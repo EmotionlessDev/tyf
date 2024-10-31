@@ -1,4 +1,4 @@
-# 🎉 Tell Your Friends 📚
+# ✨ Tell Your Friends ✨
 
 Welcome to **Tell Your Friends** – the ultimate online space for students to share, learn, and connect! 🌍 Here, you can upload notes, post project ideas, or introduce yourself to find the perfect team for your academic journey! Whether it's study guides, research work, or just a way to meet like-minded peers, we've got you covered. 💡✨
 
@@ -43,17 +43,19 @@ To keep **Tell Your Friends** welcoming and helpful for everyone:
 - **Share original content** or give credit where it's due. ✍️
 - **Stay positive** and supportive in your interactions. 🌈
 
-Together, we create a safe, engaging space for academic growth! 🌟
+Together, we create a safe, engaging space for academic growth! 🌟️
 
 ---
 
-## 🔧 Future Features
+## ⚙️ Developed using technologies:
 
-* Enhanced profile customization options 🎨
-* Advanced search filters to find content by subject or type 🔍
-* Group project forums and team-building tools 🛠️
-
----
+- Python 3.12
+- Django 5.1.2
+- PostgreSQL
+- MyPy
+- Flake8
+- Nginx
+- Docker
 
 ### 🌟 Join the Journey
 
@@ -63,5 +65,11 @@ We're building **Tell Your Friends** to help students reach new heights, togethe
 
 ---
 
-"Go Tell Your Friends about It." 
+### 👨🏻‍💻 Developed by the team:
 
+[teenxsky](https://github.com/teenxsky) [r0manch1k](https://github.com/r0manch1k) [EmotionlessDev](https://github.com/EmotionlessDev)
+
+
+---
+
+###### "Go Tell Your Friends about It." 
