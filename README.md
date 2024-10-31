@@ -67,7 +67,9 @@ We're building **Tell Your Friends** to help students reach new heights, togethe
 
 ### 👨🏻‍💻 Developed by the team:
 
-[teenxsky](https://github.com/teenxsky) [r0manch1k](https://github.com/r0manch1k) [EmotionlessDev](https://github.com/EmotionlessDev)
+[teenxsky](https://github.com/teenxsky) - Ruslan Kutorgin
+[r0manch1k](https://github.com/r0manch1k) - Roman Sokolovsky 
+[EmotionlessDev](https://github.com/EmotionlessDev) - Artem Svirin
 
 
 ---
