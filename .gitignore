@@ -90,3 +90,4 @@ manage.py
 __*__
 migrations
 tyf
+.idea/
