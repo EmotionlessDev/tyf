@@ -86,8 +86,8 @@ local_settings.py
 
 .env
 db.sqlite3
-manage.py
 __*__
 migrations
 tyf
+manage.py
 .idea/
