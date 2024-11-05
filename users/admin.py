@@ -22,23 +22,52 @@ class UserAdmin(UserAdminDefault):
     add_form = UserCreationForm
     form = UserChangeForm
     model = User
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active', 'date_joined')
-    list_filter = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active', 'date_joined')
+    list_display = (
+        'username',
+        'email',
+        'first_name',
+        'last_name',
+        'is_staff',
+        'is_active',
+        'date_joined'
+    )
+    list_filter = (
+        'username',
+        'email',
+        'first_name',
+        'last_name',
+        'is_staff',
+        'is_active',
+        'date_joined'
+    )
     fieldsets = (
-        (None, {'fields':
-                    ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active')}
+        (None, {"fields": (
+            "first_name",
+            "last_name",
+            "email",
+            "password")}
          ),
-        ('Permissions', {'fields':
-                             ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}
+        ("Permissions", {"fields": (
+            "is_staff",
+            "is_active",
+            "groups",
+            "user_permissions")}
          ),
     )
     add_fieldsets = (
-        (None, {'fields':
-                    ('first_name', 'last_name', 'email', 'password1', 'password2', 'date_of_birth', 'is_staff',
-                     'is_active', 'groups', 'user_permissions')}
+        (None, {"fields": (
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+            "date_of_birth",
+            "is_staff",
+            "is_active",
+            "groups",
+            "user_permissions")}
          ),
     )
-
     search_fields = ("email",)
     ordering = ("email",)
 
