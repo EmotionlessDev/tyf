@@ -10,3 +10,4 @@ exclude =
     .eggs,
     *.egg,
     .venv
+    venv
