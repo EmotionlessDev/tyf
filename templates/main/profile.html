@@ -1,0 +1,50 @@
+{% extends "main/blank.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="container bg-secondary vh-100 p-5">
+        <div class="row">
+            <div class="col-md-3">
+                <img src="https://avatars.mds.yandex.net/i?id=44ec612e4218e6cf67cd378240111958-4876801-images-thumbs&n=13"
+                     alt="avatar" class="img-fluid rounded-circle">
+                <p class="mt-2 fs-3">{{ user.username }}</p>
+                <div class="followers-info d-flex align-items-center mt-2">
+                    <i class="bi bi-people me-1"></i>
+                    <span>0 followers</span>
+                </div>
+                <hr>
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="user-info">
+                    <p><strong>Имя:</strong> {{ user.first_name }}</p>
+                    <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
+                    <p><strong>Отчество:</strong> {{ user.middle_name }}</p>
+                    <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Возраст:</strong> {{ user.age }}</p>
+                    <p><strong>Курс:</strong> {{ user.course }}</p>
+                    <p><strong>Направление:</strong> {{ user.specialization }}</p>
+                    <p><strong>Дата регистрации:</strong> {{ user.date_joined }}</p>
+                    <p><strong>О себе:</strong> {{ user.bio }}</p>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="social-links">
+                    <h5>Социальные сети:</h5>
+                    <a href="{{ user.vk }}" target="_blank" class="me-3"><i class="fa fa-vk" aria-hidden="true"></i> Vk</a>
+                    <a href="{{ user.telegram }}" target="_blank" class="me-3"><i class="bi bi-telegram"></i> Telegram</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
