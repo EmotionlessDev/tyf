@@ -1,9 +1,10 @@
-import uuid
+from functools import partial
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django_resized import ResizedImageField
 from random_username.generate import generate_username
-from utils import create_unique_dir
+from utils import generate_media_path
 
 
 class UserManager(BaseUserManager):
@@ -47,7 +48,7 @@ class User(AbstractUser):
         size=[300, 300],
         force_format="WEBP",
         quality=100,
-        upload_to=create_unique_dir,
+        upload_to=partial(generate_media_path, key="email", remove_with_same_key=True),
         blank=True,
         null=False,
         verbose_name="Avatar",
