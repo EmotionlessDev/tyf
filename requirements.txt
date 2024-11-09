@@ -8,4 +8,6 @@ flake8==7.1.1
 mypy==1.13.0
 mypy-extensions==1.0.0
 mysqlclient==2.2.5
-Pillow==11.0.0
+pillow==11.0.0
+random-username==1.0.2
+django-resized==1.0.3
