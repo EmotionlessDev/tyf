@@ -9,5 +9,5 @@ exclude =
     .tox,
     .eggs,
     *.egg,
-    .venv
+    .venv,
     venv
