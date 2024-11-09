@@ -41,6 +41,11 @@ warn_no_return = true
 [tool.mypy]
 plugins = "mypy_django_plugin.main"
 mypy_path = "./tyf"
+exclude = [
+    "venv",
+    ".venv",
+    "migrations",
+]
 
 [tool.django-stubs]
 django_settings_module = "tyf.settings"

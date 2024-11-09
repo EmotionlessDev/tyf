@@ -1,6 +1,5 @@
 import uuid
 import os
-from uuid import uuid5
 
 from django.utils.text import get_valid_filename
 from tyf.settings import MEDIA_ROOT
