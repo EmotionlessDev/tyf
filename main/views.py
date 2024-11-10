@@ -5,6 +5,7 @@ from django.contrib import messages
 from users.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login as login_user, logout as logout_user
+from django.apps import apps
 
 
 def register(request):
@@ -56,7 +57,7 @@ def logout(request):
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    return render(request, "main/blank.html")
+    return render(request, "main/blank.html", {"user": request.user})
 
 
 def profile(request: HttpRequest, username: str) -> HttpResponse:
