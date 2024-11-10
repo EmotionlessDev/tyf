@@ -1,10 +1,23 @@
 /********** Template CSS **********/
+*:not(.text-primary) {
+    font-family: "JetBrains Mono" !important;
+}
+
 :root {
-    --primary: #EB1616;
+    --primary: #ccff00;
+    --hover-primary: #A3CC00;
+    --secondary: #333333;
+    --thirdary: #7D80DA;
+    --light: #F2F2F2;
+    --dark: #111111;
+    --text-color: #F2F2F2;
+}
+
+    /* --primary: #EB1616;
+    --hover_primary: #bc1212;
     --secondary: #191C24;
     --light: #6C7293;
-    --dark: #000000;
-}
+    --dark: #000000; */
 
 .back-to-top {
     position: fixed;
@@ -103,6 +116,14 @@
 }
 
 @media (max-width: 991.98px) {
+    #sidebar-nav {
+        margin-top: 4rem !important;
+    }
+
+    #sidebar-logo {
+        display: none !important;
+    }
+
     .sidebar {
         margin-left: -250px;
     }
@@ -114,6 +135,16 @@
     .content {
         width: 100%;
         margin-left: 0;
+    }
+}
+
+@media (max-width: 490px) {
+    #search-input {
+        width:103px;
+    }
+
+    .content .navbar .navbar-nav .nav-link {
+        margin-right: auto !important;
     }
 }
 
@@ -286,4 +317,102 @@
 .testimonial-carousel .owl-dot.active {
     background: var(--dark);
     border-color: var(--primary);
+}
+
+.login-or {
+    position: relative;
+    color: #aaa;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.span-or {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: -2px;
+    margin-left: -25px;
+    background-color: var(--secondary);
+    width: 50px;
+    text-align: center;
+}
+
+.hr-or {
+    height: 1px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+.roboto-thin {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.roboto-light {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-medium {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.roboto-black {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.roboto-thin-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.roboto-light-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.roboto-regular-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.roboto-medium-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.roboto-bold-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.roboto-black-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: italic;
 }
