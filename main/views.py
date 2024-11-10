@@ -55,3 +55,7 @@ def login(request):
 def logout(request):
     logout_user(request)
     return HttpResponseRedirect("/login/")
+
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, 'main/profile.html', {"user": user})
