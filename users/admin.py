@@ -29,7 +29,8 @@ class UserAdmin(BaseUserAdmin):
                 "fields": [
                     "first_name",
                     "last_name",
-                    "patronymic",
+                    "middle_name",
+                    "university",
                     "course",
                     "major",
                     "bio",
@@ -54,7 +55,7 @@ class UserAdmin(BaseUserAdmin):
                     "username",
                     "first_name",
                     "last_name",
-                    "patronymic",
+                    "middle_name" "university",
                     "course",
                     "major",
                     "avatar",
@@ -71,7 +72,7 @@ class UserAdmin(BaseUserAdmin):
         "username",
         "first_name",
         "last_name",
-        "patronymic",
+        "middle_name" "university",
         "course",
         "major",
     ]
@@ -84,6 +85,9 @@ class UserAdmin(BaseUserAdmin):
 
     def save_model(self, request, obj, form, change):
         if obj.username is None:
+            username = generate_username()[0]
+            while User.objects.filter(username=username).exists():
+                username = generate_username()[0]
             obj.username = generate_username()[0]
         super().save_model(request, obj, form, change)
 

@@ -1,0 +1,45 @@
+{% extends "main/blank.html" %}
+{% load static %}
+
+
+{% block title %}Profile{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="container bg-secondary min-vh-100 p-5">
+        <div class="row">
+            <div class="col-md-3">
+                <img src="https://avatars.mds.yandex.net/i?id=44ec612e4218e6cf67cd378240111958-4876801-images-thumbs&n=13"
+                     alt="avatar" class="img-fluid rounded-circle">
+                <p class="mt-2 fs-3">{{ user.username }}</p>
+                <div class="followers-info d-flex align-items-center mt-2">
+                    <i class="bi bi-people me-1"></i>
+                    <span>0 followers</span>
+                </div>
+                <hr>
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="user-info">
+                    <p><strong>Имя: </strong> dasdasdasd </p>
+                    <p><strong>Фамилия: </strong> dasdasd </p>
+                    <p><strong>Отчество: </strong> dasdf</p>
+                    <p><strong>Имя пользователя: </strong> dcasdc1337 </p>
+                    <p><strong>Email: </strong> @dasd.com</p>
+                    <p><strong>Дата рождения: </strong> 21.01.2010</p>
+                    <p><strong>Курс: </strong> 2</p>
+                    <p><strong>Направление: </strong>dasdsdadasdas</p>
+                    <p><strong>Дата регистрации: </strong> {{ user.date_joined }}</p>
+                    <p><strong>О себе: </strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent mattis facilisis ex vitae mattis. Ut bibendum libero eu euismod vulputate. Donec ut tortor ligula. Suspendisse malesuada sed turpis ac viverra. Vestibulum id porta quam. Cras in velit placerat, condimentum odio vitae, efficitur enim. Aenean imperdiet ligula ac ex sollicitudin, eget suscipit massa ornare. Nulla a lectus nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam id fringilla turpis. Phasellus eu dignissim orci. Proin pretium id libero eget dictum. Etiam eu faucibus est, eget malesuada justo. In hac habitasse platea dictumst. Donec suscipit nunc velit, et imperdiet urna aliquet et. Donec feugiat iaculis sagittis.</p>
+                </div>
+
+                <hr class="my-4">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
