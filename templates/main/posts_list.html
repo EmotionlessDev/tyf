@@ -1,0 +1,60 @@
+{% extends "main/blank.html" %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/posts_list.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container bg-secondary min-vh-100 p-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Project Name</h5>
+                        <p class="card-text">Brief description of the project.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="language-dot" style="background-color: #f1e05a;"></span>
+                                <small class="text-muted">JavaScript</small>
+                            </div>
+                            <div class="stars">★ 10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Конец карточки -->
+            <!-- Добавь больше карточек по этому шаблону -->
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Another Project</h5>
+                        <p class="card-text">Another brief description.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="language-dot" style="background-color: #3572A5;"></span>
+                                <small class="text-muted">Python</small>
+                            </div>
+                            <div class="stars">★ 5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Еще одна карточка -->
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Sample Project</h5>
+                        <p class="card-text">Sample description for the project.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="language-dot" style="background-color: #e34c26;"></span>
+                                <small class="text-muted">HTML</small>
+                            </div>
+                            <div class="stars">★ 8</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
