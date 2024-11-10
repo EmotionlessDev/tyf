@@ -1,6 +1,4 @@
-{% extends "main/blank.html" %}
 {% load static %}
-{% block title %}Profile{% endblock %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/posts_list.css' %}">
 {% endblock %}
@@ -8,7 +6,7 @@
     <div class="container bg-secondary min-vh-100 p-5">
         <div class="row">
             {% for card in cards %}
-                <div class="col-md-4">
+                <div class="col-lg-6 col-xl-4">
                     <a href="#">
                         <div class="card bg-dark border border-light p-3 mt-4 scale-on-hover">
                             <div class="card-body">
@@ -20,6 +18,14 @@
                                         <small class="text-muted">{{ card.language }}</small>
                                     </div>
                                     <div class="stars">★ {{ card.stars }}</div>
+                                </div>
+                                <div class="d-block justify-content-between  mt-2 text-muted text-truncate">
+                                    <p>
+                                       <strong>{{ card.author }}</strong>
+                                    </p>
+                                    <p>
+                                       <strong>{{ card.date }}</strong>
+                                    </p>
                                 </div>
                             </div>
                         </div>
