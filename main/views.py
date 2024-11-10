@@ -54,12 +54,59 @@ def logout(request):
     logout_user(request)
     return HttpResponseRedirect("/login/")
 
+
 def index(request: HttpRequest) -> HttpResponse:
     return render(request, "main/blank.html")
+
 
 def profile(request: HttpRequest, username: str) -> HttpResponse:
     user = get_object_or_404(User, username=username)
     return render(request, "main/profile.html", {"user": user})
 
+
 def posts_list(request: HttpRequest) -> HttpResponse:
-    return render(request, "main/posts_list.html")
+    cards = [
+        {
+            "title": "Название работы 1",
+            "description": "Конспект по математическому анализу",
+            "language": "LaTeX",
+            "stars": 5,
+        },
+        {
+            "title": "Название работы 2",
+            "description": "Теория вероятностей. Введение",
+            "language": "Python",
+            "stars": 8,
+        },
+        {
+            "title": "Название работы 3",
+            "description": "Математическая логика",
+            "language": "Java",
+            "stars": 12,
+        },
+        {
+            "title": "Название работы 4",
+            "description": "Алгоритмы и структуры данных",
+            "language": "C++",
+            "stars": 15,
+        },
+        {
+            "title": "Название работы 5",
+            "description": "Модели машинного обучения",
+            "language": "R",
+            "stars": 7,
+        },
+        {
+            "title": "Название работы 6",
+            "description": "Курс по сетям и базам данных",
+            "language": "PHP",
+            "stars": 5,
+        },
+        {
+            "title": "Название работы 7",
+            "description": "Разработка веб-приложений",
+            "language": "JavaScript",
+            "stars": 10,
+        },
+    ]
+    return render(request, "main/posts_list.html", {"cards": cards})

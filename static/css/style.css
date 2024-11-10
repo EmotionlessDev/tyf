@@ -416,3 +416,12 @@
   font-weight: 900;
   font-style: italic;
 }
+
+/* Scale animation for everything u want */
+.scale-on-hover {
+  transition: transform 0.8s ease-in-out;
+}
+
+.scale-on-hover:hover {
+  transform: scale(1.05);
+}
