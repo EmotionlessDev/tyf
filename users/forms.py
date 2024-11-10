@@ -28,7 +28,7 @@ class UserCreationForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={"class": "form-control"}),
         min_length=8,
         max_length=50,
-
+    )
 
 
 class UserCreationForm(forms.ModelForm):
@@ -76,6 +76,7 @@ class UserCreationForm(forms.ModelForm):
 
 class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField()
+
     class Meta:
         model = User
         fields = "__all__"
