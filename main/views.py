@@ -1,5 +1,5 @@
 from users.models import User
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from users.forms import UserCreationForm
 from django.http import HttpResponseRedirect
@@ -52,10 +52,12 @@ def login(request):
 
     return render(request, "main/login.html")
 
+
 def logout(request):
     logout_user(request)
     return HttpResponseRedirect("/login/")
 
+
 def profile(request, username):
     user = get_object_or_404(User, username=username)
-    return render(request, 'main/profile.html', {"user": user})
+    return render(request, "main/profile.html", {"user": user})
