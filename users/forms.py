@@ -4,7 +4,8 @@ from django.contrib.auth import password_validation
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-
+from registry.models import University, Major
+from .models import User
 
 class UserCreationForm(forms.ModelForm):
     email = forms.CharField(
