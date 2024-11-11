@@ -1,3 +1,5 @@
+from random_username.generate import generate_username
+
 from .models import User
 from django import forms
 from django.contrib.auth import password_validation
@@ -52,7 +54,7 @@ class UserCreationForm(forms.ModelForm):
                     "Passwords don't match. Please enter both fields again.",
                 )
         return self.cleaned_data
-      
+
     def email_clean(self):
         email = self.cleaned_data["email"].lower()
         new = User.objects.filter(email=email)
@@ -70,6 +72,8 @@ class UserCreationForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.username = generate_username()[0]
+        user.is_active = True
         if commit:
             user.save()
         return user
