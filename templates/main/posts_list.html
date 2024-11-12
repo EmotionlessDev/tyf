@@ -7,7 +7,7 @@
         <div class="row">
             {% for post in posts %}
                 <div class="col-lg-6 col-xl-4">
-                    <a href="#">
+                <a href="{% url 'single-post' post.identifier %}">
                         <div class="card bg-dark border border-light p-3 mt-4 scale-on-hover">
                             <div class="card-body">
                                 <h5 class="card-title">{{ post.title }}</h5>
@@ -17,14 +17,14 @@
                                         <span class="language-dot"></span>
                                         <small class="text-muted"></small>
                                     </div>
-                                    <div class="stars">★ </div>
+                                    <div class="stars">★</div>
                                 </div>
                                 <div class="d-block justify-content-between  mt-2 text-muted text-truncate">
                                     <p>
-                                       <strong>{{ post.author }}</strong>
+                                        <strong>{{ post.author }}</strong>
                                     </p>
                                     <p>
-                                       <strong>{{ post.created_at }}</strong>
+                                        <strong>{{ post.created_at }}</strong>
                                     </p>
                                 </div>
                             </div>

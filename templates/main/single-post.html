@@ -1,0 +1,72 @@
+{% extends "main/blank.html" %}
+{% load static %}
+<!-- TODO: change title -->
+{% block title %}single post{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/single-post.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container bg-secondary min-vh-100 p-5">
+        <div class="card bg-dark border-light p-4">
+            <div class="row flex-md-row flex-column">
+                <!-- Левая колонка с аватаром и информацией -->
+                <div class="col-md-3 text-center mb-3 mb-md-0 flex-shrink-0">
+                    <img src="https://avatars.mds.yandex.net/i?id=44ec612e4218e6cf67cd378240111958-4876801-images-thumbs&n=13"
+                         alt="avatar"
+                         class="img-fluid rounded-circle mb-3">
+                <h3 class="text-light">{{post.author.username}}</h3>
+                    <div class="followers-info d-flex align-items-center justify-content-center text-muted">
+                        <i class="bi bi-people me-1"></i>
+                        <span>0 followers</span>
+                    </div>
+                    <hr class="bg-light my-3">
+                </div>
+                <div class="col-md-9">
+                    <h1 class="post-title text-light">Название работы</h1>
+                    <div class="post-info d-flex flex-column justify-content-start mt-3 mb-4 text-muted">
+                        <span class="me-3">
+                            <i class="bi bi-calendar3 me-1"></i>Дата создания: 11 Ноября, 2024, 3:08 p.m.
+                        </span>
+                        <span class="mt-3">
+                            <i class="bi bi-eye me-1"></i>Просмотры: 123
+                        </span>
+                    </div>
+                    <div class="social-links mt-3">
+                        <a href="#" class="text-muted me-3">
+                            <i class="bi bi-telegram"></i> telegram
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="post-description rounded bg-dark-subtle text-light">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi augue orci, porta id neque sit
+                    amet, venenatis ullamcorper mi. Praesent at elementum sapien, in gravida arcu. Nunc eleifend
+                    lacus in ligula semper, vitae eleifend metus maximus. Ut euismod ipsum neque, eget lacinia metus
+                    vulputate eget. Donec a turpis sit amet ex bibendum vestibulum sed at nibh. Cras aliquet a urna
+                    ut accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
+                    curae; Nullam in aliquam eros, nec cursus arcu. Suspendisse faucibus quam sed dolor rutrum
+                    hendrerit. Aliquam vehicula consectetur pellentesque. Sed sollicitudin lorem enim, tempor
+                    lacinia augue sagittis sit amet. Duis blandit, mi id venenatis bibendum, erat quam porta sem,
+                    nec bibendum ante lorem eu mi. Nunc vehicula mauris ac nisl consectetur, eget accumsan eros
+                    suscipit. Maecenas vel turpis quis nulla tincidunt dictum a ac lectus.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi augue orci, porta id neque sit
+                    amet, venenatis ullamcorper mi. Praesent at elementum sapien, in gravida arcu. Nunc eleifend
+                    lacus in ligula semper, vitae eleifend metus maximus. Ut euismod ipsum neque, eget lacinia metus
+                    vulputate eget. Donec a turpis sit amet ex bibendum vestibulum sed at nibh. Cras aliquet a urna
+                    ut accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
+                    curae; Nullam in aliquam eros, nec cursus arcu. Suspendisse faucibus quam sed dolor rutrum
+                    hendrerit. Aliquam vehicula consectetur pellentesque. Sed sollicitudin lorem enim, tempor
+                    lacinia augue sagittis sit amet. Duis blandit, mi id venenatis bibendum, erat quam porta sem,
+                    nec bibendum ante lorem eu mi. Nunc vehicula mauris ac nisl consectetur, eget accumsan eros
+                    suscipit. Maecenas vel turpis quis nulla tincidunt dictum a ac lectus.
+                </p>
+            </div>
+            <div class="post-content mt-5">
+                <a href="path/to/file.pdf"
+                   target="_blank"
+                   class="btn btn-outline-light mt-2 mb-4">Вложения</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
