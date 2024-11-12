@@ -1,25 +1,34 @@
 from django import forms
+from django_select2 import forms as s2forms
 from django.forms import modelformset_factory
 
-from .models import Post, Comment, Media
+from registry.models import Major, University
+from .models import Post, Comment, Media, Profile
 
 
-class PostForm(forms.ModelForm):
+class UniversityWidget(s2forms.ModelSelect2Widget):
+    queryset = University.objects.all().order_by("name")
+    is_required = False
+    search_fields = [
+        "name__icontains",
+        "city__icontains",
+        "country__icontains",
+    ]
+
+
+class MajorWidget(s2forms.ModelSelect2Widget):
+    queryset = Major.objects.all().order_by("name")
+    is_required = False
+    search_fields = [
+        "name__icontains",
+    ]
+
+
+class ProfileForm(forms.ModelForm):
     class Meta:
-        model = Post
-        fields = ["title", "content", "category"]
-
-
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ["content"]
-
-
-class MediaForm(forms.ModelForm):
-    class Meta:
-        model = Media
-        fields = ["file", "description"]
-
-
-MediaFormSet = modelformset_factory(Media, form=MediaForm, extra=10)
+        model = Profile
+        fields = "__all__"
+        widgets = {
+            "university": UniversityWidget,
+            "major": MajorWidget,
+        }

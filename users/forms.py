@@ -1,44 +1,15 @@
+from django import forms
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.core.exceptions import ValidationError
 from random_username.generate import generate_username
 
 from .models import User
-from django import forms
-from django.contrib.auth import password_validation
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
-from registry.models import University, Major
-from .models import User
-
-class UserCreationForm(forms.ModelForm):
-    email = forms.CharField(
-        label="Email",
-        widget=forms.EmailInput(
-            attrs={"class": "form-control"},
-        ),
-        required=True,
-    )
-    password1 = forms.CharField(
-        label="Password",
-        widget=forms.PasswordInput(attrs={"class": "form-control"}),
-        validators=[validate_password],
-        min_length=8,
-        max_length=50,
-        help_text=password_validation.password_validators_help_text_html(),
-        required=True,
-    )
-    password2 = forms.CharField(
-        label="Password confirmation",
-        widget=forms.PasswordInput(attrs={"class": "form-control"}),
-        min_length=8,
-        max_length=50,
-    )
 
 
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(
         label="Password confirmation", widget=forms.PasswordInput
-
     )
 
     class Meta:
