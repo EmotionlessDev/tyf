@@ -1,5 +1,11 @@
-from django.shortcuts import render, get_object_or_404
 from users.models import User
+from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
+from users.forms import UserCreationForm
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login as login_user, logout as logout_user
+from django.apps import apps
+from django.views.generic import DetailView
 
 
 def index(request):
@@ -51,3 +57,21 @@ def logout(request):
 
 def index(request: HttpRequest) -> HttpResponse:
     return render(request, "main/blank.html", {"user": request.user})
+
+
+def profile(request: HttpRequest, username: str) -> HttpResponse:
+    user_posts = Post.objects.filter(author__username=username)
+    user = get_object_or_404(User, username=username)
+    return render(request, "main/profile.html", {"user": user, "posts": user_posts})
+
+
+def single_post(request: HttpRequest) -> HttpResponse:
+    return render(request, "main/single-post.html")
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'main/single-post.html'
+    context_object_name = 'post'
+    slug_field = 'identifier'
+    slug_url_kwarg = 'identifier'
