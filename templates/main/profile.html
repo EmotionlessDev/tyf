@@ -8,7 +8,7 @@
 <div class="min-vh-100 p-4">
     <div class="row">
         <div class="col-md-3">
-            <img src="https://avatars.mds.yandex.net/i?id=44ec612e4218e6cf67cd378240111958-4876801-images-thumbs&n=13"
+            <img src="{{user.avatar.url}}"
                 alt="avatar" class="img-fluid rounded-circle">
             <p class="mt-2 fs-3">{{ user.username }}</p>
             <div class="followers-info d-flex align-items-center mt-2">
@@ -20,16 +20,16 @@
         <div class="col-md-9">
             <div class="user-info">
                 <p>
-                    <strong>Имя:</strong> {{ user.name }}
+                    <strong>Имя:</strong> {{ user.first_name }}
                 </p>
                 <p>
-                    <strong>Фамилия:</strong> {{ user.surname }}
+                    <strong>Фамилия:</strong> {{ user.last_name }}
                 </p>
                 <p>
-                    <strong>Отчество:</strong> {{ user.middlename }}
+                    <strong>Отчество:</strong> {{ user.middle_name }}
                 </p>
                 <p>
-                    <strong>Имя пользователя:</strong> {{ user.username }}
+                    <strong>Имя пользователя:</strong> {{ user.username }} 
                 </p>
                 <p>
                     <strong>Email:</strong> {{ user.email }}
@@ -38,10 +38,7 @@
                     <strong>Дата рождения:</strong> {{ user.date_of_birth }}
                 </p>
                 <p>
-                    <strong>Курс:</strong> {{user.course}}
-                </p>
-                <p>
-                    <strong>Направление:</strong>{{user.major}}
+                    <strong>Направление:</strong>{{user.major}} 
                 </p>
                 <p>
                     <strong>Дата регистрации:</strong> {{ user.date_joined }}
