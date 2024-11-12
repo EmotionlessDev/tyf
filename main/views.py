@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login as login_user, logout as log
 from django.apps import apps
 from django.views.generic import DetailView
 from .models import Profile
+import markdown
 
 # def post_detail(request, post_id):
 #     post = get_object_or_404(Post, id=post_id)

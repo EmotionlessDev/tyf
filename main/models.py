@@ -9,10 +9,12 @@ from django.db import models
 from django.db.models import CharField
 from django_resized import ResizedImageField
 from random_username.generate import generate_username
+from mdeditor.fields import MDTextField
 
 from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
 from utils import generate_media_path, generate_uuid
+import markdown
 
 
 User = get_user_model()
@@ -40,7 +42,7 @@ class Profile(models.Model):
         verbose_name="Major",
     )
     date_of_birth = models.DateTimeField(blank=True, null=True)
-    data_joined = models.DateTimeField(blank=True, null=True)
+    date_joined = models.DateTimeField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     avatar = ResizedImageField(
         crop=["middle", "center"],
@@ -143,7 +145,7 @@ class Post(models.Model):
     collections = models.ManyToManyField(Collection, related_name="posts", blank=True)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=255)
-    content = models.TextField(blank=True)
+    content = MDTextField()
     stars = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -158,6 +160,8 @@ class Post(models.Model):
         update_fields=None,
         **kwargs,
     ):
+        md = markdown.Markdown(extensions=["fenced_code", "codehilite"])
+        self.content = md.convert(self.content)
         self.identifier = generate_uuid(klass=Post)
         super(Post, self).save(force_insert, force_update, *args, **kwargs)
 
