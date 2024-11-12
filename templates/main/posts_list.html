@@ -3,28 +3,28 @@
     <link rel="stylesheet" href="{% static 'css/posts_list.css' %}">
 {% endblock %}
 {% block content %}
-    <div class="container bg-secondary min-vh-100 p-5">
+    <div>
         <div class="row">
-            {% for card in cards %}
+            {% for post in posts %}
                 <div class="col-lg-6 col-xl-4">
                     <a href="#">
                         <div class="card bg-dark border border-light p-3 mt-4 scale-on-hover">
                             <div class="card-body">
-                                <h5 class="card-title">{{ card.title }}</h5>
-                                <p class="card-text text-truncate">{{ card.description }}</p>
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="card-text text-truncate">{{ post.content }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center">
                                         <span class="language-dot"></span>
-                                        <small class="text-muted">{{ card.language }}</small>
+                                        <small class="text-muted"></small>
                                     </div>
-                                    <div class="stars">★ {{ card.stars }}</div>
+                                    <div class="stars">★ </div>
                                 </div>
                                 <div class="d-block justify-content-between  mt-2 text-muted text-truncate">
                                     <p>
-                                       <strong>{{ card.author }}</strong>
+                                       <strong>{{ post.author }}</strong>
                                     </p>
                                     <p>
-                                       <strong>{{ card.date }}</strong>
+                                       <strong>{{ post.created_at }}</strong>
                                     </p>
                                 </div>
                             </div>
