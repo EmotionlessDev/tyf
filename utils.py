@@ -1,7 +1,7 @@
 import uuid
 import os
 from datetime import datetime
-from uuid import uuid5
+
 from django.db import models
 from django.utils.text import get_valid_filename
 from tyf.settings import MEDIA_ROOT

@@ -11,3 +11,7 @@ mysqlclient==2.2.5
 pillow==11.0.0
 random-username==1.0.2
 django-resized==1.0.3
+django-appconf==1.0.6
+django-select2==8.2.1
+django-redis==5.4.0
+

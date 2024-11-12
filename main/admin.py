@@ -2,7 +2,65 @@ from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
 
 
-from .models import Category, Collection, Tag, Post, Comment, Media
+from .models import Category, Collection, Tag, Post, Comment, Media, Profile
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "username",
+        "email",
+        "first_name",
+        "last_name",
+        "university",
+        "date_of_birth",
+        "data_joined",
+    )
+
+    list_filter = (
+        "username",
+        "email",
+        "date_of_birth",
+        "data_joined",
+        "major",
+    )
+
+    fieldsets = [
+        (None, {"fields": ["user", "username", "email", "avatar", "data_joined"]}),
+        (
+            "Personal info",
+            {
+                "fields": [
+                    "first_name",
+                    "last_name",
+                    "middle_name",
+                    "university",
+                    "major",
+                    "bio",
+                    "date_of_birth",
+                    "telegram",
+                    "vkontakte",
+                ]
+            },
+        ),
+        ("Stats", {"fields": ["points", "awards"]}),
+    ]
+
+    search_fields = [
+        "username",
+        "first_name",
+        "last_name",
+        "major",
+    ]
+
+    ordering = [
+        "username",
+    ]
+
+    autocomplete_fields = ["university", "major"]
+
+    class Meta:
+        model = Profile
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -97,6 +155,7 @@ class PostAdmin(admin.ModelAdmin):
     ]
 
 
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Collection, CollectionAdmin)
 admin.site.register(Tag, TagAdmin)
