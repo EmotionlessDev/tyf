@@ -50,6 +50,7 @@ import markdown
 #         {"post": post, "comments": comments, "comment_form": comment_form},
 #     )
 
+
 def register(request):
     form = UserCreationForm()
 
@@ -110,7 +111,7 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'main/single-post.html'
-    context_object_name = 'post'
-    slug_field = 'identifier'
-    slug_url_kwarg = 'identifier'
+    template_name = "main/single-post.html"
+    context_object_name = "post"
+    slug_field = "identifier"
+    slug_url_kwarg = "identifier"
