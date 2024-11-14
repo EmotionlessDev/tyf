@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login as login_user, logout as log
 from django.apps import apps
 from django.views.generic import DetailView
 from .models import Profile
+import markdown
 
 # def post_detail(request, post_id):
 #     post = get_object_or_404(Post, id=post_id)
@@ -48,6 +49,7 @@ from .models import Profile
 #         "core/detail.html",
 #         {"post": post, "comments": comments, "comment_form": comment_form},
 #     )
+
 
 def register(request):
     form = UserCreationForm()
@@ -109,7 +111,7 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'main/single-post.html'
-    context_object_name = 'post'
-    slug_field = 'identifier'
-    slug_url_kwarg = 'identifier'
+    template_name = "main/single-post.html"
+    context_object_name = "post"
+    slug_field = "identifier"
+    slug_url_kwarg = "identifier"
