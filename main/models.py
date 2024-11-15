@@ -6,20 +6,38 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.conf.urls.static import static
 from django.db.models import CharField
 from django_resized import ResizedImageField
+from django.core.validators import RegexValidator
 from random_username.generate import generate_username
 
-from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
 from utils import generate_media_path, generate_uuid
 
+from urllib.parse import urljoin
+
+from tyf import settings
+
+
+validator_telegram = RegexValidator(regex=r"^(?:|(https?:\/\/)?(|www)[.]?((t|telegram)\.me)\/)[a-zA-Z0-9_]{5,32}$", 
+                                    message="Telegram profile link should be in the format of https://t.me/username or https://telegram.me/username")
+
+validator_vkontakte = RegexValidator(regex=r"^(?:|(https?:\/\/)?(|www)[.]?(vk\.com)\/)[a-zA-Z0-9_]{3,32}$",
+                                    message="VK profile link should be in the format of https://vk.com/username")
 
 User = get_user_model()
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, blank=False, null=True, related_name="profile",)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        unique=True,
+        blank=False,
+        null=True,
+        related_name="profile",
+    )
     email = models.EmailField(unique=False, blank=False, null=False)
     username = models.CharField(max_length=50, unique=True, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
@@ -60,8 +78,8 @@ class Profile(models.Model):
     )
     points = models.IntegerField(default=0, blank=True, null=True)
     awards = models.IntegerField(default=0, blank=True, null=True)
-    telegram = models.URLField(blank=True, null=True, verbose_name="Telegram")
-    vkontakte = models.URLField(blank=True, null=True, verbose_name="VK")
+    telegram = models.URLField(blank=True, null=True, validators=[validator_telegram], verbose_name="Telegram")
+    vkontakte = models.URLField(blank=True, null=True, validators=[validator_vkontakte], verbose_name="VK")
     __original_mode = None
 
     def save(
@@ -95,21 +113,30 @@ class Profile(models.Model):
     #     self.thumbnail = thumb_filename
     #     return True
 
+    @property
+    def get_avatar(self):
+        if self.avatar:
+            return self.avatar.url
+        return settings.DEFAULT_USER_AVATAR
+
     def __str__(self):
-        return f"{self.username} ({self.email})"
+        return self.username
 
 
 class Follow(models.Model):
     follower = models.ForeignKey(
-        User, related_name="following", on_delete=models.CASCADE
+        Profile, related_name="following", on_delete=models.CASCADE
     )
     following = models.ForeignKey(
-        User, related_name="followers", on_delete=models.CASCADE
+        Profile, related_name="followers", on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def is_following(self, profile):
+        return self.following.filter(id=profile.id).exists()
+
     def __str__(self):
-        return f"{self.follower} follows {self.following}"
+        return f"{self.follower} followed {self.following} at {self.created_at}"
 
 
 class Category(models.Model):
@@ -168,7 +195,9 @@ class Post(models.Model):
 class Comment(models.Model):
     identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="comments"
+    )
     content = models.TextField()
     stars = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

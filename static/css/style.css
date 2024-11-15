@@ -1,6 +1,6 @@
 /********** Template CSS **********/
 *:not(.text-primary) {
-    font-family: "JetBrains Mono" !important;
+    font-family: "JetBrains Mono";
 }
 
 :root {
@@ -9,8 +9,10 @@
     --secondary: #333333;
     --thirdary: #7D80DA;
     --light: #F2F2F2;
+    --dark-light: #222222;
     --dark: #111111;
     --text-color: #F2F2F2;
+    --alert: #FF0000;
 }
 
     /* --primary: #EB1616;

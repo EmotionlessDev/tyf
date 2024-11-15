@@ -1,0 +1,17 @@
+/* BUTTONS */
+
+.action {
+    color: var(--light);
+}
+
+.action:hover {
+    color: var(--dark);
+    background-color: var(--primary);
+    border-right: 1px solid var(--dark);
+    border-bottom: 1px solid var(--dark);
+
+}
+
+/* .alert {
+    background: var(--alert);
+} */
