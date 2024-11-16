@@ -73,5 +73,3 @@ We're building **Tell Your Friends** to help students reach new heights, togethe
 
 
 ---
-
-###### "Go Tell Your Friends about It." 
