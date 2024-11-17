@@ -16,9 +16,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
-    <link href="{% static 'lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
-
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
@@ -26,9 +23,15 @@
 
 <body>    
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-      <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-      </symbol>
+        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </symbol>
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </symbol>
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
     </svg>
 
     <div class="container-fluid position-relative d-flex p-0">
@@ -42,30 +45,52 @@
             <div class="flex row vh-100 align-items-center justify-content-center" style="min-height: 100vh;">   
                 <div class="col-12 row col-sm-8 col-md-6 col-lg-5 col-xl-4">
                     {% for msg in messages %}
-                        <div class="alert alert-danger d-flex align-items-center col-md-6" role="alert" style="border-radius: 1rem !important;">
+                        {% if 'success' in msg.tags %}
+                        <div class="alert alert-success d-flex align-items-center" role="alert" style="width: 100% !important; border-radius: 1rem !important;">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                            <div style="margin-left: 1rem !important;">
+                                {{ msg }}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if 'info' in msg.tags %}
+                        <div class="alert alert-info d-flex align-items-center" role="alert" style="width: 100% !important; border-radius: 1rem !important;">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#info-fill"/></svg>
+                            <div style="margin-left: 1rem !important;">
+                                {{ msg }}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if 'warning' in msg.tags %}
+                        <div class="alert alert-warning d-flex align-items-center" role="alert" style="width: 100% !important; border-radius: 1rem !important;">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            <div style="margin-left: 1rem !important;">
+                                {{ msg }}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if 'error' in msg.tags %}
+                        <div class="alert alert-danger d-flex align-items-center" role="alert" style="width: 100% !important; border-radius: 1rem !important;">
                             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                             <div style="margin-left: 1rem !important;">
                                 {{ msg }}
                             </div>
                         </div>
+                        {% endif %}
                     {% endfor %}
                     <div class="bg-secondary rounded p-4" style="border-radius: 1rem !important;">
                         <div class="text-center align-items-center justify-content-between mb-4">
-                            <h3 class="text-primary fs-5">Sign Up to <a href="{% url 'index' %}" class="fs-5" style="font-family: 'Roboto' !important;">Tell Your Friends</a></h3>
+                            <h3 class="fs-5">Sign Up to <a href="{% url 'index' %}" class="text-primary fs-5" style="color: var(--primary) !important; font-family: 'Roboto' !important;">Tell Your Friends</a></h3>
                         </div>
                         <div>
-                            <button class="btn btn-dark border rounded-pill px-4 py-2 mb-2" style="width: 100%;">
+                            <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-dark border rounded-pill px-4 py-2 mb-2" style="width: 100%;">
                                 <img src="https://img.icons8.com/color/48/000000/google-logo.png" class="rounded float-start" width="24" height="24">
-                                <span class="text-center">Continue with Google</span>
-                            </button>
-                            <button class="btn btn-dark border rounded-pill px-4 py-2 mb-2" style="display: block; width: 100%;">
+                                <span class="text-center" style="margin: 0% !important;">Continue with Google</span>
+                            </a>
+                            <a href="{% url 'social:begin' 'yandex-oauth2' %}" class="btn btn-dark border rounded-pill px-4 py-2 mb-3" style="display: block; width: 100%;">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/58/Yandex_icon.svg" class="rounded float-start" width="24" height="24">
-                                <span class="text-center">Continue with Yandex</span>
-                            </button>
-                            <button class="btn btn-dark border rounded-pill px-4 py-2 mb-3" style="display: block; width: 100%;">
-                                <img src="https://img.icons8.com/?size=100&id=13977&format=png&color=000000" class="rounded float-start" width="24" height="24">
-                                <span class="text-center">Continue with VK</span>
-                            </button>
+                                <span class="text-center" style="margin: 0% !important;">Continue with Yandex</span>
+                            </a>
                         </div>
                         <div class="col-md-12 mb-3">
                             <div class="login-or">
@@ -76,7 +101,7 @@
                         <form method="post" role="form">
                             {% csrf_token %}
                             <div class="form-floating mb-2">
-                                <input type="email" name="email" class="form-control form-control-sm" style="border-radius: 1rem;" id="id_email" placeholder="name@example.com" required aria-invalid="true">
+                                <input type="email" name="email" value="{{ email }}" class="form-control form-control-sm" style="border-radius: 1rem;" id="id_email" placeholder="name@example.com" required aria-invalid="true">
                                 <label for="id_email">Email <label style="color: rgb(188, 28, 28);">*</label></label>
                             </div>
                             <div class="form-floating mb-2">
@@ -87,10 +112,7 @@
                                 <input type="password" name="password2" class="form-control form-control-sm" style="border-radius: 1rem;" id="id_password2" placeholder="Password confirmation" required aria-invalid="true">
                                 <label for="id_password2">Password confirmation <label style="color: rgb(188, 28, 28);">*</label></label>
                             </div>
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <a href="">Forgot password?</a>
-                            </div>
-                            <button type="submit" class="btn btn-primary py-3 w-100 mb-4" style="border-radius: 1rem !important;"><label style="color: var(--dark) !important;">Sign Up</label></button>
+                            <button type="submit" class="btn btn-primary py-3 w-100 mb-4" style="border-radius: 1rem !important;"><label style="color: var(--dark) !important;">Continue</label></button>
                         </form>
                         <p class="text-center mb-0">Already have an Account? <a href="{% url 'login' %}">Sign In</a></p>
                     </div>
@@ -101,13 +123,6 @@
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'lib/chart/chart.min.js' %}"></script>
-    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/moment.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 
     <script src="{% static 'js/main.js' %}"></script>
 </body>

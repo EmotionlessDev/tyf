@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from random_username.generate import generate_username
 
 from .forms import UserChangeForm, UserCreationForm
 from .models import User
@@ -46,6 +47,13 @@ class UserAdmin(BaseUserAdmin):
     ]
 
     filter_horizontal = []
+
+    # def save_model(self, request, obj, form, change):
+    #     if obj.username is None:
+    #         obj.username = generate_username()[0]
+    #     if not obj.is_active:
+    #         obj.is_active = True
+    #     super().save_model(request, obj, form, change)
 
 
 admin.site.register(User, UserAdmin)

@@ -1,4 +1,5 @@
 import os
+import markdown
 from functools import partial
 
 from PIL import Image
@@ -15,7 +16,6 @@ from mdeditor.fields import MDTextField
 from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
 from utils import generate_media_path, generate_uuid
-import markdown
 from tyf import settings
 
 
@@ -107,6 +107,7 @@ class Profile(models.Model):
             while Profile.objects.filter(username=username).exists():
                 username = generate_username()[0]
             self.username = generate_username()[0]
+        
         super(Profile, self).save(force_insert, force_update, *args, **kwargs)
 
     # def save_thumbnail(self):
