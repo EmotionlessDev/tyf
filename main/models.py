@@ -3,7 +3,7 @@ from functools import partial
 
 from PIL import Image
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.conf.urls.static import static
@@ -20,11 +20,15 @@ from urllib.parse import urljoin
 from tyf import settings
 
 
-validator_telegram = RegexValidator(regex=r"^(?:|(https?:\/\/)?(|www)[.]?((t|telegram)\.me)\/)[a-zA-Z0-9_]{5,32}$", 
-                                    message="Telegram profile link should be in the format of https://t.me/username or https://telegram.me/username")
+validator_telegram = RegexValidator(
+    regex=r"^(?:|(https?:\/\/)?(|www)[.]?((t|telegram)\.me)\/)[a-zA-Z0-9_]{5,32}$",
+    message="Telegram profile link should be in the format of https://t.me/username or https://telegram.me/username",
+)
 
-validator_vkontakte = RegexValidator(regex=r"^(?:|(https?:\/\/)?(|www)[.]?(vk\.com)\/)[a-zA-Z0-9_]{3,32}$",
-                                    message="VK profile link should be in the format of https://vk.com/username")
+validator_vkontakte = RegexValidator(
+    regex=r"^(?:|(https?:\/\/)?(|www)[.]?(vk\.com)\/)[a-zA-Z0-9_]{3,32}$",
+    message="VK profile link should be in the format of https://vk.com/username",
+)
 
 User = get_user_model()
 
@@ -38,7 +42,7 @@ class Profile(models.Model):
         null=True,
         related_name="profile",
     )
-    email = models.EmailField(unique=False, blank=False, null=False)
+    email = models.EmailField(blank=True, null=True)
     username = models.CharField(max_length=50, unique=True, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
@@ -78,8 +82,12 @@ class Profile(models.Model):
     )
     points = models.IntegerField(default=0, blank=True, null=True)
     awards = models.IntegerField(default=0, blank=True, null=True)
-    telegram = models.URLField(blank=True, null=True, validators=[validator_telegram], verbose_name="Telegram")
-    vkontakte = models.URLField(blank=True, null=True, validators=[validator_vkontakte], verbose_name="VK")
+    telegram = models.URLField(
+        blank=True, null=True, validators=[validator_telegram], verbose_name="Telegram"
+    )
+    vkontakte = models.URLField(
+        blank=True, null=True, validators=[validator_vkontakte], verbose_name="VK"
+    )
     __original_mode = None
 
     def save(
@@ -121,6 +129,18 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.username
+
+    @property
+    def get_telegram(self):
+        if self.telegram:
+            return "@" + self.telegram.split("/")[-1]
+        return None
+
+    @property
+    def get_vkontakte(self):
+        if self.vkontakte:
+            return self.vkontakte.split("/")[-1]
+        return None
 
 
 class Follow(models.Model):
@@ -175,6 +195,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
+    media = GenericRelation("Media")
 
     def save(
         self,

@@ -125,7 +125,7 @@ class CommentInline(admin.StackedInline):
 
 
 class MediaAdmin(admin.ModelAdmin):
-    list_display = ["file", "description"]
+    list_display = ["file", "description", "content_type", "object_id"]
     search_fields = ["caption", "description"]
 
 
@@ -167,6 +167,7 @@ class PostAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Post
+
 
 admin.site.register(Follow, FollowAdmin)
 admin.site.register(Profile, ProfileAdmin)
