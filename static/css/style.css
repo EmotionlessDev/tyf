@@ -23,6 +23,12 @@
     --light: #6C7293;
     --dark: #000000; */
 
+/*GOVNOOO NELZYA TAK DELAT' */
+.btn-outline-light:hover {
+    color: var(--dark);
+}
+
+
 .back-to-top {
     position: fixed;
     display: none;

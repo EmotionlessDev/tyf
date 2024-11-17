@@ -11,12 +11,11 @@ from django.db.models import CharField
 from django_resized import ResizedImageField
 from django.core.validators import RegexValidator
 from random_username.generate import generate_username
-
+from mdeditor.fields import MDTextField
+from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
 from utils import generate_media_path, generate_uuid
-
-from urllib.parse import urljoin
-
+import markdown
 from tyf import settings
 
 
@@ -42,7 +41,7 @@ class Profile(models.Model):
         null=True,
         related_name="profile",
     )
-    email = models.EmailField(blank=True, null=True)
+    email = models.EmailField(unique=False, blank=False, null=False)
     username = models.CharField(max_length=50, unique=True, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
@@ -62,7 +61,7 @@ class Profile(models.Model):
         verbose_name="Major",
     )
     date_of_birth = models.DateTimeField(blank=True, null=True)
-    data_joined = models.DateTimeField(blank=True, null=True)
+    date_joined = models.DateTimeField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     avatar = ResizedImageField(
         crop=["middle", "center"],
@@ -182,7 +181,34 @@ class Tag(models.Model):
         return self.name
 
 
+class Media(models.Model):
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, related_name="media"
+    )
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+    original_filename = models.CharField(max_length=255, blank=True, null=True)
+    file = models.FileField(
+        upload_to=partial(
+            generate_media_path, key="object_id", remove_with_same_key=False
+        ),
+        null=True,
+        blank=True,
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.original_filename and self.file:
+            self.original_filename = os.path.basename(self.file.name)
+        super(Media, self).save(*args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+
+    description = models.CharField(max_length=255, blank=True, null=True)
+
+
 class Post(models.Model):
+    media_files = GenericRelation(Media)
     identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
@@ -190,7 +216,7 @@ class Post(models.Model):
     collections = models.ManyToManyField(Collection, related_name="posts", blank=True)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="posts")
     title = models.CharField(max_length=255)
-    content = models.TextField(blank=True)
+    content = MDTextField()
     stars = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -206,6 +232,8 @@ class Post(models.Model):
         update_fields=None,
         **kwargs,
     ):
+        md = markdown.Markdown(extensions=["fenced_code", "codehilite"])
+        self.content = md.convert(self.content)
         self.identifier = generate_uuid(klass=Post)
         super(Post, self).save(force_insert, force_update, *args, **kwargs)
 
@@ -238,19 +266,3 @@ class Comment(models.Model):
     ):
         self.identifier = generate_uuid(klass=Comment)
         super(Comment, self).save(force_insert, force_update, *args, **kwargs)
-
-
-class Media(models.Model):
-    content_type = models.ForeignKey(
-        ContentType, on_delete=models.CASCADE, related_name="media"
-    )
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-    file = models.FileField(
-        upload_to=partial(
-            generate_media_path, key="object_id", remove_with_same_key=False
-        ),
-        null=True,
-        blank=True,
-    )
-    description = models.CharField(max_length=255, blank=True, null=True)

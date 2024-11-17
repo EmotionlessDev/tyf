@@ -3,7 +3,8 @@
 <!-- TODO: change title -->
 {% block title %}single post{% endblock %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'css/single-post.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
 {% endblock %}
 {% block content %}
     <div class="min-vh-100 p-4">
@@ -46,8 +47,21 @@
                             {{post.content}}
                         </p>
                     </div>
-
                     
+                    {% if post.media_files.all %}
+                    <h4 class="mt-5">Вложения:</h4>
+                    <ul class="attachments-list">
+                        {% for attachment in post.media_files.all %}
+                        <li>
+                            <a href="{{ attachment.file.url }}" target="_blank" class="btn btn-outline-light mt-2 mb-2">
+                                {{ attachment.original_filename }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>Нет вложений.</p>
+                    {% endif %}
 
                 </div>
                 
@@ -60,4 +74,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}

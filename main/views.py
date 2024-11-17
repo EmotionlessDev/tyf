@@ -1,4 +1,3 @@
-from .models import Post, Comment
 from django.http import HttpResponse, HttpRequest
 from users.models import User
 from django.shortcuts import get_object_or_404, render, redirect
@@ -8,7 +7,13 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login as login_user, logout as logout_user
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView
-from .models import Profile, Follow, Collection, Category, Tag
+from .forms import PostForm
+from django.utils import timezone
+from django.db import transaction
+from django.shortcuts import redirect
+import markdown
+from .models import Profile, Follow, Collection, Category, Tag, Media, Post
+
 
 
 def register(request):
@@ -97,11 +102,21 @@ class PostDetailView(DetailView):
     slug_field = "identifier"
     slug_url_kwarg = "identifier"
 
-    def get_context_data(self, **kwargs):
-        context = super(PostDetailView, self).get_context_data(**kwargs)
-        context['media'] = self.get_object().media.all()
-        return context
-
+def post_new(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            with transaction.atomic():
+                post = form.save(commit=False)
+                post.author = request.user.profile
+                post.save()
+                media_files = request.FILES.getlist("media_files")
+                for file in media_files:
+                    Media.objects.create(content_object=post, file=file)
+            return redirect("post_detail", identifier=post.identifier)
+    else:
+        form = PostForm()
+    return render(request, "main/post_add.html", {"form": form})
 
 @login_required
 def follow(request, username):

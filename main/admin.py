@@ -14,19 +14,19 @@ class ProfileAdmin(admin.ModelAdmin):
         "last_name",
         "university",
         "date_of_birth",
-        "data_joined",
+        "date_joined",
     )
 
     list_filter = (
         "username",
         "email",
         "date_of_birth",
-        "data_joined",
+        "date_joined",
         "major",
     )
 
     fieldsets = [
-        (None, {"fields": ["user", "username", "email", "avatar", "data_joined"]}),
+        (None, {"fields": ["user", "username", "email", "avatar", "date_joined"]}),
         (
             "Personal info",
             {
