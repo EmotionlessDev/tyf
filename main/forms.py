@@ -35,18 +35,6 @@ class ProfileForm(forms.ModelForm):
         }
 
 
-# class PostForm(forms.ModelForm):
-#
-#     inlines = [MediaInline]
-#
-#     class Meta:
-#         model = Post
-#         fields = (
-#             "title",
-#             "content",
-#         )
-
-
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
