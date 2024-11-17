@@ -1,0 +1,20 @@
+/* BUTTONS */
+
+
+.action-unchecked, .action-checked:hover {
+    color: var(--light);
+    background-color: var(--dark);
+    font-size: smaller;
+    outline: none !important;
+    box-shadow: none;
+}
+
+.action-checked, .action-unchecked:hover {
+    color: var(--dark);
+    background-color: var(--primary);
+    border-right: 1px solid var(--light);
+    border-bottom: 1px solid var(--light);
+    font-size: smaller;
+    outline: none !important;
+    box-shadow: none;
+}

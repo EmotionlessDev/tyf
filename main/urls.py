@@ -9,4 +9,6 @@ urlpatterns = [
     path("posts/add/", views.post_new, name="post_add"),
     path("post/<str:identifier>/", views.PostDetailView.as_view(), name="post_detail"),
     path("<str:username>/", views.profile, name="profile"),
+    path("follow/<str:username>/", views.follow, name="follow"),
+    path("unfollow/<str:username>/", views.unfollow, name="unfollow"),
 ]
