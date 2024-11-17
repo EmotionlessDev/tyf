@@ -1,8 +1,17 @@
 import uuid
 import os
-
 from django.utils.text import get_valid_filename
 from tyf.settings import MEDIA_ROOT
+
+
+def generate_uuid(length=8, klass=None):
+    """Safely generate UUID given length and check if it's unique for the given class."""
+    UUID = str(uuid.uuid4())
+    length = min(length, len(UUID))
+    if klass:
+        while klass.objects.filter(identifier=UUID[:length]).exists():
+            UUID = str(uuid.uuid4())
+    return UUID[:length]
 
 
 def generate_media_path(instance, filename, key, remove_with_same_key, depth=3, step=1):

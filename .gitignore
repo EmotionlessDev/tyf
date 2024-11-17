@@ -92,3 +92,4 @@ tyf
 manage.py
 .idea/
 media
+*.rdb

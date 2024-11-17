@@ -8,16 +8,14 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
 
@@ -33,16 +31,17 @@
             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
         </symbol>
     </svg>
-
     <div class="container-fluid position-relative d-flex p-0">
-        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem; color: var(--primary) !important;" role="status">
+        <div id="spinner"
+            class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem;
+                            height: 3rem;
+                            color: var(--primary) !important" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-
         <div class="container-fluid">
-            <div class="flex row vh-100 align-items-center justify-content-center" style="min-height: 100vh;">   
+            <div class="flex row vh-100 align-items-center justify-content-center" style="min-height: 100vh">
                 <div class="col-12 row col-sm-8 col-md-6 col-lg-5 col-xl-4">
                     {% for msg in messages %}
                         {% if 'success' in msg.tags %}
@@ -104,18 +103,21 @@
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <a href="{% url 'reset_password' %}">Forgot password?</a>
                             </div>
-                            <button type="submit" class="btn btn-primary py-3 w-100 mb-4" style="border-radius: 1rem !important;"><label style="color: var(--dark) !important;">Sign In</label></button>
+                            <button type="submit" class="btn btn-primary py-3 w-100 mb-4"
+                                style="border-radius: 1rem !important">
+                                <label style="color: var(--dark) !important;">Sign In</label>
+                            </button>
                         </form>
-                        <p class="text-center mb-0">Don't have an Account? <a href="{% url 'register' %}">Sign Up</a></p>
+                        <p class="text-center mb-0">
+                            Don't have an Account? <a href="{% url 'register' %}">Sign Up</a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="{% static 'js/main.js' %}"></script>
 </body>
 

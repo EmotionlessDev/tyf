@@ -1,34 +1,77 @@
 import json
+import markdown
 from users.utils import (
     OTPTools,
     sendEmail,
     EncryptTools,
     AccountActivationToken,
 )
+from django.apps import apps
 from user_agents import parse
 from users.models import User
 from django.urls import reverse
 from django.conf import settings
-from django.core.cache import cache
 from django.contrib import messages
-from django.http import Http404, JsonResponse
+from django.core.cache import cache
+from .models import Post, Comment, Profile
+from django.views.generic import DetailView
 from social_django.models import UserSocialAuth
 from django.utils.encoding import force_bytes, force_str
 from users.forms import UserCreationForm, UserSetPasswordForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth import authenticate, login as login_user, logout as logoutUser
+from django.http import Http404, JsonResponse, HttpResponse, HttpRequest, HttpResponseRedirect
 
 
-def index(request):
-    return render(request, "main/blank.html")
+# def post_detail(request, post_id):
+#     post = get_object_or_404(Post, id=post_id)
+#     comments = post.comments.filter(active=True, parent__isnull=True)
+#     if request.method == "POST":
+#         # comment has been added
+#         comment_form = CommentForm(data=request.POST)
+#         if comment_form.is_valid():
+#             parent_obj = None
+#             # get parent comment id from hidden input
+#             try:
+#                 # id integer e.g. 15
+#                 parent_id = int(request.POST.get("parent_id"))
+#             except:
+#                 parent_id = None
+#             # if parent_id has been submitted get parent_obj id
+#             if parent_id:
+#                 parent_obj = Comment.objects.get(id=parent_id)
+#                 # if parent object exist
+#                 if parent_obj:
+#                     # create replay comment object
+#                     replay_comment = comment_form.save(commit=False)
+#                     # assign parent_obj to replay comment
+#                     replay_comment.parent = parent_obj
+#             # normal comment
+#             # create comment object but do not save to database
+#             new_comment = comment_form.save(commit=False)
+#             # assign ship to the comment
+#             new_comment.post = post
+#             # save
+#             new_comment.save()
+#             return HttpResponseRedirect(post.get_absolute_url())
+#     else:
+#         comment_form = CommentForm()
+#     return render(
+#         request,
+#         "core/detail.html",
+#         {"post": post, "comments": comments, "comment_form": comment_form},
+#     )
 
 
-def profile(request, username):
-    user = get_object_or_404(User, username=username)
-    if username is None:
-        return redirect("/login/")
-    return render(request, "main/profile.html", {"user": user})
+def index(request: HttpRequest) -> HttpResponse:
+    return render(request, "main/blank.html", {"user": request.user})
+
+
+def profile(request: HttpRequest, username: str) -> HttpResponse:
+    user_posts = Post.objects.filter(author__username=username)
+    user = get_object_or_404(Profile, username=username)
+    return render(request, "main/profile.html", {"user": user, "posts": user_posts})
 
 
 def login(request):
@@ -358,6 +401,14 @@ def verification(request, uidb64, token):
         return render(
             request, "main/verification.html", context={"user_email": user.email}
         )
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "main/single-post.html"
+    context_object_name = "post"
+    slug_field = "identifier"
+    slug_url_kwarg = "identifier"
 
 
 def error400(request, exception):

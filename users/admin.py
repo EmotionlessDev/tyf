@@ -12,33 +12,14 @@ class UserAdmin(BaseUserAdmin):
 
     list_display = [
         "email",
-        "username",
-        "first_name",
-        "last_name",
         "is_staff",
         "is_active",
     ]
 
-    list_filter = ["is_staff", "is_active", "date_joined", "date_of_birth"]
+    list_filter = ["is_staff", "is_active", "date_joined"]
 
     fieldsets = [
-        (None, {"fields": ["email", "username", "avatar", "password"]}),
-        (
-            "Personal info",
-            {
-                "fields": [
-                    "first_name",
-                    "last_name",
-                    "patronymic",
-                    "course",
-                    "major",
-                    "bio",
-                    "telegram",
-                    "vkontakte",
-                ]
-            },
-        ),
-        ("Stats", {"fields": ["points", "awards"]}),
+        (None, {"fields": ["email", "password"]}),
         ("Permissions", {"fields": ["is_active", "is_staff"]}),
     ]
 
@@ -51,15 +32,6 @@ class UserAdmin(BaseUserAdmin):
                     "email",
                     "password1",
                     "password2",
-                    "username",
-                    "first_name",
-                    "last_name",
-                    "patronymic",
-                    "course",
-                    "major",
-                    "avatar",
-                    "date_of_birth",
-                    "bio",
                     "is_staff",
                 ],
             },
@@ -68,12 +40,6 @@ class UserAdmin(BaseUserAdmin):
 
     search_fields = [
         "email",
-        "username",
-        "first_name",
-        "last_name",
-        "patronymic",
-        "course",
-        "major",
     ]
 
     ordering = [

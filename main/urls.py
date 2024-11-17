@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 
@@ -18,5 +18,6 @@ urlpatterns = [
         views.setPassword,
         name="set_password",
     ),
+    path("post/<str:identifier>/", views.PostDetailView.as_view(), name="single-post"),
     path("<str:username>/", views.profile, name="profile"),
 ]
