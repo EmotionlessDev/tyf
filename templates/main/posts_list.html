@@ -5,12 +5,13 @@
 {% block content %}
     <div>
         <div class="row">
-            {% for post in posts %}
+            {% for post in profile.posts.all %}
                 <div class="col-lg-6 col-xl-4">
-                <a href="{% url 'single-post' post.identifier %}">
-                        <div class="card bg-dark border border-light p-3 mt-4 scale-on-hover">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ post.title }}</h5>
+                    <a href="{% url 'post_detail' post.identifier %}">
+                        <div class="card bg-dark p-1 mt-4 scale-on-hover"
+                             style="border: 1px solid var(--secondary) !important">
+                            <div class="card-body fs-7">
+                                <h5 class="card-title fs-6">{{ post.title }}</h5>
                                 <p class="card-text text-truncate">{{ post.content }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center">
@@ -19,7 +20,7 @@
                                     </div>
                                     <div class="stars">★</div>
                                 </div>
-                                <div class="d-block justify-content-between  mt-2 text-muted text-truncate">
+                                <div class="d-block justify-content-between mt-2 text-muted text-truncate">
                                     <p>
                                         <strong>{{ post.author }}</strong>
                                     </p>

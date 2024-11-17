@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
 
 
-from .models import Category, Collection, Tag, Post, Comment, Media, Profile
+from .models import Category, Collection, Tag, Post, Comment, Media, Profile, Follow
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -63,6 +63,17 @@ class ProfileAdmin(admin.ModelAdmin):
         model = Profile
 
 
+class FollowAdmin(admin.ModelAdmin):
+    list_display = [
+        "follower",
+        "following",
+        "created_at",
+    ]
+
+    class Meta:
+        model = Follow
+
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         "name",
@@ -114,7 +125,7 @@ class CommentInline(admin.StackedInline):
 
 
 class MediaAdmin(admin.ModelAdmin):
-    list_display = ["file", "description"]
+    list_display = ["file", "description", "content_type", "object_id"]
     search_fields = ["caption", "description"]
 
 
@@ -154,7 +165,11 @@ class PostAdmin(admin.ModelAdmin):
         "updated_at",
     ]
 
+    class Meta:
+        model = Post
 
+
+admin.site.register(Follow, FollowAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Collection, CollectionAdmin)

@@ -13,65 +13,56 @@ from django.urls import reverse
 from django.conf import settings
 from django.contrib import messages
 from django.core.cache import cache
-from .models import Post, Comment, Profile
 from django.views.generic import DetailView
 from social_django.models import UserSocialAuth
 from django.utils.encoding import force_bytes, force_str
 from users.forms import UserCreationForm, UserSetPasswordForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth import authenticate, login as login_user, logout as logoutUser
-from django.http import Http404, JsonResponse, HttpResponse, HttpRequest, HttpResponseRedirect
-
-
-# def post_detail(request, post_id):
-#     post = get_object_or_404(Post, id=post_id)
-#     comments = post.comments.filter(active=True, parent__isnull=True)
-#     if request.method == "POST":
-#         # comment has been added
-#         comment_form = CommentForm(data=request.POST)
-#         if comment_form.is_valid():
-#             parent_obj = None
-#             # get parent comment id from hidden input
-#             try:
-#                 # id integer e.g. 15
-#                 parent_id = int(request.POST.get("parent_id"))
-#             except:
-#                 parent_id = None
-#             # if parent_id has been submitted get parent_obj id
-#             if parent_id:
-#                 parent_obj = Comment.objects.get(id=parent_id)
-#                 # if parent object exist
-#                 if parent_obj:
-#                     # create replay comment object
-#                     replay_comment = comment_form.save(commit=False)
-#                     # assign parent_obj to replay comment
-#                     replay_comment.parent = parent_obj
-#             # normal comment
-#             # create comment object but do not save to database
-#             new_comment = comment_form.save(commit=False)
-#             # assign ship to the comment
-#             new_comment.post = post
-#             # save
-#             new_comment.save()
-#             return HttpResponseRedirect(post.get_absolute_url())
-#     else:
-#         comment_form = CommentForm()
-#     return render(
-#         request,
-#         "core/detail.html",
-#         {"post": post, "comments": comments, "comment_form": comment_form},
-#     )
+from django.contrib.auth import authenticate, login as login_user, logout as logout_user
+from django.http import (
+    Http404,
+    JsonResponse,
+    HttpResponse,
+    HttpRequest,
+    HttpResponseRedirect,
+)
+from .models import Profile, Follow, Collection, Category, Tag, Media, Post
+from django.contrib.auth.decorators import login_required
+from .forms import PostForm
+from django.utils import timezone
+from django.db import transaction
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    return render(request, "main/blank.html", {"user": request.user})
+    collections = Collection.objects.all()
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
+
+    context = {
+        "user": request.user,
+        "collections": collections,
+        "categories": categories,
+        "tags": tags,
+    }
+
+    return render(request, "main/index.html", context=context)
 
 
 def profile(request: HttpRequest, username: str) -> HttpResponse:
-    user_posts = Post.objects.filter(author__username=username)
-    user = get_object_or_404(Profile, username=username)
-    return render(request, "main/profile.html", {"user": user, "posts": user_posts})
+    profile = get_object_or_404(Profile, username=username)
+    is_following: bool = request.user.profile.following.filter(
+        following_id=profile.id
+    ).exists()
+    followings = [x.following for x in profile.following.all()]
+    followers = [x.follower for x in profile.followers.all()]
+    context = {
+        "profile": profile,
+        "is_following": is_following,
+        "followings": followings,
+        "followers": followers,
+    }
+    return render(request, "main/profile.html", context)
 
 
 def login(request):
@@ -175,7 +166,7 @@ def register(request):
 
 
 def logout(request):
-    logoutUser(request)
+    logout_user(request)
     return redirect("/login/")
 
 
@@ -405,7 +396,7 @@ def verification(request, uidb64, token):
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = "main/single-post.html"
+    template_name = "main/post_detail.html"
     context_object_name = "post"
     slug_field = "identifier"
     slug_url_kwarg = "identifier"
@@ -429,3 +420,39 @@ def error500(request, *args, **argv):
 
 def error505(request, *args, **argv):
     return render(request, "main/error_505.html", status=505)
+
+
+def post_new(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            with transaction.atomic():
+                post = form.save(commit=False)
+                post.author = request.user.profile
+                post.save()
+                media_files = request.FILES.getlist("media_files")
+                for file in media_files:
+                    Media.objects.create(content_object=post, file=file)
+            return redirect("post_detail", identifier=post.identifier)
+    else:
+        form = PostForm()
+    return render(request, "main/post_add.html", {"form": form})
+
+
+@login_required
+def follow(request, username):
+    next = request.GET.get("next", "/")
+    following = get_object_or_404(Profile, username=username)
+    follower = request.user.profile
+    if not follower.following.filter(following_id=following.id).exists():
+        Follow.objects.create(follower=follower, following=following)
+    return redirect(next)
+
+
+@login_required
+def unfollow(request, username):
+    next = request.GET.get("next", "/")
+    following = get_object_or_404(Profile, username=username)
+    follower = request.user.profile
+    follower.following.filter(following_id=following.id).delete()
+    return redirect(next)

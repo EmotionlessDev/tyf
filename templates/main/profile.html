@@ -1,59 +1,175 @@
-{% extends "main/blank.html" %}
+{% extends "main/index.html" %}
 {% load static %}
 {% block title %}Profile{% endblock %}
-{% block head %}
+{% block content %}
+{% block extrahead %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock %}
-{% block content %}
-<div class="min-vh-100 p-4">
+<div class="min-vh-100 p-5">
     <div class="row">
         <div class="col-md-3">
-            <img src="{{user.avatar.url}}"
-                alt="avatar" class="img-fluid rounded-circle">
-            <p class="mt-2 fs-3">{{ user.username }}</p>
-            <div class="followers-info d-flex align-items-center mt-2">
-                <i class="bi bi-people me-1"></i>
-                <span>0 followers</span>
+            <img src="{{ profile.get_avatar }}" alt="avatar" class="img-fluid rounded-circle">
+            <p class="mt-3 fs-3 text-center">{{ profile.username }}</p>
+            {% if request.user and request.user.profile != profile %}
+            <div class="action-buttons">
+                {% if is_following %}
+                <a href="{% url 'unfollow' username=profile.username %}?next={{ request.path }}"
+                    class="btn border-start-0 border-top-0 btn-outline-primary w-100 mt-2 action-checked">Unfollow</a>
+                {% else %}
+                <a href="{% url 'follow' username=profile.username %}?next={{ request.path }}"
+                    class="btn border-start-0 border-top-0 btn-outline-primary w-100 mt-2 action-unchecked">Follow</a>
+                {% endif %}
+                <a href="#"
+                    class="btn border-start-0 border-top-0 btn-outline-primary w-100 mt-2 action-unchecked">Report</a>
             </div>
-            <hr>
+            {% endif %}
+            <hr class="mt-3">
+            <ul class="list-unstyled d-flex flex-column fs-7">
+                <li>
+                    <p class="d-flex align-items-center gap-1 mb-0">
+                        <span class="badge bg-secondary">{{ profile.following.count }}</span> Following
+                    </p>
+                </li>
+                <li class="mt-2">
+                    <p class="d-flex align-items-center gap-1 mb-0">
+                        <span class="badge bg-secondary">{{ profile.followers.count }}</span> Followers
+                    </p>
+                </li>
+                <li class="mt-2">
+                    <p class="d-flex align-items-center gap-1 mb-0">
+                        <span class="badge bg-secondary">{{ profile.posts.count }}</span> Posts
+                    </p>
+                </li>
+            </ul>
+            {% if profile.telegram or profile.vkontakte %}
+            <hr>{% endif %}
+            <ul class="list-unstyled d-flex flex-column fs-7">
+                {% if profile.telegram %}
+                <li>
+                    <a href="{{ profile.telegram }}" class="text-break d-flex align-items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em" fill="currentColor"
+                            class="bi bi-telegram" viewBox="0 0 17 17">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09" />
+                        </svg>
+                        {{ profile.get_telegram }}
+                    </a>
+                </li>
+                {% endif %}
+                {% if profile.vkontakte %}
+                <li class="mt-2">
+                    <a href="{{ profile.vkontakte }}" class="text-break d-flex align-items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em" viewBox="0 0 23 23">
+                            <path fill="currentColor"
+                                d="M15.073 2H8.938C3.332 2 2 3.333 2 8.927v6.136C2 20.667 3.323 22 8.927 22h6.136C20.667 22 22 20.677 22 15.073V8.938C22 3.332 20.677 2 15.073 2m3.073 14.27h-1.459c-.552 0-.718-.447-1.708-1.437c-.864-.833-1.229-.937-1.448-.937c-.302 0-.385.083-.385.5v1.312c0 .355-.115.563-1.042.563a5.7 5.7 0 0 1-4.448-2.667a11.6 11.6 0 0 1-2.302-4.833c0-.219.083-.417.5-.417h1.459c.375 0 .51.167.656.552c.708 2.084 1.916 3.896 2.406 3.896c.188 0 .27-.083.27-.552v-2.146c-.062-.979-.582-1.062-.582-1.416a.36.36 0 0 1 .374-.334h2.292c.313 0 .417.156.417.531v2.896c0 .313.135.417.229.417c.188 0 .333-.104.677-.448a12 12 0 0 0 1.792-2.98a.63.63 0 0 1 .635-.416h1.459c.437 0 .53.219.437.531a18.2 18.2 0 0 1-1.958 3.365c-.157.24-.22.365 0 .646c.145.219.656.646 1 1.052a6.5 6.5 0 0 1 1.229 1.708c.125.406-.084.615-.5.615" />
+                        </svg>
+                        {{ profile.get_vkontakte }}
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
         </div>
-        <div class="col-md-9">
-            <div class="user-info">
-                <p>
-                    <strong>Имя:</strong> {{ user.first_name }}
-                </p>
-                <p>
-                    <strong>Фамилия:</strong> {{ user.last_name }}
-                </p>
-                <p>
-                    <strong>Отчество:</strong> {{ user.middle_name }}
-                </p>
-                <p>
-                    <strong>Имя пользователя:</strong> {{ user.username }} 
-                </p>
-                <p>
-                    <strong>Email:</strong> {{ user.email }}
-                </p>
-                <p>
-                    <strong>Дата рождения:</strong> {{ user.date_of_birth }}
-                </p>
-                <p>
-                    <strong>Направление:</strong>{{user.major}} 
-                </p>
-                <p>
-                    <strong>Дата регистрации:</strong> {{ user.date_joined }}
-                </p>
-                <p>
-                    <strong>О себе:</strong>
-                    {{user.bio}}
-                </p>
+        <div class="col-md-9 bg-dark">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about"
+                        type="button" role="tab" aria-controls="about" aria-selected="true">About</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button"
+                        role="tab" aria-controls="posts" aria-selected="false">Posts</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers"
+                        type="button" role="tab" aria-controls="followers" aria-selected="false">Followers</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="following-tab" data-bs-toggle="tab" data-bs-target="#following"
+                        type="button" role="tab" aria-controls="following" aria-selected="false">Following</button>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                    {% if profile.first_name %}
+                    <p>
+                        <strong>Имя:</strong> {{ profile.first_name }}
+                    </p>
+                    {% endif %}
+                    {% if profile.last_name %}
+                    <p>
+                        <strong>Фамилия:</strong> {{ profile.last_name }}
+                    </p>
+                    {% endif %}
+                    {% if profile.middle_name %}
+                    <p>
+                        <strong>Отчество:</strong> {{ profile.middle_name }}
+                    </p>
+                    {% endif %}
+                    {% if profile.username %}
+                    <p>
+                        <strong>Имя пользователя:</strong> {{ profile.username }}
+                    </p>
+                    {% endif %}
+                    {% if profile.email %}
+                    <p>
+                        <strong>Email:</strong> {{ profile.email }}
+                    </p>
+                    {% endif %}
+                    {% if profile.date_of_birth %}
+                    <p>
+                        <strong>Дата рождения:</strong> {{ profile.date_of_birth }}
+                    </p>
+                    {% endif %}
+                    {% if profile.major %}
+                    <p>
+                        <strong>Направление:</strong>{{ profile.major }}
+                    </p>
+                    {% endif %}
+                    {% if profile.date_joined %}
+                    <p>
+                        <strong>Дата регистрации:</strong> {{ profile.date_joined }}
+                    </p>
+                    {% endif %}
+                    {% if profile.bio %}
+                    <p>
+                        <strong>О себе:</strong> {{ profile.bio }}
+                    </p>
+                    {% endif %}
+                </div>
+                <div class="tab-pane" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                    {% include 'main/posts_list.html' %}
+                </div>
+                <div class="tab-pane" id="followers" role="tabpanel" aria-labelledby="followers-tab">
+                    <ul class="list-unstyled">
+                        {% for follower in followers %}
+                        <li>
+                            <a href="{% url 'profile' username=follower.username %}" class="text-break">{{ follower.username }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="tab-pane" id="following" role="tabpanel" aria-labelledby="following-tab">
+                    <ul class="list-unstyled">
+                        {% for following in followings %}
+                        <li>
+                            <a href="{% url 'profile' username=following.username %}" class="text-break">{{ following.username }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    <hr>
-    <div class="d-flex">
-        <h3 style="color: var(--light);">Работы:</h3>
-    </div>
-    {% include 'main/posts_list.html' %}
 </div>
+<script>
+    var triggerTabList = [].slice.call(document.querySelectorAll('#profile-nav a'))
+    triggerTabList.forEach(function (triggerEl) {
+        var tabTrigger = new bootstrap.Tab(triggerEl)
+
+        triggerEl.addEventListener('click', function (event) {
+            event.preventDefault()
+            tabTrigger.show()
+        })
+    })
+</script>
 {% endblock %}
