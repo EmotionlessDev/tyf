@@ -48,12 +48,12 @@ class UserAdmin(BaseUserAdmin):
 
     filter_horizontal = []
 
-    def save_model(self, request, obj, form, change):
-        if obj.username is None:
-            obj.username = generate_username()[0]
-        if not obj.is_active:
-            obj.is_active = True
-        super().save_model(request, obj, form, change)
+    # def save_model(self, request, obj, form, change):
+    #     if obj.username is None:
+    #         obj.username = generate_username()[0]
+    #     if not obj.is_active:
+    #         obj.is_active = True
+    #     super().save_model(request, obj, form, change)
 
 
 admin.site.register(User, UserAdmin)

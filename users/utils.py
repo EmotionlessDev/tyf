@@ -2,11 +2,16 @@ import os
 import uuid
 import random
 import hashlib
+import requests
+from .models import User
+from functools import partial
+from main.models import Profile
 from django.conf import settings
 from datetime import datetime, timedelta
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from utils import generate_media_path, generate_uuid
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 
@@ -77,6 +82,27 @@ def sendEmail(user, otp, reset_password=False, register_cofirm=False):
     )
     msg.attach_alternative(html_content, "text/html")
     msg.send()
+
+
+def create_profile(user, is_new=False, *args, **kwargs):
+    if is_new:
+        try:
+            email = kwargs["details"]["email"] or ""
+            username = kwargs["details"]["username"] or ""
+            first_name = kwargs["details"]["first_name"] or ""
+            last_name = kwargs["details"]["last_name"] or ""
+
+            user_profile = Profile.objects.get(email=email)
+            if username != "":
+                user_profile.username = username
+            if first_name != "":
+                user_profile.first_name = first_name
+            if last_name != "":
+                user_profile.last_name = last_name
+            user_profile.save()
+            
+        except:
+            pass
 
 
 AccountActivationToken = PasswordResetTokenGenerator()
