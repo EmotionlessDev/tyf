@@ -1,4 +1,4 @@
-from .models import Post, Comment
+from .models import Post, Comment, Media, Profile
 from django.http import HttpResponse, HttpRequest
 from users.models import User
 from django.shortcuts import get_object_or_404, render
@@ -9,6 +9,10 @@ from django.contrib.auth import authenticate, login as login_user, logout as log
 from django.apps import apps
 from django.views.generic import DetailView
 from .models import Profile
+from .forms import PostForm
+from django.utils import timezone
+from django.db import transaction
+from django.shortcuts import redirect
 import markdown
 
 # def post_detail(request, post_id):
@@ -111,7 +115,38 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = "main/single-post.html"
+    template_name = "main/post_detail.html"
     context_object_name = "post"
     slug_field = "identifier"
     slug_url_kwarg = "identifier"
+
+
+
+# def post_new(request: HttpRequest) -> HttpResponse:
+#     if request.method == "POST":
+#         form = PostForm(request.POST)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.author = request.user.profile
+#             post.save()
+#             return redirect("post_detail", identifier=post.identifier)
+#     else:
+#         form = PostForm()
+#     return render(request, "main/post_add.html", {"form": form})
+
+
+def post_new(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            with transaction.atomic():
+                post = form.save(commit=False)
+                post.author = request.user.profile
+                post.save()
+                media_files = request.FILES.getlist("media_files")
+                for file in media_files:
+                    Media.objects.create(content_object=post, file=file)
+            return redirect("post_detail", identifier=post.identifier)
+    else:
+        form = PostForm()
+    return render(request, "main/post_add.html", {"form": form})
