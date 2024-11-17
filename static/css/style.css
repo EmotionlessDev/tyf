@@ -1,6 +1,6 @@
 /********** Template CSS **********/
 *:not(.text-primary) {
-    font-family: "JetBrains Mono" !important;
+    font-family: "JetBrains Mono";
 }
 
 :root {
@@ -18,6 +18,12 @@
     --secondary: #191C24;
     --light: #6C7293;
     --dark: #000000; */
+
+/*GOVNOOO NELZYA TAK DELAT' */
+.btn-outline-light:hover {
+    color: var(--dark);
+}
+
 
 .back-to-top {
     position: fixed;

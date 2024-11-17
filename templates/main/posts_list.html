@@ -7,7 +7,7 @@
         <div class="row">
             {% for post in posts %}
                 <div class="col-lg-6 col-xl-4">
-                <a href="{% url 'single-post' post.identifier %}">
+                <a href="{% url 'post_detail' post.identifier %}">
                         <div class="card bg-dark border border-light p-3 mt-4 scale-on-hover">
                             <div class="card-body">
                                 <h5 class="card-title">{{ post.title }}</h5>

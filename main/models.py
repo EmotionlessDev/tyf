@@ -10,18 +10,24 @@ from django.db.models import CharField
 from django_resized import ResizedImageField
 from random_username.generate import generate_username
 from mdeditor.fields import MDTextField
-
+from django.contrib.contenttypes.fields import GenericRelation
 from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
 from utils import generate_media_path, generate_uuid
 import markdown
 
-
 User = get_user_model()
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, blank=False, null=True, related_name="profile",)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        unique=True,
+        blank=False,
+        null=True,
+        related_name="profile",
+    )
     email = models.EmailField(unique=False, blank=False, null=False)
     username = models.CharField(max_length=50, unique=True, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
@@ -137,7 +143,34 @@ class Tag(models.Model):
         return self.name
 
 
+class Media(models.Model):
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, related_name="media"
+    )
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+    original_filename = models.CharField(max_length=255, blank=True, null=True)
+    file = models.FileField(
+        upload_to=partial(
+            generate_media_path, key="object_id", remove_with_same_key=False
+        ),
+        null=True,
+        blank=True,
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.original_filename and self.file:
+            self.original_filename = os.path.basename(self.file.name)
+        super(Media, self).save(*args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+
+    description = models.CharField(max_length=255, blank=True, null=True)
+
+
 class Post(models.Model):
+    media_files = GenericRelation(Media)
     identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
@@ -172,7 +205,9 @@ class Post(models.Model):
 class Comment(models.Model):
     identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="comments"
+    )
     content = models.TextField()
     stars = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -192,19 +227,3 @@ class Comment(models.Model):
     ):
         self.identifier = generate_uuid(klass=Comment)
         super(Comment, self).save(force_insert, force_update, *args, **kwargs)
-
-
-class Media(models.Model):
-    content_type = models.ForeignKey(
-        ContentType, on_delete=models.CASCADE, related_name="media"
-    )
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-    file = models.FileField(
-        upload_to=partial(
-            generate_media_path, key="object_id", remove_with_same_key=False
-        ),
-        null=True,
-        blank=True,
-    )
-    description = models.CharField(max_length=255, blank=True, null=True)

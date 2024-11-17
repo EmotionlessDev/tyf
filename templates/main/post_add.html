@@ -1,0 +1,26 @@
+{% extends "main/blank.html" %}
+{% load static %}
+{% block title %}add post{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+{% endblock %}
+{% block content %}
+<div class="min-vh-100 p-4">
+    <h2>New post</h2>
+    <form method="POST" class="post-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-outline-light mt-2 mb-2">Submit</button>
+    </form>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var simplemde = new SimpleMDE({element: document.getElementById("id_content")});
+        document.getElementById("id_content").removeAttribute("required");
+        document.querySelector('.post-form').addEventListener('submit', function (e) {
+            document.getElementById("id_content").value = simplemde.value();
+        });
+    });
+</script>
+{% endblock %}

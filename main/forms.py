@@ -4,6 +4,7 @@ from django.forms import modelformset_factory
 
 from registry.models import Major, University
 from .models import Post, Comment, Media, Profile
+from django.contrib.contenttypes.admin import GenericStackedInline
 
 
 class UniversityWidget(s2forms.ModelSelect2Widget):
@@ -32,3 +33,41 @@ class ProfileForm(forms.ModelForm):
             "university": UniversityWidget,
             "major": MajorWidget,
         }
+
+
+# class PostForm(forms.ModelForm):
+#
+#     inlines = [MediaInline]
+#
+#     class Meta:
+#         model = Post
+#         fields = (
+#             "title",
+#             "content",
+#         )
+
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
+
+
+class PostForm(forms.ModelForm):
+    media_files = MultipleFileField(required=False)
+
+    class Meta:
+        model = Post
+        fields = ["title", "content", "category", "tags"]
