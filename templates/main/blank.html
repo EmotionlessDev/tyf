@@ -16,9 +16,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
-    <link href="{% static 'lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
-
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
@@ -33,8 +30,12 @@
 
         <div class="sidebar pe-4 pb-3 border border-2" style="border-right: 1px solid var(--secondary) !important; background-color: var(--dark) !important;">
             <nav id="sidebar-nav" class="navbar bg-secondary navbar-dark align-items-center" style="background-color: var(--dark) !important;">
-                <a href="{% url 'index' %}" class="mx-4 mb-3 w-100">
-                    <h3 id="sidebar-logo" class="text-primary text-center fs-5" style="color: var(--primary) !important;">Tell Your Friends</h3>
+                <a href="{% url 'index' %}" class="mx-4 mb-4 w-100" style="width: 100% !important; display: inline-block !important;">
+                    
+                    <h3 id="sidebar-logo" class="text-primary text-center fs-5" style="color: var(--primary) !important; margin: 0 !important;">
+                        <img class="me-2" src="{% static 'img/extension_icon.svg' %}" width="18" height="18" style="margin: 0 !important;"></img>
+                        Tell Your Friends
+                    </h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
@@ -184,13 +185,6 @@
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'lib/chart/chart.min.js' %}"></script>
-    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/moment.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 
     <script src="{% static 'js/main.js' %}"></script>
 </body>

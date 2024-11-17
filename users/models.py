@@ -9,10 +9,6 @@ from utils import generate_media_path
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError("Users must have an email address")
-        if not password:
-            raise ValueError("Users must have a password")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         if user.username is None:

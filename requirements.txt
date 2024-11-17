@@ -11,3 +11,10 @@ mysqlclient==2.2.5
 pillow==11.0.0
 random-username==1.0.2
 django-resized==1.0.3
+django-redis==5.4.0
+PyJWT==2.9.0
+social_auth_app_django==5.4.2
+pyyaml==6.0.2 
+ua-parser==0.18.0 
+user-agents==2.2.0
+django-hide-admin==1.0.0

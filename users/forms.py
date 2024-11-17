@@ -1,7 +1,11 @@
 from .models import User
 from django import forms
+from django.contrib.auth.forms import (
+    ReadOnlyPasswordHashField,
+    SetPasswordForm,
+)
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from random_username.generate import generate_username
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -46,13 +50,22 @@ class UserCreationForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.username = generate_username()[0]
+        user.is_active = False
         if commit:
             user.save()
         return user
 
 
+class UserSetPasswordForm(SetPasswordForm):
+    class Meta:
+        model = User
+        fields = ["new_password1", "new_password2"]
+
+
 class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField()
+
     class Meta:
         model = User
         fields = "__all__"

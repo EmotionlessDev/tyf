@@ -11,13 +11,8 @@
     --light: #F2F2F2;
     --dark: #111111;
     --text-color: #F2F2F2;
+    --shadow: #767676;
 }
-
-    /* --primary: #EB1616;
-    --hover_primary: #bc1212;
-    --secondary: #191C24;
-    --light: #6C7293;
-    --dark: #000000; */
 
 .back-to-top {
     position: fixed;
@@ -259,7 +254,6 @@
     }
 }
 
-
 /*** Date Picker ***/
 .bootstrap-datetimepicker-widget.bottom {
     top: auto !important;
@@ -415,4 +409,19 @@
   font-family: "Roboto", sans-serif;
   font-weight: 900;
   font-style: italic;
+}
+
+#otp {
+    .inputs input {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+        margin: 0 !important;
+    }
 }
