@@ -51,7 +51,11 @@ class UserCreationForm(forms.ModelForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         user.username = generate_username()[0]
-        user.is_active = False
+        if user.is_superuser:
+            user.is_active = True
+        else:
+            user.is_active = False
+            
         if commit:
             user.save()
         return user

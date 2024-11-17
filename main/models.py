@@ -1,20 +1,19 @@
 import os
+import markdown
 from functools import partial
 
 from PIL import Image
-from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import CharField
-from django_resized import ResizedImageField
-from random_username.generate import generate_username
-from mdeditor.fields import MDTextField
-
 from tyf.settings import MEDIA_ROOT
+from django.db.models import CharField
+from mdeditor.fields import MDTextField
+from django_resized import ResizedImageField
 from registry.models import Major, University
+from django.contrib.auth import get_user_model
 from utils import generate_media_path, generate_uuid
-import markdown
+from random_username.generate import generate_username
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 
 User = get_user_model()
@@ -84,6 +83,7 @@ class Profile(models.Model):
             while Profile.objects.filter(username=username).exists():
                 username = generate_username()[0]
             self.username = generate_username()[0]
+        
         super(Profile, self).save(force_insert, force_update, *args, **kwargs)
 
     # def save_thumbnail(self):
