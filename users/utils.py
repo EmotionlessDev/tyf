@@ -100,7 +100,7 @@ def create_profile(user, is_new=False, *args, **kwargs):
             if last_name != "":
                 user_profile.last_name = last_name
             user_profile.save()
-            
+
         except:
             pass
 

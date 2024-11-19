@@ -4,7 +4,11 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+<<<<<<< HEAD
+    path("edit/", views.edit_profile, name="edit_profile"),
+=======
     path("load_posts/", views.load_posts, name="load_posts"),
+>>>>>>> 1dbe4c38d2d2defeea62523951ad3b9848a266d1
     path("register/", views.register, name="register"),
     path("login/", views.login, name="login"),
     path("login/reset_password/", views.resetPassword, name="reset_password"),

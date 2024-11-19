@@ -2,9 +2,9 @@
 {% load mptt_tags static %}
 {% load static %}
 <!-- TODO: change title -->
-{% block title %}single post{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
 {% endblock %}
 {% block content %}
     <div class="h-100 p-4">

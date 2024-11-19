@@ -9,6 +9,7 @@
     --secondary: #333333;
     --secondary-light: #555555;
     --secondary-x-light: #777777;
+    --secondary-xx-light: #AAAAAA;
     --thirdary: #7D80DA;
     --light: #F2F2F2;
     --dark-light: #222222;
@@ -25,6 +26,29 @@
     --dark: #000000; */
 
 /*GOVNOOO NELZYA TAK DELAT' */
+.action-checked:focus, .action-unchecked:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.action-unchecked, .action-checked:hover {
+    color: var(--light);
+    background-color: var(--dark);
+    font-size: smaller;
+    outline: none !important;
+    box-shadow: none;
+}
+
+.action-checked, .action-unchecked:hover {
+    color: var(--dark);
+    background-color: var(--primary);
+    border-right: 1px solid var(--light);
+    border-bottom: 1px solid var(--light);
+    font-size: smaller;
+    outline: none !important;
+    box-shadow: none;
+}
+
 .btn-outline-light:hover {
     color: var(--dark);
 }
@@ -73,7 +97,64 @@
     font-size: x-small;
 }
 
+/* Add this to avoid !important in text-light */
+.color-light {
+    color: var(--light);
+}
 
+.hover-muted {
+    color: var(--light);
+    transition: 0.1s;
+}
+
+.hover-muted:hover {
+    color: var(--secondary-xx-light);
+}
+
+.tab {
+    width: 100%;
+    display: block;
+    border: none;
+    border-bottom: 1px solid var(--secondary);
+    background: none;
+    padding: .5rem 1rem;
+}
+
+.tab.active {
+    border-bottom: 1px solid var(--primary);
+}
+
+.nav {
+    justify-content: space-between;
+}
+
+.margin-left-auto {
+    margin-left: auto;
+}
+
+.post-add-btn {
+    position: fixed;
+    right: 45px;
+    bottom: 45px;
+    height: 50px;
+    width: 50px;
+    font-size: larger;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: var(--dark);
+    z-index: 99;
+}
+
+/* Scale animation for everything u want */
+.scale-on-hover {
+    transition: transform 0.8s ease-in-out;
+}
+
+.scale-on-hover:hover {
+  transform: scale(1.05);
+}
 
 /*** Spinner ***/
 #spinner {
@@ -508,11 +589,5 @@
     }
 }
 
-/* Scale animation for everything u want */
-.scale-on-hover {
-    transition: transform 0.8s ease-in-out;
-}
 
-.scale-on-hover:hover {
-    transform: scale(1.05);
-}
+

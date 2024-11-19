@@ -1,0 +1,93 @@
+{% extends "main/index.html" %}
+{% load static %}
+{% block title %}Edit Profile{% endblock title %}
+{% block content %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+{% endblock %}
+    {% if user_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in user_form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
+    <div class="container px-5 pt-4" style="padding: 50px 100px;">
+        <div class="row">
+            <p class="fs-5 mb-0">Edit Profile</p>
+            <div class="form-content form-group" enctype="multipart/form-data">
+                <form method="post" class="">
+                    {% csrf_token %}
+
+                    <br/>
+                    
+                    <label>Username: </label>{{ profile_form.username }}
+                    
+                    <br/>
+                    
+                    <label>Change Avatar: </label>{{ profile_form.avatar }}
+
+                    <br/>
+                    
+                    <label >First Name: </label>{{ profile_form.first_name }}
+                    
+                    <br/>
+                    
+                    <label >Last Name: </label>{{ profile_form.last_name }}
+
+                    <br/>
+                    
+                    <label>Middle Name: </label>{{ profile_form.middle_name }}
+
+                    <br/>
+                    
+                    <label>University: </label>{{ profile_form.university }}
+
+                    <br/>
+
+                    <label>Major: </label>{{ profile_form.major }}
+
+                    <br/>
+                    
+                    <div class="d-flex justify-content-start">
+                        <label id="date_of_birth">Date of birth: </label>{{ profile_form.date_of_birth }}
+                    </div>
+
+                    <br/>
+
+                    <label>Telegram: </label>{{ profile_form.telegram }}
+
+                    <br/>
+
+                    <label>VK: </label>{{ profile_form.vkontakte }}
+
+                    <br/>
+
+                    <label>Bio: </label>{{ profile_form.bio }}
+
+                    <br/>
+
+                    <label><a href="#">Change Password</a></label>
+
+                    <hr>
+
+                    <br/>
+
+                    <button type="submit" class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked">
+                        Save Changes
+                    </button>
+
+                    <button type="reset" class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked">
+                        Reset
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
