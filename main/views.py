@@ -33,6 +33,7 @@ from .forms import PostForm
 from django.utils import timezone
 from django.db import transaction
 from .forms import CommentForm
+from .models import Comment
 
 
 ################################## Main Page Views ##################################
@@ -462,7 +463,8 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
-        context["comments"] = self.object.comments.filter(active=True)
+        comments = self.object.comments.filter(active=True).order_by('tree_id', 'lft')
+        context["comments"] = comments
         context["form"] = CommentForm()
         return context
 
@@ -473,6 +475,9 @@ class PostDetailView(DetailView):
             comment = form.save(commit=False)
             comment.post = self.object
             comment.author = request.user.profile
+            parent_id = form.cleaned_data.get("parent")
+            if parent_id:
+                comment.parent = parent_id
             comment.save()
             return HttpResponseRedirect(
                 reverse("post_detail", kwargs={"identifier": self.object.identifier})
