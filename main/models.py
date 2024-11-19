@@ -17,6 +17,7 @@ from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
 from utils import generate_media_path, generate_uuid
 from tyf import settings
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 validator_telegram = RegexValidator(
@@ -211,8 +212,39 @@ class Media(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True)
 
 
+class Comment(MPTTModel):
+    identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="comments"
+    )
+    content = models.TextField()
+    stars = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
+
+    def save(
+        self,
+        *args,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+        **kwargs,
+    ):
+
+        max_depth = 5
+        if self.parent and self.parent.level >= max_depth - 1:
+            self.parent = self.parent.parent
+        self.identifier = generate_uuid(klass=Comment)
+        super(Comment, self).save(force_insert, force_update, *args, **kwargs)
+
+
 class Post(models.Model):
     media_files = GenericRelation(Media)
+    comments = GenericRelation(Comment)
     identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
@@ -243,30 +275,3 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class Comment(models.Model):
-    identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
-    author = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="comments"
-    )
-    content = models.TextField()
-    stars = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    parent = models.ForeignKey(
-        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
-    )
-
-    def save(
-        self,
-        *args,
-        force_insert=False,
-        force_update=False,
-        using=None,
-        update_fields=None,
-        **kwargs,
-    ):
-        self.identifier = generate_uuid(klass=Comment)
-        super(Comment, self).save(force_insert, force_update, *args, **kwargs)

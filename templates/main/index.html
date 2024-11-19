@@ -28,6 +28,10 @@
       {% block head %}{% endblock %}
    </head>
    <body>
+      <div class="content--canvas">
+
+      </div>
+
       <div class="container-fluid position-relative d-flex p-0">
          <div id="spinner"
             class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -222,7 +226,23 @@
                </div>
             </nav>
             <!-- Blank Start -->
-            {% block content %}{% endblock %}
+            <div class="main__content container">
+               <div class="main_background"></div>
+                  <div class="row position-relative">
+                     <div class="col-9">
+                        {% block content %}
+                        <div id="search-container"></div>
+                        <div class="h-100 p-4 row" id="posts"></div>
+                        {% endblock %}
+                     </div>
+                     <div class="col-3">
+                        <!-- recent users sidebar -->
+                        <div class="card bg-transparent p-2 mt-4">
+                              <h5 class="text-light>">Recent Users</h5>
+                        </div>
+                     </div>
+               </div>
+            </div>
             <!-- Blank End -->
             <div class="container-fluid pt-4 px-0">
                <div class="bg-secondary rounded-top p-4">
@@ -236,7 +256,179 @@
          </div>
          <a href="{% url 'post_add' %}" class="post-add-btn">+</a>
       </div>
+      <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous">
+      </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
 
+   <script>
+      let offset = 0;
+      const limit = 12;
+      let search_term = "";
+      $.ajaxSetup({
+         headers: {"X-CSRFToken": '{{csrf_token}}'}
+      });
+      const postContainer = document.getElementById('posts');
+      const searchContainer = document.getElementById('search-container');
+      // document.getElementById("search-input").addEventListener("input", loadSearchContent);
+
+
+      if (postContainer.innerText === "") {
+         if ('{{ request.get_full_path }}' === "/") {
+            loadMoreContent();
+         }
+      }
+
+      window.onscroll = function () {
+         if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            if ('{{ request.get_full_path }}' === "/") {
+               offset += limit;
+               loadMoreContent();
+            }
+         }
+      };
+
+      // async function loadSearchContent() {
+      //    search_term = $("#search-input").val();
+
+      //    if (search_term.length >= 0) {
+      //       if (search_term.length == 0) {
+      //          searchContainer.innerHTML = "";
+      //       } else if (search_term.length == 1) {
+      //          offset = 0;
+      //          postContainer.innerHTML = "";
+      //          searchContainer.innerHTML = 
+      //          `
+      //          <div class="p-4 text-center pb-1" style="color: var(--secondary-light);">
+      //             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+      //                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+      //             </svg>
+      //             The search term "<span id="search-term"></span>" returned <span id="search-count"></span> posts.
+      //             <hr>
+      //          </div>
+      //          `;
+      //       }
+      //       await loadMoreContent();
+      //    }
+      //    console.log(search_term);
+      // }
+
+      function loadMoreContent() {
+         let payload = {
+            "offset": offset,
+            "limit": limit,
+            "search": search_term,
+         }
+         $.ajax({
+            type: "POST",
+            url: 'load_posts/',
+            contentType: 'application/json',
+            dataType: "json",
+            data: JSON.stringify(payload),
+            success: function (data) {
+               console.log(data);
+               if (data.loading === false) {
+                  if (postContainer.innerText != "") {
+                     offset -= limit;
+                  }
+               } else {
+                  if (data.search) {
+                     console.log(data);
+                  }
+                  if (search_term != "") {
+                     document.getElementById('search-term').innerHTML = search_term;
+                     document.getElementById('search-count').innerHTML = data.posts.length;
+                  }
+
+                  for (let i = 0; i < data.posts.length; i++) {
+                     if (data.posts !== null) {
+                        postContainer.innerHTML += createPostElement(data.posts[i]);
+                     }
+                  }
+                  textTruncate();
+               }
+            },
+         });
+      }
+
+      function createPostElement(post) {
+         var regex = /<([a-z]+)>(.+)<\/([a-z]+)>/ig;
+         var content_array = regex.exec(post.content);
+
+         var fst_elm_content = "";
+         if (content_array !== null) {
+            fst_elm_content = content_array[0];
+         } else {
+            fst_elm_content = post.content;
+         }
+
+         var postElement =
+            `
+            <div class="col-md-6 border-4";">
+               <a href="post/` + post.identifier + `/">
+                  <div class="card bg-dark p-1 mb-4 scale-on-hover"
+                       style="border: 1px solid var(--primary) !important; border-left:0 !important; border-top:0 !important;">
+                     <div class="card-body fs-7">
+                        <h5 class="card-title truncate fs-3">
+            `
+            + post.title +
+            `
+                        </h5>
+                        <div class="post-description fs-6 card-text truncate mb-2" 
+                             style="color: var(--light); !important">
+            `
+            + fst_elm_content +
+            `
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                           <div class="d-flex align-items-center">
+                              <span class="language-dot"></span>
+                              <small class="text-muted"></small>
+                           </div> 
+                           <div class="stars">` + post.stars + ` ★</div>
+                        </div>
+                        <div class="d-block justify-content-between mt-2 text-muted text-truncate">
+                           <p>
+                              <strong>` + post.author + `</strong>
+                           </p>
+                           <p>
+                              <strong>` + post.created_at + `</strong>
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            `
+         return postElement;
+      }
+
+      function textTruncate() {
+         var truncate_p = document.querySelector(".truncate p");
+         $clamp(truncate_p, {
+            clamp: 2,
+            useNativeClamp: false
+         });
+
+         var truncate_span = document.querySelector(".truncate span");
+         $clamp(truncate_span, {
+            clamp: 2,
+            useNativeClamp: false
+         });
+
+         for (let i = 1; i < 7; i++) {
+            $clamp(document.querySelector(`.truncate h${i}`), {
+               clamp: 2,
+               useNativeClamp: false
+            });
+         }
+      }
+   </script>
+      <script src="{% static 'js/noise.min.js' %}"></script>
+      <script src="{% static 'js/util.js' %}"></script>
+      <script src="{% static 'js/coalesce.js' %}"></script>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
       <script src="{% static 'js/main.js' %}"></script>
       {% block scripts %}{% endblock %}
    </body>

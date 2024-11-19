@@ -102,7 +102,7 @@ class EditProfileForm(forms.ModelForm):
             "major": MajorWidget,
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["first_name"].widget.attrs.update(
@@ -129,3 +129,25 @@ class EditProfileForm(forms.ModelForm):
             {"placeholder": "Write something about yourself", }
         )
         
+
+
+class CommentForm(forms.ModelForm):
+    parent = forms.ModelChoiceField(
+        queryset=Comment.objects.all(),
+        widget=forms.HiddenInput,
+        required=False
+    )
+
+    class Meta:
+        model = Comment
+        fields = ("content", "parent", )
+        labels = {
+            "content": "",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["content"].widget.attrs.update(
+            {"class": "form-control comments__content", "placeholder": "..."}
+        )

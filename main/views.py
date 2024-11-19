@@ -32,12 +32,26 @@ from django.contrib.auth.decorators import login_required
 from .forms import PostForm, EditProfileForm
 from django.utils import timezone
 from django.db import transaction
+from .forms import CommentForm
+from .models import Comment
+
+
+################################## Main Page Views ##################################
 
 
 def index(request: HttpRequest) -> HttpResponse:
     collections = Collection.objects.all()
     categories = Category.objects.all()
     tags = Tag.objects.all()
+
+    if cache.get("all_posts") is None:
+        cache.set("all_posts", Post.objects.all().order_by("-created_at"), 3600)
+
+    elif Post.objects.count() > len(cache.get("all_posts")):
+        cache.delete("all_posts")
+        if cache.get("end:all_posts") is not None:
+            cache.delete("end:all_posts")
+        cache.set("all_posts", Post.objects.all().order_by("-created_at"), 3600)
 
     context = {
         "user": request.user,
@@ -47,6 +61,49 @@ def index(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "main/index.html", context=context)
+
+
+def load_posts(request: HttpRequest):
+    response = {"posts": [], "search_count": "0", "loading": False}
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        if cache.get("all_posts") is not None:
+            data = json.loads(request.body)
+            offset = int(data["offset"])
+            limit = int(data["limit"])
+
+            posts = cache.get(f"{offset}_{offset + limit}:all_posts")
+
+            if posts is None:
+                if len(cache.get("all_posts")) > offset + limit:
+                    posts = cache.get("all_posts")[offset : offset + limit]
+                    cache.set(f"{offset}_{offset + limit}:all_posts", posts, 3600)
+                    response["loading"] = True
+
+                elif len(cache.get("all_posts")) > offset:
+                    if cache.get(f"end:all_posts") is None:
+                        posts = cache.get("all_posts")[offset:]
+                        cache.set(f"{offset}_end:all_posts", posts, 3600)
+                        response["loading"] = True
+                    else:
+                        posts = cache.get(f"end:all_posts")
+            else:
+                response["loading"] = True
+
+        if response["loading"]:
+            response["posts"] = [
+                {
+                    "title": post.title,
+                    "content": post.content,
+                    "stars": str(post.stars),
+                    "identifier": post.identifier,
+                    "author": post.author.username,
+                    "author_id": str(post.author.id),
+                    "created_at": post.created_at.strftime(settings.DATETIME_FORMAT),
+                }
+                for post in posts
+            ]
+
+    return JsonResponse(response, safe=True)
 
 
 def profile(request: HttpRequest, username: str) -> HttpResponse:
@@ -76,6 +133,9 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
     }
 
     return render(request, "main/profile.html", context)
+
+
+#####################################################################################
 
 
 def login(request):
@@ -413,6 +473,30 @@ class PostDetailView(DetailView):
     context_object_name = "post"
     slug_field = "identifier"
     slug_url_kwarg = "identifier"
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        comments = self.object.comments.filter(active=True).order_by('tree_id', 'lft')
+        context["comments"] = comments
+        context["form"] = CommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.object
+            comment.author = request.user.profile
+            parent_id = form.cleaned_data.get("parent")
+            if parent_id:
+                comment.parent = parent_id
+            comment.save()
+            return HttpResponseRedirect(
+                reverse("post_detail", kwargs={"identifier": self.object.identifier})
+            )
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 def error400(request, exception):

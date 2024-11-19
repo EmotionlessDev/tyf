@@ -19,7 +19,7 @@
     --alert: #FF0000;
 }
 
-    /* --primary: #EB1616;
+/* --primary: #EB1616;
     --hover_primary: #bc1212;
     --secondary: #191C24;
     --light: #6C7293;
@@ -52,6 +52,28 @@
 .btn-outline-light:hover {
     color: var(--dark);
 }
+
+/* BUTTONS */
+
+
+.action-unchecked, .action-checked:hover {
+    color: var(--light);
+    background-color: var(--dark);
+    font-size: smaller;
+    outline: none !important;
+    box-shadow: none;
+}
+
+.action-checked, .action-unchecked:hover {
+    color: var(--dark);
+    background-color: var(--primary);
+    border-right: 1px solid var(--light);
+    border-bottom: 1px solid var(--light);
+    font-size: smaller;
+    outline: none !important;
+    box-shadow: none;
+}
+
 
 .back-to-top {
     position: fixed;
@@ -125,6 +147,15 @@
     z-index: 99;
 }
 
+/* Scale animation for everything u want */
+.scale-on-hover {
+    transition: transform 0.8s ease-in-out;
+}
+
+.scale-on-hover:hover {
+  transform: scale(1.05);
+}
+
 /*** Spinner ***/
 #spinner {
     opacity: 0;
@@ -182,15 +213,47 @@
     height: 100vh;
     overflow-y: auto;
     background: var(--secondary);
+
     transition: 0.5s;
     z-index: 999;
+}
+
+#sidebar-nav {
+    margin-top: 4rem !important;
 }
 
 .content {
     margin-left: 250px;
     min-height: 100vh;
-    background: var(--dark);
+
+    /* background: url(../img/test.jpg) no-repeat center fixed; */
+        /* background-size: cover; */
+    /* background: var(--dark); */
     transition: 0.5s;
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+
+.main__content {
+    opacity: 0.5;
+    transition: 0.5s ease all;
+    position: relative;
+}
+.open .main__content {
+    opacity: 1 !important;
+}
+
+.main_background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--dark);
+    opacity: 0.7;
+}
+
+
+.nav-tabs {
+    border: none !important;
 }
 
 @media (min-width: 992px) {
@@ -237,7 +300,7 @@
 
 @media (max-width: 490px) {
     #search-input {
-        width:103px;
+        width: 103px;
     }
 
     .content .navbar .navbar-nav .nav-link {
@@ -440,75 +503,75 @@
 }
 
 .roboto-thin {
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: normal;
 }
 
 .roboto-light {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: normal;
 }
 
 .roboto-regular {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .roboto-medium {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
 }
 
 .roboto-bold {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
 
 .roboto-black {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
 }
 
 .roboto-thin-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: italic;
 }
 
 .roboto-light-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: italic;
 }
 
 .roboto-regular-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
 }
 
 .roboto-medium-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: italic;
 }
 
 .roboto-bold-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: italic;
 }
 
 .roboto-black-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: italic;
 }
 
 #otp {
@@ -525,11 +588,6 @@
         margin: 0 !important;
     }
 }
-/* Scale animation for everything u want */
-.scale-on-hover {
-  transition: transform 0.8s ease-in-out;
-}
 
-.scale-on-hover:hover {
-  transform: scale(1.05);
-}
+
+
