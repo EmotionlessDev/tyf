@@ -62,7 +62,25 @@
                     {% else %}
                     <p>Нет вложений.</p>
                     {% endif %}
-
+                    <!-- BEGIN COMMENTS  -->
+                <h2>Комментарии:</h2>
+                {% for comment in comments %}
+                    <div>
+                        <p><strong>{{ comment.author }}</strong>: {{ comment.content }}</p>
+                        <p><small>{{ comment.created_at }}</small></p>
+                    </div>
+                {% empty %}
+                    <p>Комментариев пока нет.</p>
+                {% endfor %}
+                    <!-- END COMMENTS -->
+                    <!--BEGIN COMMENTS FORM -->
+                <h2>Оставить комментарий:</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}  <!-- Рендеринг формы -->
+                    <button type="submit">Отправить</button>
+                </form>
+                    <!-- END COMMENTS FORM -->
                 </div>
                 
             </div>
