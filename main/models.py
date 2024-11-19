@@ -231,6 +231,10 @@ class Comment(MPTTModel):
         update_fields=None,
         **kwargs,
     ):
+
+        max_depth = 5
+        if self.parent and self.parent.level >= max_depth - 1:
+            self.parent = self.parent.parent
         self.identifier = generate_uuid(klass=Comment)
         super(Comment, self).save(force_insert, force_update, *args, **kwargs)
 

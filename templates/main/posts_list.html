@@ -6,9 +6,9 @@
     <div>
         <div class="row">
             {% for post in profile.posts.all %}
-                <div class="col-lg-6 col-xl-4">
+                <div class="col-lg-6">
                     <a href="{% url 'post_detail' post.identifier %}">
-                        <div class="card bg-dark p-1 mt-4 scale-on-hover"
+                        <div class="card bg-dark mb-4 p-1 scale-on-hover"
                              style="border: 1px solid var(--secondary) !important">
                             <div class="card-body fs-7">
                                 <h5 class="card-title fs-6">{{ post.title }}</h5>
