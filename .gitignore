@@ -93,3 +93,4 @@ manage.py
 .idea/
 media
 *.rdb
+.vscode

@@ -107,7 +107,7 @@ class Profile(models.Model):
             while Profile.objects.filter(username=username).exists():
                 username = generate_username()[0]
             self.username = generate_username()[0]
-        
+
         super(Profile, self).save(force_insert, force_update, *args, **kwargs)
 
     # def save_thumbnail(self):
@@ -120,6 +120,12 @@ class Profile(models.Model):
     #     image.save(MEDIA_ROOT + thumb_filename, "WEBP")
     #     self.thumbnail = thumb_filename
     #     return True
+
+    def is_following(self, profile):
+        return self.following.filter(following_id=profile.id).exists()
+
+    def is_followed(self, profile):
+        return self.followers.filter(follower_id=profile.id).exists()
 
     @property
     def get_avatar(self):
@@ -151,9 +157,6 @@ class Follow(models.Model):
         Profile, related_name="followers", on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def is_following(self, profile):
-        return self.following.filter(id=profile.id).exists()
 
     def __str__(self):
         return f"{self.follower} followed {self.following} at {self.created_at}"

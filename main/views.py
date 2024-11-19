@@ -29,7 +29,7 @@ from django.http import (
 )
 from .models import Profile, Follow, Collection, Category, Tag, Media, Post
 from django.contrib.auth.decorators import login_required
-from .forms import PostForm
+from .forms import PostForm, EditProfileForm
 from django.utils import timezone
 from django.db import transaction
 
@@ -51,17 +51,30 @@ def index(request: HttpRequest) -> HttpResponse:
 
 def profile(request: HttpRequest, username: str) -> HttpResponse:
     profile = get_object_or_404(Profile, username=username)
-    is_following: bool = request.user.profile.following.filter(
-        following_id=profile.id
-    ).exists()
-    followings = [x.following for x in profile.following.all()]
-    followers = [x.follower for x in profile.followers.all()]
+
+    def get_is_following_or_none(profile):
+        if not request.user.is_authenticated:
+            return None
+        return request.user.profile.is_following(profile)
+
+    followings = [
+        (x.following, get_is_following_or_none(x.following))
+        for x in profile.following.all()
+    ]
+    followers = [
+        (x.follower, get_is_following_or_none(x.follower))
+        for x in profile.followers.all()
+    ]
+
+    is_following = get_is_following_or_none(profile)
+
     context = {
         "profile": profile,
-        "is_following": is_following,
         "followings": followings,
         "followers": followers,
+        "is_following": is_following,
     }
+
     return render(request, "main/profile.html", context)
 
 
@@ -456,3 +469,24 @@ def unfollow(request, username):
     follower = request.user.profile
     follower.following.filter(following_id=following.id).delete()
     return redirect(next)
+
+
+@login_required
+def edit_profile(request):
+    if request.method == "POST":
+        profile_form = EditProfileForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
+
+        if profile_form.is_valid():
+            profile_form.save()
+
+            if request.FILES.get("avatar", None) != None:
+                request.user.profile.avatar = request.FILES["avatar"]
+                request.user.profile.save()
+
+            return redirect(to="profile", username=request.user.profile.username)
+    else:
+        profile_form = EditProfileForm(instance=request.user.profile)
+
+    return render(request, "main/edit_profile.html", {"profile_form": profile_form})

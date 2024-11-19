@@ -1,9 +1,8 @@
 {% extends "main/index.html" %}
 {% load static %}
 <!-- TODO: change title -->
-{% block title %}single post{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 {% block head %}
-
 <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
 {% endblock %}
 {% block content %}
@@ -14,12 +13,14 @@
                 <!-- Левая колонка с аватаром и информацией -->
                 <div class="mb-3 mb-md-0 flex-shrink-0">
                     <div class="d-flex align-items-center gap-2">
-                        <img src="{{post.author.get_avatar}}"
+                        <a href="{% url 'profile' username=post.author.username %}">
+                            <img src="{{post.author.get_avatar}}"
                                 alt="avatar"
                                 class="img-fluid rounded-circle"
                                 style="width: 50px; height: 50px;">
+                        </a>
                         <div class="d-flex flex-column">
-                            <a href="{% url 'profile' username=post.author.username %}" class="text-light fs-6 mb-1">{{post.author.username}}</a>
+                            <a href="{% url 'profile' username=post.author.username %}" class="color-light fs-6 mb-1 hover-muted">{{post.author.username}}</a>
                             <span class="fs-9 text-muted">
                                 <i class="bi bi-calendar3 me-1"></i>{{post.created_at}} 
                             </span>

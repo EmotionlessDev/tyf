@@ -55,7 +55,7 @@ class UserCreationForm(forms.ModelForm):
             user.is_active = True
         else:
             user.is_active = False
-            
+
         if commit:
             user.save()
         return user
