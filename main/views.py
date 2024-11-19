@@ -32,6 +32,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import PostForm
 from django.utils import timezone
 from django.db import transaction
+from .forms import CommentForm
+from .models import Comment
 
 
 ################################## Main Page Views ##################################
@@ -458,6 +460,30 @@ class PostDetailView(DetailView):
     context_object_name = "post"
     slug_field = "identifier"
     slug_url_kwarg = "identifier"
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        comments = self.object.comments.filter(active=True).order_by('tree_id', 'lft')
+        context["comments"] = comments
+        context["form"] = CommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.object
+            comment.author = request.user.profile
+            parent_id = form.cleaned_data.get("parent")
+            if parent_id:
+                comment.parent = parent_id
+            comment.save()
+            return HttpResponseRedirect(
+                reverse("post_detail", kwargs={"identifier": self.object.identifier})
+            )
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 def error400(request, exception):

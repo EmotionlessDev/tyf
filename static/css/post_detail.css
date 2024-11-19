@@ -2,3 +2,17 @@
     max-width: 100%;
     height: auto;
 }
+
+.comments__content {
+    border: 1px solid var(--secondary);
+    resize: none;
+}
+
+.comments__reply {
+    margin-left: auto;
+}
+
+.comments__reply:hover {
+    color: var(--dark);
+}
+
