@@ -23,9 +23,8 @@
                                     height: 50px">
                         <div class="d-flex flex-column">
                             <a href="{% url 'profile' username=post.author.username %}"
-                               class="text-light fs-6 mb-1">{{
-                            post.author.username }}</a>
-                            <span class="fs-9 text-muted">
+                               class="text-light fs-6 mb-1">{{ post.author.username }}</a>
+                           <span class="fs-9 text-muted">
                                 <i class="bi bi-calendar3 me-1"></i>{{ post.created_at }}
                             </span>
                         </div>
@@ -58,16 +57,20 @@
                     <!-- BEGIN COMMENTS  -->
                     <div class="mt-5">
                         <h2 class="mb-4">Comments</h2>
+                        <!-- if no comments -->
+                        {% if comments.exists %}
                         <div class="nested-comments">
                             {% recursetree comments %}
                             <ul id="comment-thread-{{ node.pk }}">
-                                <li class="d-flex mb-4" style="margin-left: {{ node.level|default:0 }}em">
+                                <li class="d-flex flex-column mb-4" style="margin-left: {{ node.level|default:0 }}em">
+                                    <div class="d-flex">
+
                                     <div class="me-3">
                                         <img src="{{ node.author.get_avatar }}"
-                                             alt="{{ node.author.username }}"
-                                             class="rounded-circle"
-                                             style="width: 50px;
-                                                    height: 50px">
+                                            alt="{{ node.author.username }}"
+                                            class="rounded-circle"
+                                            style="width: 50px;
+                                            height: 50px">
                                     </div>
                                     <div class="flex-grow-1">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -76,19 +79,26 @@
                                         </div>
                                         <p class="mt-2">{{ node.content }}</p>
                                         <button class="d-block ml-auto reply-btn comments__reply btn btn-sm btn-outline-primary"
-                                                data-parent-id="{{ node.id }}">Reply</button>
+                                            data-parent-id="{{ node.id }}">Reply</button>
                                     </div>
+                                </div>
                                 </li>
                                 <!-- Рекурсивный вывод дочерних комментариев -->
                                 {% if not node.is_leaf_node %}{{ children }}{% endif %}
                             </ul>
+                            {% if node.level == 0 %}
+                            <hr>
+                            {% endif %}
                         {% endrecursetree %}
                     </div>
+                    {% else %}
+                        <p>No comments yet... Be the first to comment!</p>
+                    {% endif %}
                 <!-- Reply Form -->
                 <form id="reply-form" method="post" class="d-none mt-4">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary">Submit Reply</button>
+                    <button type="submit" class="btn btn-outline-primary comments__reply">Submit Reply</button>
                 </form>
                 <!-- END COMMENTS -->
                 {% if post.media_files.all %}
