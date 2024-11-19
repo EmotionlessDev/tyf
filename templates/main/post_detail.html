@@ -44,28 +44,41 @@
                     <div class="post-description rounded bg-dark-subtle text-light mt-4">
                         <p>{{ post.content|safe }}</p>
                     </div>
+                {% if post.media_files.all %}
+                    <h5 class="mt-5">Attachments:</h5>
+                    <ul class="attachments-list">
+                        {% for attachment in post.media_files.all %}
+                            <li>
+                                <a href="{{ attachment.file.url }}"
+                                   target="_blank"
+                                   class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-2 action-unchecked">{{ attachment.original_filename }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                {% endif %}
                     <!--BEGIN COMMENTS FORM -->
                     <div class="mt-5">
-                        <h2>Write comment?</h2>
+                        <h5>Write comment?</h5>
                         <form method="post">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <button class="btn btn-outline-light mt-2 mb-2" type="submit">Submit</button>
+                            <button class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-2 action-unchecked" type="submit">Submit</button>
                         </form>
                     </div>
                     <!-- END COMMENTS FORM -->
                     <!-- BEGIN COMMENTS  -->
                     <div class="mt-5">
-                        <h2 class="mb-4">Comments</h2>
+                        <h5 class="mb-4">Comments</h5>
                         <!-- if no comments -->
                         {% if comments.exists %}
                         <div class="nested-comments">
                             {% recursetree comments %}
                             <ul id="comment-thread-{{ node.pk }}">
-                                <li class="d-flex flex-column mb-4" style="margin-left: {{ node.level|default:0 }}em">
+                                <li class="d-flex flex-column mb-2" style="margin-left: {{ node.level|default:0 }}em">
                                     <div class="d-flex">
 
-                                    <div class="me-3">
+                                    <div style="margin-right: 0.5rem;">
                                         <img src="{{ node.author.get_avatar }}"
                                             alt="{{ node.author.username }}"
                                             class="rounded-circle"
@@ -73,12 +86,12 @@
                                             height: 50px">
                                     </div>
                                     <div class="flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h5 class="mb-0">{{ node.author.username }}</h5>
+                                        <div class="mt-1 d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0 fs-6">{{ node.author.username }}</h5>
                                             <small class="text-muted">{{ node.created_at|date:"d M Y, H:i" }}</small>
                                         </div>
-                                        <p class="mt-2">{{ node.content }}</p>
-                                        <button class="d-block ml-auto reply-btn comments__reply btn btn-sm btn-outline-primary"
+                                        <p>{{ node.content }}</p>
+                                        <button class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked d-block ml-auto reply-btn comments__reply"
                                             data-parent-id="{{ node.id }}">Reply</button>
                                     </div>
                                 </div>
@@ -98,22 +111,10 @@
                 <form id="reply-form" method="post" class="d-none mt-4">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-outline-primary comments__reply">Submit Reply</button>
+                    <button type="submit" class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-2 action-unchecked comments__reply">Submit Reply</button>
                 </form>
                 <!-- END COMMENTS -->
-                {% if post.media_files.all %}
-                    <h4 class="mt-5">Attachments:</h4>
-                    <ul class="attachments-list">
-                        {% for attachment in post.media_files.all %}
-                            <li>
-                                <a href="{{ attachment.file.url }}"
-                                   target="_blank"
-                                   class="btn btn-outline-light mt-2 mb-2">{{ attachment.original_filename }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                {% endif %}
+
             </div>
         </div>
     </div>
