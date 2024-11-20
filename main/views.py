@@ -19,7 +19,8 @@ from django.utils.encoding import force_bytes, force_str
 from users.forms import UserCreationForm, UserSetPasswordForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth import authenticate, login as login_user, logout as logout_user
+from django.contrib.auth import authenticate, login as login_user, logout as logout_user, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.http import (
     Http404,
     JsonResponse,
@@ -27,13 +28,14 @@ from django.http import (
     HttpRequest,
     HttpResponseRedirect,
 )
-from .models import Profile, Follow, Collection, Category, Tag, Media, Post
+from .models import Profile, Follow, Collection, Category, Tag, Media, Post, Bookmark
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm, EditProfileForm
 from django.utils import timezone
 from django.db import transaction
 from .forms import CommentForm
 from .models import Comment
+from social_django.models import UserSocialAuth
 
 
 ################################## Main Page Views ##################################
@@ -479,6 +481,11 @@ class PostDetailView(DetailView):
         comments = self.object.comments.filter(active=True).order_by('tree_id', 'lft')
         context["comments"] = comments
         context["form"] = CommentForm()
+
+        print([x.slug for x in Category.objects.all()])
+
+        is_bookmarked = Bookmark.objects.filter(profile=self.request.user.profile, post=self.object).exists()
+        context["is_bookmarked"] = is_bookmarked
         return context
 
     def post(self, request, *args, **kwargs):
@@ -518,8 +525,8 @@ def error500(request, *args, **argv):
 def error505(request, *args, **argv):
     return render(request, "main/error_505.html", status=505)
 
-
-def post_new(request: HttpRequest) -> HttpResponse:
+    
+def post_add(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -562,15 +569,68 @@ def edit_profile(request):
             request.POST, request.FILES, instance=request.user.profile
         )
 
+        passowrd_form = PasswordChangeForm(request.user, request.POST)
+
         if profile_form.is_valid():
             profile_form.save()
 
+            print(request.FILES.get("avatar", None), request.FILES)
+
+            if passowrd_form.is_valid():
+                passowrd_form.save()
+                update_session_auth_hash(request, passowrd_form.user)
+            
             if request.FILES.get("avatar", None) != None:
                 request.user.profile.avatar = request.FILES["avatar"]
-                request.user.profile.save()
+
+            request.user.profile.save()
 
             return redirect(to="profile", username=request.user.profile.username)
     else:
+        is_able_to_change_password = not UserSocialAuth.objects.filter(user__email=request.user.email).exists()
         profile_form = EditProfileForm(instance=request.user.profile)
+        passowrd_form = PasswordChangeForm(request.user)
 
-    return render(request, "main/edit_profile.html", {"profile_form": profile_form})
+    return render(request, "main/edit_profile.html", {"profile_form": profile_form, "password_form": passowrd_form, "is_able_to_change_password": is_able_to_change_password})
+
+
+@login_required
+def post_edit(request: HttpRequest, identifier: str) -> HttpResponse:
+    post = get_object_or_404(Post, identifier=identifier)
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save()
+            return redirect("post_detail", identifier=post.identifier)
+    else:
+        form = PostForm(instance=post)
+    return render(request, "main/post_edit.html", {"form": form, "post": post})
+
+@login_required
+def post_bookmark(request: HttpRequest, identifier: str) -> HttpResponse:
+    next = request.GET.get("next", "/")
+    post = get_object_or_404(Post, identifier=identifier)
+    profile = request.user.profile
+    if Bookmark.objects.filter(profile=profile, post=post).exists():
+        Bookmark.objects.filter(profile=profile, post=post).delete()
+    else:
+        Bookmark.objects.create(profile=profile, post=post)
+    return redirect(next)
+
+def categories(request: HttpRequest) -> HttpResponse:
+    categories = Category.objects.all()
+    return render(request, "main/categories.html", {"categories": categories})
+
+def category(request: HttpRequest, slug: str) -> HttpResponse:
+    category = get_object_or_404(Category, slug=slug)
+    posts = Post.objects.filter(category=category)
+    return render(request, "main/category.html", {"category": category, "posts": posts})  
+
+def collections(request: HttpRequest) -> HttpResponse:
+    collections = Collection.objects.all()
+    return render(request, "main/collections.html", {"collections": collections})
+
+def collection(request: HttpRequest, slug: str) -> HttpResponse:
+    collection = get_object_or_404(Collection, slug=slug)
+    posts = collection.posts.all()
+    return render(request, "main/collection.html", {"collection": collection, "posts": posts})

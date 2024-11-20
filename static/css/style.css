@@ -25,7 +25,35 @@
     --light: #6C7293;
     --dark: #000000; */
 
-/*GOVNOOO NELZYA TAK DELAT' */
+
+#search-input {
+    font-size: smaller;
+}
+
+
+/*** Custom ***/
+
+.action-super {
+    color: var(--light);
+    background-color: var(--dark);
+    border: 0;
+    transition: 0.05s;
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: 0.5em;
+    border-radius: 1em;
+    width: 110px;
+    height: 2.4em;
+    outline: none !important;
+    box-shadow: none;
+}
+
+.action-super:hover {
+    border: 0;
+    color: var(--dark);
+    background-color: var(--primary);
+}
+
 .action-checked:focus, .action-unchecked:focus {
     outline: none !important;
     box-shadow: none !important;
@@ -34,6 +62,9 @@
 .action-unchecked, .action-checked:hover {
     color: var(--light);
     background-color: var(--dark);
+    border: 0;
+    border-right: 1px solid var(--primary);
+    border-bottom: 1px solid var(--primary);
     font-size: smaller;
     outline: none !important;
     box-shadow: none;
@@ -42,6 +73,7 @@
 .action-checked, .action-unchecked:hover {
     color: var(--dark);
     background-color: var(--primary);
+    border: 0;
     border-right: 1px solid var(--light);
     border-bottom: 1px solid var(--light);
     font-size: smaller;
@@ -53,13 +85,10 @@
     color: var(--dark);
 }
 
-/* BUTTONS */
-
 
 .action-unchecked, .action-checked:hover {
     color: var(--light);
     background-color: var(--dark);
-    font-size: smaller;
     outline: none !important;
     box-shadow: none;
 }
@@ -69,7 +98,6 @@
     background-color: var(--primary);
     border-right: 1px solid var(--light);
     border-bottom: 1px solid var(--light);
-    font-size: smaller;
     outline: none !important;
     box-shadow: none;
 }
@@ -82,8 +110,6 @@
     bottom: 45px;
     z-index: 99;
 }
-
-/*** Custom ***/
 
 .fs-7 {
     font-size: smaller;
@@ -145,6 +171,8 @@
     background-color: var(--primary);
     color: var(--dark);
     z-index: 99;
+    outline: none !important;
+    box-shadow: none;
 }
 
 /* Scale animation for everything u want */
@@ -155,6 +183,12 @@
 .scale-on-hover:hover {
   transform: scale(1.05);
 }
+
+
+
+
+
+
 
 /*** Spinner ***/
 #spinner {
@@ -239,6 +273,7 @@
     transition: 0.5s ease all;
     position: relative;
 }
+
 .open .main__content {
     opacity: 1 !important;
 }

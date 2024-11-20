@@ -10,12 +10,13 @@ from django.db import models
 from django.conf.urls.static import static
 from django.db.models import CharField
 from django_resized import ResizedImageField
+from django.utils.text import slugify
 from django.core.validators import RegexValidator
 from random_username.generate import generate_username
 from mdeditor.fields import MDTextField
 from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
-from utils import generate_media_path, generate_uuid
+from utils.utils import generate_media_path, generate_uuid
 from tyf import settings
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -61,7 +62,7 @@ class Profile(models.Model):
         null=True,
         verbose_name="Major",
     )
-    date_of_birth = models.DateTimeField(blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
     date_joined = models.DateTimeField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     avatar = ResizedImageField(
@@ -164,16 +165,28 @@ class Follow(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=True, null=True, unique=True)
     description = models.TextField(blank=True)
+    slug = models.SlugField(default="", max_length=50, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        value = self.name
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 
 class Collection(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=True, null=True, unique=True)
     description = models.TextField(blank=True)
+    slug = models.SlugField(default="", max_length=50, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        value = self.name
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -257,7 +270,12 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
-    media = GenericRelation("Media")
+    media = GenericRelation(
+        to="Media", 
+        related_query_name="media", 
+        content_type_field="content_type", 
+        object_id_field="object_id",
+    )
 
     def save(
         self,
@@ -275,3 +293,12 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Bookmark(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="bookmarks")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="bookmarks")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} bookmarked {self.post} at {self.created_at}"

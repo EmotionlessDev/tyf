@@ -1,262 +1,232 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <title>
-         {% block title %}
-         Tell your friends
-         {% endblock %}
-      </title>
-      <meta content="width=device-width, initial-scale=1.0" name="viewport">
-      <meta content="" name="keywords">
-      <meta content="" name="description">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-         rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
-         rel="stylesheet">
-      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-         rel="stylesheet">
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
-         rel="stylesheet">
-      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-      <link href="{% static 'css/style.css' %}" rel="stylesheet">
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-      {% block head %}{% endblock %}
-   </head>
-   <body>
-      <div class="content--canvas">
 
-      </div>
+<head>
+   <meta charset="utf-8">
+   <title>
+      {% block title %}
+      Tell your friends
+      {% endblock %}
+   </title>
+   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+   <meta content="" name="keywords">
+   <meta content="" name="description">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
+      rel="stylesheet">
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+   <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
-      <div class="container-fluid position-relative d-flex p-0">
-         <div id="spinner"
-            class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary"
-               style="width: 3rem;
+   {% block head %}{% endblock %}
+</head>
+
+<body>
+   <div class="content--canvas">
+         
+   </div>
+   <div class="container-fluid position-relative d-flex p-0">
+      <div id="spinner"
+         class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+         <div class="spinner-border text-primary" style="width: 3rem;
                height: 3rem;
-               color: var(--primary) !important"
-               role="status">
-               <span class="sr-only">Loading...</span>
-            </div>
+               color: var(--primary) !important" role="status">
+            <span class="sr-only">Loading...</span>
          </div>
-         <div class="sidebar pe-0 pb-3 border border-2"
-            style="border-right: 0.1px solid var(--secondary) !important;
-            background-color: var(--dark) !important">
-            <nav id="sidebar-nav"
-               class="navbar bg-secondary navbar-dark align-items-center"
-               style="background-color: var(--dark) !important">
-
-               <a href="{% url 'index' %}" class="lgog w-100 text-center">
-               <img class=""
-                  src="{% static 'img/logo.svg' %}"
-                  alt=""
-                  style="height: 40px">
-               </a>
-
-               <p class=" text-break fs-9 w-100 p-3"
-                  style="color: var(--secondary-light);">
-                  What's the rush? 
-                  <br />
-                  Just relax and enjoy another hour of free studying with 
-                  <em>Tell Your Friends!</em>
-               </p>
-
-               <div class="navbar-nav ps-3 w-100">
-                  <div class="nav-item dropdown">
-                     <a href="#"
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown">📚 Collections</a>
-                     <div class="dropdown-menu bg-transparent border-0">
-                        {% for collection in collections %}
-                        <a href="signin.html" class="dropdown-item">{{ collection }}</a>
-                        {% endfor %}
-                     </div>
-                  </div>
-                  <div class="nav-item dropdown">
-                     <a href="#"
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown">📁 Categories</a>
-                     <div class="dropdown-menu bg-transparent border-0">
-                        {% for category in categories %}
-                        <a href="signin.html" class="dropdown-item">{{ category }}</a>
-                        {% endfor %}
-                     </div>
-                  </div>
-                  <div class="nav-item dropdown">
-                     <a href="#"
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown">🔖 Tags</a>
-                     <div class="dropdown-menu bg-transparent border-0">
-                        {% for tag in tags %}
-                        <a href="signin.html" class="dropdown-item">{{ tag }}</a>
-                        {% endfor %}
-                     </div>
-                  </div>
-               </div>
-
-            </nav>
-
-            <div>
-               <a href="https://github.com/EmotionlessDev/tyf" class="dropdown-item">⭐ Support Us</a>
-               <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="dropdown-item">🛠️ Report a bug</a>
-            </div>
-         </div>
-         <div class="content">
-            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0"
-               style="background-color: var(--dark) !important;
-               border-bottom: 0.1px solid var(--secondary) !important">
-               <a href="{% url 'index' %}" class="navbar-brand d-flex d-lg-none me-4">
-                  <h2 class="text-primary mb-0" style="color: var(--primary) !important;">tyf</h2>
-               </a>
-               <a href="#" class="sidebar-toggler flex-shrink-0">
-               <i class="bi bi-list fs-4 text-light"></i>
-               </a>
-               <form class="ms-4">
-                  <input id="search-input"
-                     class="form-control bg-dark border-0"
-                     type="search"
-                     placeholder="Search">
-               </form>
-               <a href="{% url 'post_add' %}" class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked ms-auto">+ Create</a>
-               <div class="navbar-nav align-items-center">
-                  <div class="nav-item dropdown">
-                     <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">
-                           <div class="d-flex align-items-center">
-                              <img class="rounded-circle"
-                                 src="{{ user.profile.get_avatar }}"
-                                 alt=""
-                                 style="width: 40px;
-                                 height: 40px">
-                              <div class="ms-2">
-                                 <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                 <small>15 minutes ago</small>
-                              </div>
-                           </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                           <div class="d-flex align-items-center">
-                              <img class="rounded-circle"
-                                 src="{{ user.profile.get_avatar }}"
-                                 alt=""
-                                 style="width: 40px;
-                                 height: 40px">
-                              <div class="ms-2">
-                                 <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                 <small>15 minutes ago</small>
-                              </div>
-                           </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                           <div class="d-flex align-items-center">
-                              <img class="rounded-circle"
-                                 src="{{ user.profile.get_avatar }}"
-                                 alt=""
-                                 style="width: 40px;
-                                 height: 40px">
-                              <div class="ms-2">
-                                 <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                 <small>15 minutes ago</small>
-                              </div>
-                           </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item text-center">See all message</a>
-                     </div>
-                  </div>
-                  <div class="nav-item dropdown">
-                     <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">
-                           <h6 class="fw-normal mb-0">Profile updated</h6>
-                           <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                           <h6 class="fw-normal mb-0">New user added</h6>
-                           <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                           <h6 class="fw-normal mb-0">Password changed</h6>
-                           <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item text-center">See all notifications</a>
-                     </div>
-                  </div>
-                  <div class="nav-item dropdown">
-                     {% if user.is_authenticated %}
-                     <a href="{% url 'profile' username=request.user.profile.username %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                     <img class="rounded-circle me-lg-0"
-                        src="{{ user.profile.get_avatar }}"
-                        alt=""
-                        style="width: 30px;
-                        height: 30px">
-                     </a>
-                     {% else %}
-                     <a href="{% url 'login' %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <img class="rounded-circle me-lg-0"
-                           src="{% static 'img/default_avatar.webp' %}"
-                           alt=""
-                           style="width: 30px;
-                           height: 30px">
-                     </a>
-                     {% endif %} 
-                     <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0 fs-7">
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'profile' username=request.user.profile.username %}"
-                           class="dropdown-item">My Profile</a>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-                        <a href="#" class="dropdown-item">Settings</a>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
-                        {% else %}
-                        <a href="{% url 'login' %}" class="dropdown-item">Log In</a>
-                        {% endif %}
-                     </div>
-                  </div>
-               </div>
-            </nav>
-            <!-- Blank Start -->
-            <div class="main__content container">
-               <div class="main_background"></div>
-                  <div class="row position-relative">
-                     <div class="col-9">
-                        {% block content %}
-                        <div id="search-container"></div>
-                        <div class="h-100 p-4 row" id="posts"></div>
-                        {% endblock %}
-                     </div>
-                     <div class="col-3">
-                        <!-- recent users sidebar -->
-                        <div class="card bg-transparent p-2 mt-4">
-                              <h5 class="text-light>">Recent Users</h5>
-                        </div>
-                     </div>
-               </div>
-            </div>
-            <!-- Blank End -->
-            <div class="container-fluid pt-4 px-0">
-               <div class="bg-secondary rounded-top p-4">
-                  <div class="row">
-                     <div class="col-12 col-sm-6 text-center text-sm-start fs-7">
-                        &copy; <a href="#">Tell Your Friends</a>, All Right Reserved.
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <a href="{% url 'post_add' %}" class="post-add-btn">+</a>
       </div>
-      <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      <div class="sidebar pe-0 pb-3 border border-2 open" style="border-right: 0.1px solid var(--secondary) !important;
+            background-color: var(--dark) !important">
+         <nav id="sidebar-nav" class="navbar bg-secondary navbar-dark align-items-center"
+            style="background-color: var(--dark) !important">
+
+            <a href="{% url 'index' %}" class="lgog w-100 text-center">
+               <img class="" src="{% static 'img/logo.svg' %}" alt="" style="height: 32px">
+            </a>
+
+            <p class=" text-break fs-9 w-100 p-3" style="color: var(--secondary-light);">
+               What's the rush?
+               <br />
+               Just relax and enjoy another hour of free studying with
+               <em>Tell Your Friends!</em>
+            </p>
+
+            <div class="navbar-nav ps-3 w-100">
+               <div class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📚 Collections</a>
+                  <div class="dropdown-menu bg-transparent border-0">
+                     {% for collection in collections %}
+                     <a href="signin.html" class="dropdown-item">{{ collection }}</a>
+                     {% endfor %}
+                  </div>
+               </div>
+               <div class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📁 Categories</a>
+                  <div class="dropdown-menu bg-transparent border-0">
+                     {% for category in categories %}
+                     <a href="signin.html" class="dropdown-item">{{ category }}</a>
+                     {% endfor %}
+                  </div>
+               </div>
+               <div class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">🔖 Tags</a>
+                  <div class="dropdown-menu bg-transparent border-0">
+                     {% for tag in tags %}
+                     <a href="signin.html" class="dropdown-item">{{ tag }}</a>
+                     {% endfor %}
+                  </div>
+               </div>
+            </div>
+
+         </nav>
+
+         <div>
+            <a href="https://github.com/EmotionlessDev/tyf" class="dropdown-item">⭐ Support Us</a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="dropdown-item">🛠️ Report a bug</a>
+         </div>
+      </div>
+      <div class="content open">
+         <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="background-color: var(--dark) !important;
+               border-bottom: 0.1px solid var(--secondary) !important">
+            <a href="{% url 'index' %}" class="navbar-brand d-flex me-4">
+               <img class="" src="{% static 'img/logo.svg' %}" alt="" style="height: 35px">
+
+            </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+               <i class="bi bi-list fs-4 text-light"></i>
+            </a>
+            <form class="ms-4 w-100">
+               <input id="search-input" class="form-control bg-dark fs-7 border-0" type="search" placeholder="Search">
+            </form>
+            <a href="{% url 'post_add' %}" class="btn btn-outline-primary fs-8 ms-4 action-super">+ Create</a>
+            <div class="navbar-nav align-items-center ms-0">
+               <div class="nav-item dropdown">
+                  <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                     <a href="#" class="dropdown-item">
+                        <div class="d-flex align-items-center">
+                           <img class="rounded-circle" src="{{ user.profile.get_avatar }}" alt="" style="width: 40px;
+                                 height: 40px">
+                           <div class="ms-1">
+                              <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                              <small>15 minutes ago</small>
+                           </div>
+                        </div>
+                     </a>
+                     <hr class="dropdown-divider">
+                     <a href="#" class="dropdown-item">
+                        <div class="d-flex align-items-center">
+                           <img class="rounded-circle" src="{{ user.profile.get_avatar }}" alt="" style="width: 40px;
+                                 height: 40px">
+                           <div class="ms-2">
+                              <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                              <small>15 minutes ago</small>
+                           </div>
+                        </div>
+                     </a>
+                     <hr class="dropdown-divider">
+                     <a href="#" class="dropdown-item">
+                        <div class="d-flex align-items-center">
+                           <img class="rounded-circle" src="{{ user.profile.get_avatar }}" alt="" style="width: 40px;
+                                 height: 40px">
+                           <div class="ms-2">
+                              <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                              <small>15 minutes ago</small>
+                           </div>
+                        </div>
+                     </a>
+                     <hr class="dropdown-divider">
+                     <a href="#" class="dropdown-item text-center">See all message</a>
+                  </div>
+               </div>
+               <div class="nav-item dropdown">
+                  <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                     <a href="#" class="dropdown-item">
+                        <h6 class="fw-normal mb-0">Profile updated</h6>
+                        <small>15 minutes ago</small>
+                     </a>
+                     <hr class="dropdown-divider">
+                     <a href="#" class="dropdown-item">
+                        <h6 class="fw-normal mb-0">New user added</h6>
+                        <small>15 minutes ago</small>
+                     </a>
+                     <hr class="dropdown-divider">
+                     <a href="#" class="dropdown-item">
+                        <h6 class="fw-normal mb-0">Password changed</h6>
+                        <small>15 minutes ago</small>
+                     </a>
+                     <hr class="dropdown-divider">
+                     <a href="#" class="dropdown-item text-center">See all notifications</a>
+                  </div>
+               </div>
+               <div class="nav-item dropdown">
+                  {% if user.is_authenticated %}
+                  <a href="{% url 'profile' username=request.user.profile.username %}" class="nav-link dropdown-toggle ms-0"
+                     data-bs-toggle="dropdown">
+                     <img class="rounded-circle me-lg-0" src="{{ user.profile.get_avatar }}" alt="" style="width: 30px;
+                        height: 30px">
+                  </a>
+                  {% else %}
+                  <a href="{% url 'login' %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                     <img class="rounded-circle me-lg-0" src="{% static 'img/default_avatar.webp' %}" alt="" style="width: 30px;
+                           height: 30px">
+                  </a>
+                  {% endif %}
+                  <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom fs-7">
+                     {% if user.is_authenticated %}
+                     <a href="{% url 'profile' username=request.user.profile.username %}" class="dropdown-item">My
+                        Profile</a>
+                     {% endif %}
+                     {% if user.is_authenticated %}
+                     <a href="#" class="dropdown-item">Settings</a>
+                     {% endif %}
+                     {% if user.is_authenticated %}
+                     <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
+                     {% else %}
+                     <a href="{% url 'login' %}" class="dropdown-item">Log In</a>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+         </nav>
+
+         <div class="main__content container">
+               <div class="main_background"></div>
+            <div class="row position-relative">
+               <div class="col-9">
+                  {% block content %}
+                  <div id="search-container"></div>
+                  <div class="h-100 p-4 row" id="posts"></div>
+                  {% endblock %}
+               </div>
+               <div class="col-3" id="recent-users">
+                  <!-- recent users sidebar -->
+                  <div class="card bg-transparent p-2 mt-4">
+                        <h5 class="text-light>">Recent Users</h5>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="container-fluid">
+            <div class="bg-secondary rounded-top mt-4 p-4">
+               <div class="row">
+                  <div class="col-12 col-sm-6 text-center text-sm-start fs-7">
+                     &copy; <a href="#">Tell Your Friends</a>, All Right Reserved.
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <a href="{% url 'post_add' %}" class="post-add-btn">+</a>
+   </div>
+
+   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
       crossorigin="anonymous">
       </script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
@@ -429,7 +399,8 @@
       <script src="{% static 'js/coalesce.js' %}"></script>
 
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="{% static 'js/main.js' %}"></script>
-      {% block scripts %}{% endblock %}
-   </body>
+   <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
 </html>

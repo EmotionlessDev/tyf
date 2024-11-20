@@ -7,6 +7,18 @@ p {
     font-weight: 500;
 }
 
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li, span {
+    color: var(--secondary-light);
+    font-weight: 100;
+    font-style: italic;
+    font-size: smaller;
+}
+
 label {
     color: var(--secondary-xx-light);
     font-weight: 100;
@@ -28,7 +40,7 @@ input, textarea, select, #id_date_of_birth, #id_bio {
     border-right: 0;
     /* background-color: var(--secondary); */
     padding-right: 0;
-    background: transparent;
+    background: var(--dark);
     color: var(--light) !important;
     padding-left: 0.5em;
     font-weight: 100 !important;
@@ -49,9 +61,10 @@ input, textarea, select, #id_date_of_birth {
     text-align: center;
 }
 
-input[type="date"]::-webkit-inner-spin-button,
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type="date" i]::-webkit-inner-spin-button,
+input[type="date" i]::-webkit-calendar-picker-indicator {
     filter: invert(1);
+    border-radius: 5px;
 }
 
 input::file-selector-button {
@@ -68,4 +81,16 @@ input:focus {
 
 button {
     background-color: var(--primary);
+}
+
+
+@media (max-width: 490px) {
+
+    #recent-users {
+        visibility: hidden;
+    }
+
+    form {
+        width: 100%;
+    }
 }

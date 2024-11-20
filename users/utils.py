@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from utils import generate_media_path, generate_uuid
+from utils.utils import generate_media_path, generate_uuid
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 

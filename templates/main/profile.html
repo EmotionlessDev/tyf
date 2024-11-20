@@ -10,7 +10,7 @@
    <div class="row">
       <div class="col-md-3 text-center">
          <img src="{{ profile.get_avatar }}" alt="avatar" class="img-fluid rounded-circle">
-         <p class="mt-3 fs-3 text-break">{{ profile.username }}</p>
+         <p class="mt-3 fs-4 text-break">{{ profile.username }}</p>
          <div class="action-buttons">
             {% if request.user.is_authenticated %}
                {% if request.user and request.user.profile != profile %}
@@ -19,15 +19,15 @@
                      class="btn border-start-0 border-top-0 btn-outline-primary w-100 mt-2 action-checked">Unfollow</a>
                   {% else %}
                   <a href="{% url 'follow' username=profile.username %}?next={{ request.path }}"
-                     class="btn border-start-0 border-top-0 btn-outline-primary w-100 mt-2 action-unchecked">Follow</a>
+                     class="btn btn-outline-primary w-100 mt-2 action-unchecked">Follow</a>
                   {% endif %}
                {% else %}
                <a href="{% url 'edit_profile' %}"
-                  class="btn border-start-0 border-top-0 btn-outline-primary w-100 mt-2 action-unchecked">Edit</a>
+                  class="btn btn-outline-primary w-100 mt-2 action-unchecked">Edit</a>
                {% endif %}
             {% else %}
             <a href="{% url 'login' %}"
-               class="btn border-start-0 border-top-0 btn-outline-primary w-100 mt-2 action-unchecked">Follow</a>
+               class="btn btn-outline-primary w-100 mt-2 action-unchecked">Follow</a>
             {% endif %}
          </div>
 
@@ -97,8 +97,8 @@
             {% endif %}
          </ul>
       </div>
-      <div class="col-md-9 bg-dark fs-7">
-         <ul class="nav nav-tabs mb-3 nav-fill" id="profile-tab" role="tablist">
+      <div class="col-md-9 fs-7">
+         <ul class="nav nav-tabs mb-3 nav-fill" id="profile-nav" role="tablist">
             <li class="nav-item" role="presentation">
                <button class="tab text-light active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about"
                   type="button" role="tab" aria-controls="about" aria-selected="true">About</button>
@@ -165,7 +165,28 @@
                {% endif %}
             </div>
             <div class="tab-pane" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-               {% include 'main/posts_list.html' %}
+               <ul class="nav nav-tabs mb-3 nav-fill" id="posts-nav" role="tablist">
+                  <li class="nav-item" role="presentation">
+                     <button class="tab text-light active" id="posts-self-tab" data-bs-toggle="tab" data-bs-target="#posts-self"
+                        type="button" role="tab" aria-controls="posts-self" aria-selected="true"><i class="bi bi-person-square"></i></i></button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                     <button class="tab text-light" id="bookmarks-tab" data-bs-toggle="tab" data-bs-target="#bookmarks" type="bookmarks"
+                        role="tab" aria-controls="bookmarks" aria-selected="false"><i class="bi bi-bookmark-fill"></i></button>
+                  </li>
+               </ul>
+               <div class="tab-content">
+                  <div class="tab-pane pt-1" id="posts-self" role="tabpanel" aria-labelledby="posts-self-tab">
+                     {% for post in profile.posts.all %}
+                        {% include 'main/post.html' with post=post %}
+                     {% endfor %}
+                  </div>
+                  <div class="tab-pane pt-1" id="bookmarks" role="tabpanel" aria-labelledby="bookmarks-tab">
+                     {% for bookmark in profile.bookmarks.all %}
+                        {% include 'main/post.html' with post=bookmark.post %}
+                     {% endfor %}
+                  </div>
+               </div>
             </div>
             <div class="tab-pane pt-1" id="followers" role="tabpanel" aria-labelledby="followers-tab">
                {% if not followers %}
@@ -187,14 +208,14 @@
                      {% if request.user.is_authenticated %}
                         {% if request.user.profile != follower and is_following %}
                         <a href="{% url 'unfollow' username=follower.username %}?next={{ request.path }}"
-                           class="btn border-start-0 border-top-0 btn-outline-primary margin-left-auto action-checked">Unfollow</a>
+                           class="btn btn-outline-primary margin-left-auto action-checked">Unfollow</a>
                         {% elif request.user.profile != follower %}
                         <a href="{% url 'follow' username=follower.username %}?next={{ request.path }}"
-                           class="btn border-start-0 border-top-0 btn-outline-primary margin-left-auto action-unchecked">Follow</a>
+                           class="btn btn-outline-primary margin-left-auto action-unchecked">Follow</a>
                         {% endif %}
                      {% else %}
                      <a href="{% url 'login' %}"
-                        class="btn border-start-0 border-top-0 btn-outline-primary margin-left-auto action-unchecked">Follow</a>
+                        class="btn btn-outline-primary margin-left-auto action-unchecked">Follow</a>
                      {% endif %}
                   </li>
                   <hr>
@@ -221,13 +242,13 @@
                      </a>
                      {% if not request.user.is_authenticated %}
                      <a href="{% url 'login' %}"
-                        class="btn border-start-0 border-top-0 btn-outline-primary margin-left-auto action-checked">Follow</a>
+                        class="btn btn-outline-primary margin-left-auto action-checked">Follow</a>
                      {% elif request.user.profile != following and is_following %}
                      <a href="{% url 'unfollow' username=following.username %}?next={{ request.path }}"
-                        class="btn border-start-0 border-top-0 btn-outline-primary margin-left-auto action-checked">Unfollow</a>
+                        class="btn btn-outline-primary margin-left-auto action-checked">Unfollow</a>
                      {% elif request.user.profile != following %}
                      <a href="{% url 'follow' username=following.username %}?next={{ request.path }}"
-                        class="btn border-start-0 border-top-0 btn-outline-primary margin-left-auto  action-unchecked">Follow</a>
+                        class="btn btn-outline-primary margin-left-auto  action-unchecked">Follow</a>
                      {% endif %}
                   </li>
                   <hr>
@@ -242,8 +263,18 @@
 {% endblock %}
 {% block extrabody %}
 <script>
-   const triggerTabList = document.querySelectorAll('#profile-nav button')
-   triggerTabList.forEach(triggerEl => {
+   const profileTriggerTabList = document.querySelectorAll('#profile-nav button')
+   profileTriggerTabList.forEach(triggerEl => {
+       const tabTrigger = new bootstrap.Tab(triggerEl)
+   
+       triggerEl.addEventListener('click', event => {
+           event.preventDefault()
+           tabTrigger.show()
+       })
+   })
+
+   const postsTriggerTabList = document.querySelectorAll('#posts-nav button')
+   postsTriggerTabList.forEach(triggerEl => {
        const tabTrigger = new bootstrap.Tab(triggerEl)
    
        triggerEl.addEventListener('click', event => {

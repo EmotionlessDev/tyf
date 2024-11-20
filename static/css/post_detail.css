@@ -15,3 +15,11 @@
 .comments__reply:hover {
     color: var(--dark);
 }
+
+textarea {
+    font-size: smaller !important;
+}
+
+h1 {
+    font-style: italic;
+}

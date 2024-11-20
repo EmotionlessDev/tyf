@@ -18,18 +18,46 @@
         </div>
     {% endif %}
 
-    <div class="container px-5 pt-4" style="padding: 50px 100px;">
+    <div class="container px-5 pt-4">
         <div class="row">
             <p class="fs-5 mb-0">Edit Profile</p>
-            <div class="form-content form-group" enctype="multipart/form-data">
-                <form method="post" class="">
+            <div class="form-content">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+
+                    <br/>
+
+                    <img src="
+                        {% if profile_form.avatar.value %}
+                            {{ profile_form.avatar.value.url }}
+                        {% else %}
+                            {{ request.user.profile.get_avatar }}
+                        {% endif %}
+                    " alt="avatar" class="img-fuild rounded-circle" style="height: 50px;">
+
+                    <br/>
 
                     <br/>
                     
                     <label>Username: </label>{{ profile_form.username }}
+
+                    <br/>
+
+                    {% if is_able_to_change_password %}
+
+                    <hr>
+
+                    <br/>
+
+                    {{ password_form.as_p }}
                     
                     <br/>
+
+                    <hr>
+
+                    <br/>
+
+                    {% endif %}
                     
                     <label>Change Avatar: </label>{{ profile_form.avatar }}
 
@@ -71,19 +99,15 @@
 
                     <label>Bio: </label>{{ profile_form.bio }}
 
-                    <br/>
-
-                    <label><a href="#">Change Password</a></label>
-
                     <hr>
 
                     <br/>
 
-                    <button type="submit" class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked">
+                    <button type="submit" class="btn btn-outline-primary action-unchecked">
                         Save Changes
                     </button>
 
-                    <button type="reset" class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked">
+                    <button type="reset" class="btn btn-outline-primary action-unchecked">
                         Reset
                     </button>
                 </form>

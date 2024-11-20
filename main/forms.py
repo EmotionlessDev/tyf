@@ -80,7 +80,19 @@ class EditProfileForm(forms.ModelForm):
         widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}),
     )
 
-    autocomplete_fields = ["university", "major"]
+    university = forms.ModelChoiceField(
+        queryset=University.objects.all().order_by("name"),
+        widget=UniversityWidget,
+        required=False,
+    )
+
+    major = forms.ModelChoiceField(
+        queryset=Major.objects.all().order_by("name"),
+        widget=MajorWidget,
+        required=False,
+    )
+
+    autocomplete_fields = ["university", "major", ]
 
     class Meta:
         model = Profile
@@ -102,7 +114,7 @@ class EditProfileForm(forms.ModelForm):
             "major": MajorWidget,
         }
 
-    def __init(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["first_name"].widget.attrs.update(
@@ -126,7 +138,7 @@ class EditProfileForm(forms.ModelForm):
         )
 
         self.fields["bio"].widget.attrs.update(
-            {"placeholder": "Write something about yourself", }
+            {"placeholder": "Tell your friends about yourself", }
         )
         
 
