@@ -128,22 +128,18 @@
                                         <div class="mt-1 d-flex justify-content-between align-items-center">
                                             <a href="{% url 'profile' username=node.author.username %}"
                                                 class="text-light mb-1 fs-7">{{ node.author.username }}</a>
-                                            <small class="text-muted fs-9">{{ node.created_at|date:"d M Y, H:i" }}</small>
-                                        </div>
-                                        <p class="fs-8 mb-1">{{ node.content }}</p>
-                                        <div class="d-flex">
-
+                                        <div class="d-flex align-items-center">
                                             {% if request.user.is_authenticated %}
-                                            <button class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block ml-auto reply-btn comments__reply"
+                                            <button class="border-0 text-muted bg-transparent d-block ml-auto reply-btn comments__reply"
                                                 data-parent-id="{{ node.id }}">
-                                             <i class="bi bi-reply-fill"></i>
+                                             <i class="bi bi-reply-fill" style="font-size: 15px;"></i>
                                                 </button>
                                             {% endif %}
                                             {% if request.user.is_authenticated %}
                                             {% if node.author == request.user.profile %}
                                             <a href="{% url 'delete_comment' node.id %}">
-                                                <button class="ms-3 btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block">
-                                                    <i class="bi bi-trash-fill"></i>
+                                                <button class="ms-1 border-0 text-muted bg-transparent d-block">
+                                                    <i class="bi bi-trash-fill" style="font-size: 12px;"></i>
                                                 </button>
                                             </a>
                                             {% endif %}
@@ -151,13 +147,18 @@
                                         {% if request.user.is_authenticated and node.author == request.user.profile %}
                                             <a href="{% url 'edit_comment' node.id %}" >
                                             <button type="button"
-                                                    class="ms-3 btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block edit-btn"
+                                                    class="ms-1 border-0 text-muted bg-transparent d-block edit-btn"
                                                     data-comment-id="{{ node.id }}">
-                                                <i class="bi bi-pencil-square"></i>
+                                                <i class="bi bi-pencil-square" style="font-size: 12.5px;"></i>
                                             </button>
                                             </a>
                                         {% endif %}
+
+                                            <small class="text-muted fs-9 ms-2">{{ node.created_at|date:"d M Y, H:i" }}</small>
                                         </div>
+                                        </div>
+                                        <p class="fs-8 mb-1">{{ node.content }}</p>
+
                                     </div>
                                 </div>
                                 </li>
