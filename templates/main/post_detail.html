@@ -135,13 +135,15 @@
 
                                             {% if request.user.is_authenticated %}
                                             <button class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block ml-auto reply-btn comments__reply"
-                                                data-parent-id="{{ node.id }}">Reply</button>
+                                                data-parent-id="{{ node.id }}">
+                                             <i class="bi bi-reply-fill"></i>
+                                                </button>
                                             {% endif %}
                                             {% if request.user.is_authenticated %}
                                             {% if node.author == request.user.profile %}
                                             <a href="{% url 'delete_comment' node.id %}">
                                                 <button class="ms-3 btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block">
-                                                    Delete
+                                                    <i class="bi bi-trash-fill"></i>
                                                 </button>
                                             </a>
                                             {% endif %}
@@ -151,7 +153,7 @@
                                             <button type="button"
                                                     class="ms-3 btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block edit-btn"
                                                     data-comment-id="{{ node.id }}">
-                                                Edit
+                                                <i class="bi bi-pencil-square"></i>
                                             </button>
                                             </a>
                                         {% endif %}
