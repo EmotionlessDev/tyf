@@ -25,7 +25,6 @@ label {
     font-style: italic;
     font-size: smaller;
     margin-bottom: 1.5em;
-    margin-right: 0.5em;
     width: 200px;
 }
 
@@ -49,12 +48,12 @@ input, textarea, select, #id_date_of_birth, #id_bio {
 }
 
 input, textarea, select, #id_date_of_birth {
-    width: 30%;
+    width: 400px;
     height: 1.8em;
 }
 
 #id_bio {
-    width: 50%;
+    width: 600px;
 }
 
 #id_avatar {
@@ -70,7 +69,6 @@ input[type="date" i]::-webkit-calendar-picker-indicator {
 input::file-selector-button {
     background-color: var(--primary);
     border: 0;
-    content: "Choose a file";
 }
 
 input:focus {

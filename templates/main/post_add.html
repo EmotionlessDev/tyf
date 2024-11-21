@@ -3,16 +3,17 @@
 {% block title %}Add Post{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<link rel="stylesheet" href="{% static 'css/post_add.css' %}">
 <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 {% endblock %}
 {% block content %}
 <div class="min-vh-100 p-4">
-    <h2>New post</h2>
+    <h2 class="fs-5">Add Post</h2>
     <form method="POST" class="post-form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-outline-primary action-unchecked">
-            Submit
+        <button type="submit" class="btn btn-outline-primary mt-4 action-unchecked">
+            Publish
         </button>
     </form>
 </div>
