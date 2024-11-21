@@ -1,0 +1,96 @@
+p {
+    /* text-decoration: underline;
+    text-decoration-color: var(--primary);
+    text-decoration-thickness: 0.01em; */
+    /* font-style: italic; */
+    color: var(--light);
+    font-weight: 500;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li, span {
+    color: var(--secondary-light);
+    font-weight: 100;
+    font-style: italic;
+    font-size: smaller;
+}
+
+label {
+    color: var(--secondary-xx-light);
+    font-weight: 100;
+    font-style: italic;
+    font-size: smaller;
+    margin-bottom: 1.5em;
+    margin-right: 0.5em;
+    width: 200px;
+}
+
+hr {
+    margin: 0;
+}
+
+input, textarea, select, #id_date_of_birth, #id_bio {
+    border: 0.1px solid var(--primary);
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    /* background-color: var(--secondary); */
+    padding-right: 0;
+    background: var(--dark);
+    color: var(--light) !important;
+    padding-left: 0.5em;
+    font-weight: 100 !important;
+    font-size: smaller !important;
+    border-radius: 0.2em;
+}
+
+input, textarea, select, #id_date_of_birth {
+    width: 30%;
+    height: 1.8em;
+}
+
+#id_bio {
+    width: 50%;
+}
+
+#id_avatar {
+    text-align: center;
+}
+
+input[type="date" i]::-webkit-inner-spin-button,
+input[type="date" i]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    border-radius: 5px;
+}
+
+input::file-selector-button {
+    background-color: var(--primary);
+    border: 0;
+    content: "Choose a file";
+}
+
+input:focus {
+    border-color: var(--primary);
+    outline: 0;
+    box-shadow: 0 0 0 .25rem var(--hover-primary);
+}
+
+button {
+    background-color: var(--primary);
+}
+
+
+@media (max-width: 490px) {
+
+    #recent-users {
+        visibility: hidden;
+    }
+
+    form {
+        width: 100%;
+    }
+}

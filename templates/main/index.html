@@ -1,458 +1,378 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <title>
-         {% block title %}
-         Tell your friends
-         {% endblock %}
-      </title>
-      <meta content="width=device-width, initial-scale=1.0" name="viewport">
-      <meta content="" name="keywords">
-      <meta content="" name="description">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-         rel="stylesheet">
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
-         rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
-         rel="stylesheet">
-      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-         rel="stylesheet">
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
-         rel="stylesheet">
-      <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}"
-         rel="stylesheet">
-      <link href="{% static 'lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}"
-         rel="stylesheet" />
-      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-      <link href="{% static 'css/style.css' %}" rel="stylesheet">
-      {% block head %}{% endblock %}
-   </head>
-   <body>
-      <div class="container-fluid position-relative d-flex p-0">
-         <div id="spinner"
-            class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary"
-               style="width: 3rem;
+
+<head>
+   <meta charset="utf-8">
+   <title>
+      {% block title %}
+      Tell your friends
+      {% endblock %}
+   </title>
+   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+   <meta content="" name="keywords">
+   <meta content="" name="description">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
+      rel="stylesheet">
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
+   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+   <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+   {% block head %}{% endblock %}
+</head>
+
+<body>
+   <div class="content--canvas">
+         
+   </div>
+   <div class="container-fluid position-relative d-flex p-0">
+      <div id="spinner"
+         class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+         <div class="spinner-border text-primary" style="width: 3rem;
                height: 3rem;
-               color: var(--primary) !important"
-               role="status">
-               <span class="sr-only">Loading...</span>
-            </div>
+               color: var(--primary) !important" role="status">
+            <span class="sr-only">Loading...</span>
          </div>
-         <div class="sidebar pe-0 pb-3 border border-2"
-            style="border-right: 0.1px solid var(--secondary) !important;
+      </div>
+      <div class="sidebar pe-0 pb-3 border border-2 open" style="border-right: 0.1px solid var(--secondary) !important;
             background-color: var(--dark) !important">
-            <nav id="sidebar-nav"
-               class="navbar bg-secondary navbar-dark align-items-center"
-               style="background-color: var(--dark) !important">
+         <nav id="sidebar-nav" class="navbar bg-secondary navbar-dark align-items-center"
+            style="background-color: var(--dark) !important">
 
-               <a href="{% url 'index' %}" class="lgog w-100 text-center">
-               <img class=""
-                  src="{% static 'img/logo.svg' %}"
-                  alt=""
-                  style="height: 40px">
-               </a>
+            <p class=" text-break fs-9 w-100 p-3" style="color: var(--secondary-light);">
+               What's the rush?
+               <br />
+               Just relax and enjoy another hour of free studying with
+               <em>Tell Your Friends!</em>
+            </p>
 
-               <p class=" text-break fs-9 w-100 p-3"
-                  style="color: var(--secondary-light);">
-                  What's the rush? 
-                  <br />
-                  Just relax and enjoy another hour of free studying with 
-                  <em>Tell Your Friends!</em>
-               </p>
-
-               <div class="navbar-nav ps-3 w-100">
-                  <div class="nav-item dropdown">
-                     <a href="#"
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown">📚 Collections</a>
-                     <div class="dropdown-menu bg-transparent border-0">
-                        {% for collection in collections %}
-                        <a href="signin.html" class="dropdown-item">{{ collection }}</a>
-                        {% endfor %}
-                     </div>
-                  </div>
-                  <div class="nav-item dropdown">
-                     <a href="#"
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown">📁 Categories</a>
-                     <div class="dropdown-menu bg-transparent border-0">
-                        {% for category in categories %}
-                        <a href="signin.html" class="dropdown-item">{{ category }}</a>
-                        {% endfor %}
-                     </div>
-                  </div>
-                  <div class="nav-item dropdown">
-                     <a href="#"
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown">🔖 Tags</a>
-                     <div class="dropdown-menu bg-transparent border-0">
-                        {% for tag in tags %}
-                           <!-- <a id="tag::{{ tag.name }}" class="dropdown-item" style="background-color: {{ tag.color }}; width: 90% !important;"> -->
-                              <span style="background-color: {{ tag.color }};">
-                                 <span style="filter: invert(1) !important;">{{ tag.name }}</span>
-                              </span>
-                           <!-- </a> -->
-                           <!-- <a href="signin.html" class="dropdown-item">{{ tag }}</a> -->
-                        {% endfor %}
-                     </div>
+            <div class="navbar-nav ps-3 w-100">
+               <div class="nav-item dropdown">
+                  <a href="#" onclick="collection_help('{{ collection }}')" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📚 Collections</a>
+                  <div class="dropdown-menu bg-transparent border-0">
+                     {% for collection in collections %}
+                     <a href="#" class="dropdown-item">{{ collection }}</a>
+                     {% endfor %}
                   </div>
                </div>
-
-            </nav>
-
-            <div>
-               <a href="https://github.com/EmotionlessDev/tyf" class="dropdown-item">⭐ Support Us</a>
-               <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="dropdown-item">🛠️ Report a bug</a>
-            </div>
-         </div>
-         <div class="content">
-            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0"
-               style="background-color: var(--dark) !important;
-               border-bottom: 0.1px solid var(--secondary) !important;">
-               <a href="{% url 'index' %}" class="navbar-brand d-flex d-lg-none me-4">
-                  <h2 class="text-primary mb-0" style="color: var(--primary) !important;">tyf</h2>
-               </a>
-               <a href="#" class="sidebar-toggler flex-shrink-0">
-               <i class="bi bi-list fs-4 text-light"></i>
-               </a>
-               <div class="ms-4 w-100">
-                  <div id="playground"></div>
-                  <input id="search-input"
-                         class="js-typing-color form-control bg-dark border-0"
-                         type="search"
-                         placeholder="Search">
+               <div class="nav-item dropdown">
+                  <a href="#" onclick="category_help('{{ category }}')" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📁 Categories</a>
+                  <div class="dropdown-menu bg-transparent border-0">
+                     {% for category in categories %}
+                     <a href="#" class="dropdown-item">{{ category }}</a>
+                     {% endfor %}
+                  </div>
                </div>
-               <div class="navbar-nav align-items-center ms-auto">
-                  <div class="nav-item dropdown">
-                     <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">
-                           <div class="d-flex align-items-center">
-                              <img class="rounded-circle"
-                                 src="{{ user.profile.get_avatar }}"
-                                 alt=""
-                                 style="width: 40px;
-                                 height: 40px">
-                              <div class="ms-2">
-                                 <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                 <small>15 minutes ago</small>
-                              </div>
-                           </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                           <div class="d-flex align-items-center">
-                              <img class="rounded-circle"
-                                 src="{{ user.profile.get_avatar }}"
-                                 alt=""
-                                 style="width: 40px;
-                                 height: 40px">
-                              <div class="ms-2">
-                                 <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                 <small>15 minutes ago</small>
-                              </div>
-                           </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                           <div class="d-flex align-items-center">
-                              <img class="rounded-circle"
-                                 src="{{ user.profile.get_avatar }}"
-                                 alt=""
-                                 style="width: 40px;
-                                 height: 40px">
-                              <div class="ms-2">
-                                 <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                 <small>15 minutes ago</small>
-                              </div>
-                           </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item text-center">See all message</a>
-                     </div>
-                  </div>
-                  <div class="nav-item dropdown">
-                     <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">
-                           <h6 class="fw-normal mb-0">Profile updated</h6>
-                           <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                           <h6 class="fw-normal mb-0">New user added</h6>
-                           <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                           <h6 class="fw-normal mb-0">Password changed</h6>
-                           <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item text-center">See all notifications</a>
-                     </div>
-                  </div>
-                  <div class="nav-item dropdown">
-                     {% if user.is_authenticated %}
-                     <a href="{% url 'profile' username=request.user.profile.username %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                     <img class="rounded-circle me-lg-0"
-                        src="{{ user.profile.get_avatar }}"
-                        alt=""
-                        style="width: 30px;
-                        height: 30px">
+               <div class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">🔖 Tags</a>
+                  <div class="dropdown-menu bg-transparent border-0">
+                     {% for tag in tags %}
+                     <a href="#" onclick="tag_help('{{ tag.name }}')" class="dropdown-item">
+                        <span style="background-color: '{{ tag.color }}';">
+                           <span style="filter: invert(1) !important;">{{ tag.name }}</span>
+                        </span>
                      </a>
-                     {% else %}
-                     <a href="{% url 'login' %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <img class="rounded-circle me-lg-0"
-                           src="{% static 'img/default_avatar.webp' %}"
-                           alt=""
-                           style="width: 30px;
-                           height: 30px">
-                     </a>
-                     {% endif %} 
-                     <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0 fs-7">
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'profile' username=request.user.profile.username %}"
-                           class="dropdown-item">My Profile</a>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-                        <a href="#" class="dropdown-item">Settings</a>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
-                        {% else %}
-                        <a href="{% url 'login' %}" class="dropdown-item">Log In</a>
-                        {% endif %}
-                     </div>
+                     {% endfor %}
                   </div>
                </div>
-            </nav>
+            </div>
 
-            {% block content %}
-            <div id="search-container"></div>
-            <div class="h-100 w-100 p-4 pb-0 row d-flex" id="posts"></div>
-            {% endblock %}
-            
-            <div class="p-4 pb-0 w-100 text-center" style="color: var(--secondary-light);">
-               <hr>
-               <a href="{% url 'index' %}" style="color: var(--secondary-light);">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                     <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
-                     <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
-                  </svg>
-                  Reload the page to refresh post feed
-               </a>
-            </div>
-            
-            <div class="container-fluid">
-               <div class="bg-secondary rounded-top mt-4 p-4">
-                  <div class="row">
-                     <div class="col-12 col-sm-6 text-center text-sm-start fs-7">
-                        &copy; <a href="#">Tell Your Friends</a>, All Right Reserved.
-                     </div>
-                  </div>
-               </div>
-            </div>
+         </nav>
+
+         <div>
+            <a href="https://github.com/EmotionlessDev/tyf" class="dropdown-item">⭐ Support Us</a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="dropdown-item">🛠️ Report a bug</a>
          </div>
-         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up" style="color: var(--dark) !important;"></i></a>
       </div>
 
-      <script 
-         src="https://code.jquery.com/jquery-3.5.1.js" 
-         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
-         crossorigin="anonymous">
-      </script> 
-      <script src="https://www.the-art-of-web.com/hilitor.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
-      <script src='//cdn.rawgit.com/garysieling/jquery-highlighttextarea/master/jquery.highlighttextarea.js'></script>
+      <div class="content open">
+         <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="background-color: var(--dark) !important;
+               border-bottom: 0.1px solid var(--secondary) !important">
+            <a href="{% url 'index' %}" class="navbar-brand d-flex me-4">
+               <img class="" src="{% static 'img/logo.svg' %}" alt="" style="height: 35px">
 
-      <script defer>
-         let offset = -2;
-         let is_end = false;
-         let search_term = "";
-         var timeoutId = null;
-         let is_search_by_keyword = false;
-         $.ajaxSetup({
-            headers: { "X-CSRFToken": '{{csrf_token}}' }
-         });
-         const postContainer = document.getElementById('posts');
-         const searchContainer = document.getElementById('search-container');
+            </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+               <i class="bi bi-list fs-4 text-light"></i>
+            </a>
+            <div class="ms-4 w-100">
+               <input id="search-input" class="js-typing-color form-control fs-7 bg-dark border-0" type="search" placeholder="Search">
+            </div>
+            <a href="{% url 'post_add' %}" class="btn btn-outline-primary fs-8 ms-4 action-super">+ Create</a>
+            <div class="navbar-nav align-items-center ms-0">
+
+               <div class="nav-item dropdown">
+                  {% if user.is_authenticated %}
+                  <a href="{% url 'profile' username=request.user.profile.username %}" class="nav-link dropdown-toggle ms-0"
+                     data-bs-toggle="dropdown">
+                     <img class="rounded-circle me-lg-0" src="{{ user.profile.get_avatar }}" alt="" style="width: 30px;
+                        height: 30px">
+                  </a>
+                  {% else %}
+                  <a href="{% url 'login' %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                     <img class="rounded-circle me-lg-0" src="{% static 'img/default_avatar.webp' %}" alt="" style="width: 30px;
+                           height: 30px">
+                  </a>
+                  {% endif %}
+                  <div class="dropdown-menu dropdown-menu-end bg-dark border-secondary border-top-0 rounded-0 rounded-bottom fs-8">
+                     {% if user.is_authenticated %}
+                     <a href="{% url 'profile' username=request.user.profile.username %}" class="dropdown-item">Profile</a>
+                     {% endif %}
+                     {% if user.is_authenticated %}
+                     <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
+                     {% else %}
+                     <a href="{% url 'login' %}" class="dropdown-item">Log In</a>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+         </nav>
+
+         <div class="main__content container">
+               <div class="main_background"></div>
+            <div class="row position-relative">
+               <div class="col-9">
+                  {% block content %}
+                  <div id="search-container"></div>
+                  <div class="h-100 p-4 row" id="posts"></div>
+                  {% endblock %}
+               </div>
+               <div class="col-3" id="recent-users">
+                  <!-- recent users sidebar -->
+                  <div class="card bg-transparent p-2 mt-4">
+                        <h5 class="text-light>">Recent Users</h5>
+                  </div>
+               </div>
+               <!-- <div class="p-4 pb-0 w-100 text-center" style="color: var(--secondary-light);">
+                  <hr>
+                  <a href="{% url 'index' %}" style="color: var(--secondary-light);">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                     </svg>
+                     Reload the page to refresh post feed
+                  </a>
+               </div> -->
+            </div>
+         </div>
+
+         <div class="container-fluid">
+            <div class="bg-dark rounded-top mt-4 p-4">
+               <div class="d-flex align-items-center justify-content-between">
+                  <div class="col-12 col-sm-6 text-center text-sm-start fs-9 text-muted">
+                     &copy; <a href="{% url 'index' %}">Tell Your Friends</a>, All Right Reserved.
+                  </div>
+                  <div class="d-flex align-items-center gap-1">
+                     <a href="https://github.com/EmotionlessDev/tyf" class="text-muted">
+                        <i class="bi bi-github"></i>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <a href="{% url 'post_add' %}" class="post-add-btn">+</a>
+   </div>
+
+   <script 
+      src="https://code.jquery.com/jquery-3.5.1.js" 
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+      crossorigin="anonymous">
+   </script> 
+   <script src="https://www.the-art-of-web.com/hilitor.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+   <script src='//cdn.rawgit.com/garysieling/jquery-highlighttextarea/master/jquery.highlighttextarea.js'></script>
+
+   <script defer>
+      $.ajaxSetup({
+         headers: { "X-CSRFToken": '{{csrf_token}}' }
+      });
+
+      let offset = -2;
+      let is_end = false;
+      let search_term = "";
+      var timeoutId = null;
+      let is_search_by_keyword = false;
+      const postContainer = document.getElementById('posts');
+      const searchContainer = document.getElementById('search-container');
 
 
-         $("#search-input").on("input", function() {
-            if ($(this).val().startsWith("tag::") || $(this).val().startsWith("collection::") || $(this).val().startsWith("category::")) {
-               $("#search-input").css("color", "#ADF0FF");
-               is_search_by_keyword = true;
-            } else {
-               $("#search-input").css("color", "var(--text-color)");
-               is_search_by_keyword = false;
-            }
-            if ($(this).val().includes(" ") || $(this).val() === "") {
-               $("#search-input").css("color", "var(--text-color)");
-               is_search_by_keyword = false;
-            }
-         });
-
-         function tag_help(name) {
-            $("#search-input").focus();
+      $("#search-input").on("input", function() {
+         if ($(this).val().includes(" ") || $(this).val() === "") {
+            $("#search-input").css("color", "var(--text-color)");
+            is_search_by_keyword = false;
+         }
+         if ($(this).val().startsWith("tag::") || $(this).val().startsWith("collection::") || $(this).val().startsWith("category::")) {
             $("#search-input").css("color", "#ADF0FF");
-            if (name == undefined) {
-               $("#search-input").val("tag::");
-            } else {
-               $("#search-input").val("tag::" + name);
+            is_search_by_keyword = true;
+         } else {
+            $("#search-input").css("color", "var(--text-color)");
+            is_search_by_keyword = false;
+         }
+      });
+
+      function tag_help(name) {
+         $("#search-input").focus();
+         $("#search-input").css("color", "#ADF0FF");
+         if (name == undefined) {
+            $("#search-input").val("tag::");
+         } else {
+            $("#search-input").val("tag::" + name);
+            offset = -2;
+            is_end = false;
+            is_search_by_keyword = true;
+            search_term = $("#search-input").val();
+            postContainer.innerHTML = "";
+            loadMoreContent();
+         }
+      }
+      function collection_help(name) {
+         $("#search-input").focus();
+         $("#search-input").css("color", "#ADF0FF");
+         if (name == undefined) {
+            $("#search-input").val("collection::");
+         } else {
+            $("#search-input").val("collection::" + name);
+            offset = -2;
+            is_end = false;
+            is_search_by_keyword = true;
+            search_term = $("#search-input").val();
+            postContainer.innerHTML = "";
+            loadMoreContent();
+         }
+      }
+      function category_help(name) {
+         $("#search-input").focus();
+         $("#search-input").css("color", "#ADF0FF");
+         if (name == undefined) {
+            $("#search-input").val("category::");
+         } else {
+            $("#search-input").val("category::" + name);
+            offset = -2;
+            is_end = false;
+            is_search_by_keyword = true;
+            search_term = $("#search-input").val();
+            postContainer.innerHTML = "";
+            loadMoreContent();
+         }
+      }
+
+      if (postContainer.innerText === "") {
+         if ('{{ request.get_full_path }}' === "/"  && !is_end) {
+            loadMoreContent();
+         }
+      }
+      window.onscroll = function () {
+         if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            if ('{{ request.get_full_path }}' === "/" && !is_end) {
+               loadMoreContent();
+            }
+         }
+      };
+      $('#search-input').on('keyup', function() {
+         clearTimeout(timeoutId);
+         timeoutId = setTimeout(function() {
+            search_term = $("#search-input").val();
+            if (search_term != "") {
                offset = -2;
                is_end = false;
-               is_search_by_keyword = true;
-               search_term = $("#search-input").val();
                postContainer.innerHTML = "";
                loadMoreContent();
-            }
-         }
-         function collection_help(name) {
-            $("#search-input").focus();
-            $("#search-input").css("color", "#ADF0FF");
-            if (name == undefined) {
-               $("#search-input").val("collection::");
             } else {
-               $("#search-input").val("collection::" + name);
                offset = -2;
                is_end = false;
-               is_search_by_keyword = true;
-               search_term = $("#search-input").val();
+               search_term = "";
                postContainer.innerHTML = "";
+               searchContainer.innerHTML = "";
                loadMoreContent();
             }
-         }
-         function category_help(name) {
-            $("#search-input").focus();
-            $("#search-input").css("color", "#ADF0FF");
-            if (name == undefined) {
-               $("#search-input").val("category::");
-            } else {
-               $("#search-input").val("category::" + name);
-               offset = -2;
-               is_end = false;
-               is_search_by_keyword = true;
-               search_term = $("#search-input").val();
-               postContainer.innerHTML = "";
-               loadMoreContent();
-            }
-         }
+         }, 500); 
+      });
 
-
-         if (postContainer.innerText === "") {
-            if ('{{ request.get_full_path }}' === "/"  && !is_end) {
-               loadMoreContent();
-            }
+      function loadMoreContent() {
+         let payload = {
+            "offset": offset,
+            "search_term": search_term,
          }
-         window.onscroll = function () {
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-               if ('{{ request.get_full_path }}' === "/" && !is_end) {
-                  loadMoreContent();
-               }
-            }
-         };
-         $('#search-input').on('keyup', function() {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(function() {
-               search_term = $("#search-input").val();
+         
+         $.ajax({
+            type: "POST",
+            url: 'load_posts/',
+            contentType: 'application/json',
+            dataType: "json",
+            data: JSON.stringify(payload),
+            success: function(data) {
                if (search_term != "") {
-                  offset = -2;
-                  is_end = false;
-                  postContainer.innerHTML = "";
-                  loadMoreContent();
-               } else {
-                  offset = -2;
-                  is_end = false;
-                  search_term = "";
-                  postContainer.innerHTML = "";
-                  searchContainer.innerHTML = "";
-                  loadMoreContent();
-               }
-            }, 500); 
-         });
+                  let info = "";
 
-         function loadMoreContent() {
-            let payload = {
-               "offset": offset,
-               "search_term": search_term,
-            }
-            $.ajax({
-               type: "POST",
-               url: 'load_posts/',
-               contentType: 'application/json',
-               dataType: "json",
-               data: JSON.stringify(payload),
-               success: function(data) {
-                  if (search_term != "") {
-                     let info = "";
-                     if (is_search_by_keyword) {
-                        if (search_term.startsWith("tag::")) {
-                           info = `Search results for tag "#${search_term.slice(5)}".`;
-                        } else if (search_term.startsWith("collection::")) {
-                           info = `Posts contained in "${search_term.slice(12)}" collection.`;
-                        } else if (search_term.startsWith("category::")) {
-                           info = `Search results for category "${search_term.slice(10)}".`;
-                        }
-                     } else {
-                        info = `Search results for "${search_term}".`;
-                     }
-
-                     searchContainer.innerHTML = 
-                     `
-                     <div class="p-4 text-center pb-0" style="color: var(--secondary-light);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                        </svg>
-                     
-                        <span>` + info + `</span>
-                        <hr>
-                        
-                     </div>
-                     <div class="p-4 pb-1 pt-0" style="color: var(--secondary-light);">
-                        <div><a onclick='tag_help();' href="#" style="color: var(--secondary-light); font-style: italic;">Search by tag</a>,</div> 
-                        <div><a onclick='collection_help()'' href="#" style="color: var(--secondary-light); font-style: italic;">Search by collection</a>,</div>  
-                        <div><a onclick='category_help()' href="#" style="color: var(--secondary-light); font-style: italic;">Search by category</a>.</div> 
-                     </div>
-                     
-                     `;
-                  }
-                  if (data.loading === true) {
-                     if (data.offset < offset || offset == -2) {
-                        for (let i = 0; i < data.posts.length; i++) {
-                           if (data.posts !== null) {
-                              postContainer.innerHTML += createPostElement(data.posts[i]);
-                           }
-                        }
-
-                        offset = data.offset;
-                        console.log(data.offset);
-                        textTruncate();
+                  if (is_search_by_keyword) {
+                     if (search_term.startsWith("tag::")) {
+                        info = `Search results for tag "#${search_term.slice(5)}".`;
+                     } else if (search_term.startsWith("collection::")) {
+                        info = `Posts contained in "${search_term.slice(12)}" collection.`;
+                     } else if (search_term.startsWith("category::")) {
+                        info = `Search results for category "${search_term.slice(10)}".`;
                      }
                   } else {
-                     is_end = true;
+                     info = `Search results for "${search_term}".`;
                   }
-               },
-            });
+
+                  searchContainer.innerHTML = 
+                  `
+                  <div class="p-4 text-center pb-0" style="color: var(--secondary-light);">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                     </svg>
+                     <span>` + info + `</span>
+                     <hr>  
+                  </div>
+                  <div class="p-4 pb-1 pt-0" style="color: var(--secondary-light);">
+                     <div><a onclick='tag_help();' href="#" style="color: var(--secondary-light); font-style: italic;">Search by tag</a>,</div> 
+                     <div><a onclick='collection_help()'' href="#" style="color: var(--secondary-light); font-style: italic;">Search by collection</a>,</div>  
+                     <div><a onclick='category_help()' href="#" style="color: var(--secondary-light); font-style: italic;">Search by category</a>.</div> 
+                  </div>
+                  `;
+               }
+
+               if (data.loading === true) {
+                  if (data.offset < offset || offset == -2) {
+                     for (let i = 0; i < data.posts.length; i++) {
+                        if (data.posts !== null) {
+                           postContainer.innerHTML += createPostElement(data.posts[i]);
+                        }
+                     }
+                     offset = data.offset;
+                     textTruncate();
+                  }
+               } else {
+                  is_end = true;
+               }
+            }
+         });
+      }
+
+      function createPostElement(post) {
+         var regex = /<([a-z]+)>(.+)<\/([a-z]+)>/ig;
+         var content_array = regex.exec(post.content);
+
+         var fst_elm_content = "";
+         if (content_array !== null) {
+            fst_elm_content = content_array[0];
+         } else {
+            fst_elm_content = post.content;
          }
 
-         function createPostElement(post) {
-            var regex = /<([a-z]+)>(.+)<\/([a-z]+)>/ig;
-            var content_array = regex.exec(post.content);
-
-            var fst_elm_content = "";
-            if (content_array !== null) {
-               fst_elm_content = content_array[0];
-            } else {
-               fst_elm_content = post.content;
-            }
-
-            var postElement = 
+         var postElement =
             `
             <div class="col-md-6 border-4 d w-100;">
                <a href="post/` + post.identifier + `/">
@@ -491,40 +411,37 @@
                </a>
             </div>
             `
-            return postElement;
-         }
+         return postElement;
+      }
 
-         function textTruncate() {
-            var truncate_p = document.querySelector(".truncate p");
-            $clamp(truncate_p, {
+      function textTruncate() {
+         var truncate_p = document.querySelector(".truncate p");
+         $clamp(truncate_p, {
+            clamp: 2,
+            useNativeClamp: false
+         });
+
+         var truncate_span = document.querySelector(".truncate span");
+         $clamp(truncate_span, {
+            clamp: 2,
+            useNativeClamp: false
+         });
+
+         for (let i = 1; i < 7; i++) {
+            $clamp(document.querySelector(`.truncate h${i}`), {
                clamp: 2,
                useNativeClamp: false
             });
-
-            var truncate_span = document.querySelector(".truncate span");
-            $clamp(truncate_span, {
-               clamp: 2,
-               useNativeClamp: false
-            });
-
-            for (let i = 1; i < 7; i++) {
-               $clamp(document.querySelector(`.truncate h${i}`), {
-               clamp: 2,
-               useNativeClamp: false
-            });
-            }
          }
-      </script>
+      }
+   </script>
 
-      <style>
-         #search-input mark {
-            padding:0 3px;
-            margin:-1px -4px;
-            border-radius:5em;
-         }
-      </style>
+   <script src="{% static 'js/noise.min.js' %}"></script>
+   <script src="{% static 'js/util.js' %}"></script>
+   <script src="{% static 'js/coalesce.js' %}"></script>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="{% static 'js/main.js' %}"></script>
-   </body>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+   <script src="{% static 'js/main.js' %}"></script>
+
+</body>
 </html>

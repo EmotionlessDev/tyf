@@ -1,78 +1,176 @@
 {% extends "main/index.html" %}
+{% load mptt_tags static %}
 {% load static %}
 <!-- TODO: change title -->
-{% block title %}single post{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 {% block head %}
-
 <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
 {% endblock %}
 {% block content %}
     <div class="h-100 p-4">
-    <!-- TODO: WTF with bootstrap classes? -->
-        <div class="card rounded-0 border-top-0 bg-dark border-light p-4" style="border-left: 0 !important; border-right: 0 !important;">
+        <!-- TODO: WTF with bootstrap classes? -->
+        <div class="card rounded-0 border-top-0 border-bottom-0 bg-transparent border-light p-4"
+             style="border-left: 0 !important;
+                    border-right: 0 !important">
             <div class="row flex-md-row">
                 <!-- Левая колонка с аватаром и информацией -->
                 <div class="mb-3 mb-md-0 flex-shrink-0">
                     <div class="d-flex align-items-center gap-2">
-                        <img src="{{post.author.get_avatar}}"
-                                alt="avatar"
-                                class="img-fluid rounded-circle"
-                                style="width: 50px; height: 50px;">
+                        <a href="{% url 'profile' username=post.author.username %}">
+                            <img src="{{ post.author.get_avatar }}"
+                                 alt="avatar"
+                                 class="img-fluid rounded-circle"
+                                 style="width: 50px;
+                                        height: 50px">
+                        </a>
                         <div class="d-flex flex-column">
-                            <a href="{% url 'profile' username=post.author.username %}" class="text-light fs-6 mb-1">{{post.author.username}}</a>
-                            <span class="fs-9 text-muted">
-                                <i class="bi bi-calendar3 me-1"></i>{{post.created_at}} 
+                            <a href="{% url 'profile' username=post.author.username %}"
+                               class="text-light fs-6 mb-1">{{ post.author.username }}</a>
+                           <span class="fs-9 text-muted">
+                                <i class="bi bi-calendar3 me-1"></i>{{ post.created_at }}
                             </span>
                         </div>
                     </div>
-
-                    <h1 class="post-title text-light fs-3 mt-4">{{post.title}}</h1>
-
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="post-title text-light fs-4">{{ post.title }}</h1>
+                        <div class="d-flex gap-3 align-items-center">
+                            {% if request.user.is_authenticated %}
+                                {% if post.author == request.user.profile %}
+                                <a href="{% url 'post_edit' post.identifier %}"
+                                class="text-light">
+                                    <i class="bi bi-pencil-square fs-6"></i>
+                                </a>
+                                {% endif %}
+                            {% endif %}
+                            {% if is_bookmarked %}
+                            <a href="{% url 'post_bookmark' post.identifier %}?next={{ request.path }}"
+                            class="text-light">
+                                <i class="bi bi-bookmark-fill"></i>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'post_bookmark' post.identifier %}?next={{ request.path }}"
+                            class="text-light">
+                                <i class="bi bi-bookmark"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
                     <div class="post-info d-flex gap-3 text-muted">
-                        <span class="fs-7">
-                            <i class="bi bi-collection me-1"></i>{{ post.category }}
+                        <span class="fs-9">
+                            <a href="{% url 'category' slug=post.category.slug %}"
+                               class="text-muted fs-9">
+                                <i class="bi bi-collection me-1"></i>{{ post.category }}
+                            </a>
                         </span>
-
-                        <span class="fs-7">
+                        <span class="fs-9">
                             <i class="bi bi-eye me-1"></i>123
                         </span>
-
-                        <span class="fs-7">
-                            <i class="bi bi-paperclip"></i>{{ post.media.count }}(files)
+                        <span class="fs-9">
+                            <a href="#attachments" class="text-muted fs-9">
+                                <i class="bi bi-paperclip"></i>{{ post.media.count }} files
+                            </a>
                         </span>
                     </div>
-
-                    <div class="post-description rounded bg-dark-subtle text-light mt-4">
-                        <p>
-                            {{post.content|safe}}
-                        </p>
+                    <div class="post-description rounded bg-dark-subtle text-light fs-6 mt-4">
+                        <p>{{ post.content|safe }}</p>
                     </div>
-                    
                     {% if post.media_files.all %}
-                    <h4 class="mt-5">Вложения:</h4>
-                    <ul class="attachments-list">
+                    <h5 class="mt-5 fs-6" id="attachments">Attachments:</h5>
+                    <ul class="attachments-list list-group list-group-numbered fs-8">
                         {% for attachment in post.media_files.all %}
-                        <li>
-                            <a href="{{ attachment.file.url }}" target="_blank" class="btn btn-outline-light mt-2 mb-2">
-                                {{ attachment.original_filename }}
-                            </a>
-                        </li>
+                            <li>
+                                <a href="{{ attachment.file.url }}"
+                                   target="_blank"
+                                   class="mb-2 mt-2 fs-8">{{ attachment.original_filename }}</a>
+                            </li>
                         {% endfor %}
                     </ul>
                     {% else %}
-                    <p>Нет вложений.</p>
                     {% endif %}
+                    <hr>
+                    <!--BEGIN COMMENTS FORM -->
+                    <div class="mt-5">
+                        <h5 class="fs-6 mb-3">Leave a comment</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-0 fs-8 action-unchecked" type="submit">Submit</button>
+                        </form>
+                    </div>
+                    <!-- END COMMENTS FORM -->
+                    <!-- BEGIN COMMENTS  -->
+                    <div class="mt-5">
+                        <h5 class="mb-4 fs-6">Comments</h5>
+                        <hr>
+                        <!-- if no comments -->
+                        {% if comments.exists %}
+                        <div class="nested-comments" id="comments">
+                            {% recursetree comments %}
+                            <ul id="comment-thread-{{ node.pk }}" class="ps-0">
+                                <li class="d-flex flex-column mb-2" style="margin-left: {{ node.level|default:0 }}em">
+                                    <div class="d-flex">
 
-                </div>
-                
-            </div>
-            
-            <div class="post-content mt-5">
-                <a href="path/to/file.pdf"
-                   target="_blank"
-                   class="btn btn-outline-light mt-2 mb-4">Вложения</a>
+                                    <div style="margin-right: 0.5rem;">
+                                        <a href="{% url 'profile' username=node.author.username %}">
+                                            <img src="{{ node.author.get_avatar }}"
+                                            alt="{{ node.author.username }}"
+                                            class="rounded-circle"
+                                            style="width: 50px;
+                                            height: 50px">
+                                        </a>
+                                        
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="mt-1 d-flex justify-content-between align-items-center">
+                                            <a href="{% url 'profile' username=node.author.username %}"
+                                                class="text-light mb-1 fs-7">{{ node.author.username }}</a>
+                                            <small class="text-muted fs-9">{{ node.created_at|date:"d M Y, H:i" }}</small>
+                                        </div>
+                                        <p class="fs-8 mb-1">{{ node.content }}</p>
+                                        <button class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block ml-auto reply-btn comments__reply"
+                                            data-parent-id="{{ node.id }}">Reply</button>
+                                    </div>
+                                </div>
+                                </li>
+                                <!-- Рекурсивный вывод дочерних комментариев -->
+                                {% if not node.is_leaf_node %}{{ children }}{% endif %}
+                            </ul>
+                            {% if node.level == 0 %}
+                            <hr>
+                            {% endif %}
+                        {% endrecursetree %}
+                    </div>
+                    {% else %}
+                        <p class="text-muted fs-7">No comments yet.</p>
+                    {% endif %}
+                <!-- Reply Form -->
+                <form id="reply-form" method="post" class="d-none mt-4">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-2 action-unchecked comments__reply">Submit Reply</button>
+                </form>
+                <!-- END COMMENTS -->
+
             </div>
         </div>
     </div>
+</div>
+    </div>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const replyButtons = document.querySelectorAll(".reply-btn");
+            const replyForm = document.getElementById("reply-form");
 
+            replyButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const parentId = this.getAttribute("data-parent-id");
+                    const parentInput = replyForm.querySelector("input[name='parent']");
+                    parentInput.value = parentId;
+                    replyForm.classList.remove("d-none");
+                    this.closest(".mb-4").append(replyForm);
+                });
+            });
+        });
+</script>
 {% endblock %}

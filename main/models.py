@@ -1,5 +1,6 @@
 import os
 import markdown
+import random
 from functools import partial
 
 from PIL import Image
@@ -10,13 +11,15 @@ from django.db import models
 from django.conf.urls.static import static
 from django.db.models import CharField
 from django_resized import ResizedImageField
+from django.utils.text import slugify
 from django.core.validators import RegexValidator
 from random_username.generate import generate_username
 from mdeditor.fields import MDTextField
 from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
-from utils import generate_media_path, generate_uuid, generate_pastel_color
+from utils.utils import generate_media_path, generate_uuid, generate_pastel_color
 from tyf import settings
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 validator_telegram = RegexValidator(
@@ -60,7 +63,7 @@ class Profile(models.Model):
         null=True,
         verbose_name="Major",
     )
-    date_of_birth = models.DateTimeField(blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
     date_joined = models.DateTimeField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     avatar = ResizedImageField(
@@ -121,6 +124,12 @@ class Profile(models.Model):
     #     self.thumbnail = thumb_filename
     #     return True
 
+    def is_following(self, profile):
+        return self.following.filter(following_id=profile.id).exists()
+
+    def is_followed(self, profile):
+        return self.followers.filter(follower_id=profile.id).exists()
+
     @property
     def get_avatar(self):
         if self.avatar:
@@ -152,24 +161,33 @@ class Follow(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def is_following(self, profile):
-        return self.following.filter(id=profile.id).exists()
-
     def __str__(self):
         return f"{self.follower} followed {self.following} at {self.created_at}"
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=True, null=True, unique=True)
     description = models.TextField(blank=True)
+    slug = models.SlugField(default="", max_length=50, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        value = self.name
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 
 class Collection(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=True, null=True, unique=True)
     description = models.TextField(blank=True)
+    slug = models.SlugField(default="", max_length=50, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        value = self.name
+        self.slug = slugify(value, allow_unicode=True)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -217,9 +235,45 @@ class Media(models.Model):
 
     description = models.CharField(max_length=255, blank=True, null=True)
 
+    def filetype(self):
+        return os.path.splitext(self.file.name)[1][1:]
+
+
+class Comment(MPTTModel):
+    identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="comments"
+    )
+    content = models.TextField()
+    stars = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+    parent = TreeForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
+    )
+
+    def save(
+        self,
+        *args,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+        **kwargs,
+    ):
+
+        max_depth = 5
+        if self.parent and self.parent.level >= max_depth - 1:
+            self.parent = self.parent.parent
+        self.identifier = generate_uuid(klass=Comment)
+        super(Comment, self).save(force_insert, force_update, *args, **kwargs)
+
 
 class Post(models.Model):
     media_files = GenericRelation(Media)
+    comments = GenericRelation(Comment)
     identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
@@ -232,7 +286,12 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
-    media = GenericRelation("Media")
+    media = GenericRelation(
+        to="Media",
+        related_query_name="media",
+        content_type_field="content_type",
+        object_id_field="object_id",
+    )
 
     def save(
         self,
@@ -248,32 +307,20 @@ class Post(models.Model):
         self.identifier = generate_uuid(klass=Post)
         super(Post, self).save(force_insert, force_update, *args, **kwargs)
 
+    @property
+    def get_filetypes(self):
+        return list(set(os.path.splitext(x.file.url)[1][1:] for x in self.media.all()))[:3]
+
     def __str__(self):
         return self.title
 
 
-class Comment(models.Model):
-    identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
-    author = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="comments"
+class Bookmark(models.Model):
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="bookmarks"
     )
-    content = models.TextField()
-    stars = models.IntegerField(default=0)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="bookmarks")
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    parent = models.ForeignKey(
-        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
-    )
 
-    def save(
-        self,
-        *args,
-        force_insert=False,
-        force_update=False,
-        using=None,
-        update_fields=None,
-        **kwargs,
-    ):
-        self.identifier = generate_uuid(klass=Comment)
-        super(Comment, self).save(force_insert, force_update, *args, **kwargs)
+    def __str__(self):
+        return f"{self.user} bookmarked {self.post} at {self.created_at}"

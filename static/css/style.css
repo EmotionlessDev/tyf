@@ -9,6 +9,7 @@
     --secondary: #333333;
     --secondary-light: #555555;
     --secondary-x-light: #777777;
+    --secondary-xx-light: #AAAAAA;
     --thirdary: #7D80DA;
     --light: #F2F2F2;
     --dark-light: #222222;
@@ -18,15 +19,91 @@
     --alert: #FF0000;
 }
 
-    /* --primary: #EB1616;
+/* --primary: #EB1616;
     --hover_primary: #bc1212;
     --secondary: #191C24;
     --light: #6C7293;
     --dark: #000000; */
 
-/*GOVNOOO NELZYA TAK DELAT' */
+
+#search-input {
+    font-size: smaller;
+}
+
+
+/*** Custom ***/
+
+.pt-0-5 {
+    padding-top: 0.125em;
+}
+
+.action-super {
+    color: var(--light);
+    background-color: var(--dark);
+    border: 0;
+    transition: 0.05s;
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: 0.5em;
+    border-radius: 1em;
+    width: 110px;
+    height: 2.4em;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.action-super:hover {
+    border: 0;
+    color: var(--dark);
+    background-color: var(--primary);
+}
+
+.action-checked:focus, .action-unchecked:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.action-unchecked, .action-checked:hover {
+    color: var(--light);
+    background-color: var(--dark);
+    border: 0;
+    border-right: 1px solid var(--primary);
+    border-bottom: 1px solid var(--primary);
+    font-size: smaller;
+    outline: none !important;
+    box-shadow: none;
+}
+
+.action-checked, .action-unchecked:hover {
+    color: var(--dark);
+    background-color: var(--primary);
+    border: 0;
+    border-right: 1px solid var(--light);
+    border-bottom: 1px solid var(--light);
+    font-size: smaller;
+    outline: none !important;
+    box-shadow: none;
+}
+
 .btn-outline-light:hover {
     color: var(--dark);
+}
+
+
+.action-unchecked, .action-checked:hover {
+    color: var(--light);
+    background-color: var(--dark);
+    outline: none !important;
+    box-shadow: none;
+}
+
+.action-checked, .action-unchecked:hover {
+    color: var(--dark);
+    background-color: var(--primary);
+    border-right: 1px solid var(--light);
+    border-bottom: 1px solid var(--light);
+    outline: none !important;
+    box-shadow: none;
 }
 
 
@@ -37,8 +114,6 @@
     bottom: 45px;
     z-index: 99;
 }
-
-/*** Custom ***/
 
 .fs-7 {
     font-size: smaller;
@@ -51,6 +126,71 @@
 .fs-9 {
     font-size: x-small;
 }
+
+/* Add this to avoid !important in text-light */
+.color-light {
+    color: var(--light);
+}
+
+.hover-muted {
+    color: var(--light);
+    transition: 0.1s;
+}
+
+.hover-muted:hover {
+    color: var(--secondary-xx-light);
+}
+
+.tab {
+    width: 100%;
+    display: block;
+    border: none;
+    border-bottom: 1px solid var(--secondary);
+    background: none;
+    padding: .5rem 1rem;
+}
+
+.tab.active {
+    border-bottom: 1px solid var(--primary);
+}
+
+.nav {
+    justify-content: space-between;
+}
+
+.margin-left-auto {
+    margin-left: auto;
+}
+
+.post-add-btn {
+    position: fixed;
+    right: 45px;
+    bottom: 45px;
+    height: 50px;
+    width: 50px;
+    font-size: larger;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: var(--dark);
+    z-index: 99;
+    outline: none !important;
+    box-shadow: none;
+}
+
+/* Scale animation for everything u want */
+.scale-on-hover {
+    transition: transform 0.8s ease-in-out;
+}
+
+.scale-on-hover:hover {
+  transform: scale(1.05);
+}
+
+
+
+
 
 
 
@@ -111,15 +251,48 @@
     height: 100vh;
     overflow-y: auto;
     background: var(--secondary);
+
     transition: 0.5s;
     z-index: 999;
+}
+
+#sidebar-nav {
+    margin-top: 4rem !important;
 }
 
 .content {
     margin-left: 250px;
     min-height: 100vh;
-    background: var(--dark);
+
+    /* background: url(../img/test.jpg) no-repeat center fixed; */
+        /* background-size: cover; */
+    /* background: var(--dark); */
     transition: 0.5s;
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+
+.main__content {
+    opacity: 0.5;
+    transition: 0.5s ease all;
+    position: relative;
+}
+
+.open .main__content {
+    opacity: 1 !important;
+}
+
+.main_background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--dark);
+    opacity: 0.7;
+}
+
+
+.nav-tabs {
+    border: none !important;
 }
 
 @media (min-width: 992px) {
@@ -166,7 +339,7 @@
 
 @media (max-width: 490px) {
     #search-input {
-        width:103px;
+        width: 103px;
     }
 
     .content .navbar .navbar-nav .nav-link {
@@ -369,75 +542,75 @@
 }
 
 .roboto-thin {
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: normal;
 }
 
 .roboto-light {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: normal;
 }
 
 .roboto-regular {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .roboto-medium {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
 }
 
 .roboto-bold {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
 
 .roboto-black {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: normal;
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
 }
 
 .roboto-thin-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: italic;
 }
 
 .roboto-light-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: italic;
 }
 
 .roboto-regular-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
 }
 
 .roboto-medium-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: italic;
 }
 
 .roboto-bold-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 700;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: italic;
 }
 
 .roboto-black-italic {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-style: italic;
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: italic;
 }
 
 #otp {
@@ -454,11 +627,6 @@
         margin: 0 !important;
     }
 }
-/* Scale animation for everything u want */
-.scale-on-hover {
-  transition: transform 0.8s ease-in-out;
-}
 
-.scale-on-hover:hover {
-  transform: scale(1.05);
-}
+
+

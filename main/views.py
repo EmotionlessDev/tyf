@@ -1,5 +1,4 @@
 import json
-import markdown
 from users.utils import (
     OTPTools,
     sendEmail,
@@ -13,26 +12,31 @@ from django.http import (
     HttpRequest,
     HttpResponseRedirect,
 )
-from .forms import PostForm
-from django.apps import apps
+from django.contrib.auth import (
+    authenticate,
+    login as login_user,
+    logout as logout_user,
+    update_session_auth_hash,
+)
 from user_agents import parse
 from users.models import User
+from .forms import CommentForm
 from django.urls import reverse
 from django.conf import settings
-from django.utils import timezone
-from django.db import transaction
 from .utils import DataBaseLoader
+from django.db import transaction
 from django.contrib import messages
 from django.core.cache import cache
 from django.views.generic import DetailView
+from .forms import PostForm, EditProfileForm
 from social_django.models import UserSocialAuth
 from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from users.forms import UserCreationForm, UserSetPasswordForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from .models import Profile, Follow, Collection, Category, Tag, Media, Post
-from django.contrib.auth import authenticate, login as login_user, logout as logout_user
+from .models import Profile, Follow, Collection, Category, Tag, Media, Post, Bookmark
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -69,17 +73,30 @@ def load_posts(request: HttpRequest):
 
 def profile(request: HttpRequest, username: str) -> HttpResponse:
     profile = get_object_or_404(Profile, username=username)
-    is_following: bool = request.user.profile.following.filter(
-        following_id=profile.id
-    ).exists()
-    followings = [x.following for x in profile.following.all()]
-    followers = [x.follower for x in profile.followers.all()]
+
+    def get_is_following_or_none(profile):
+        if not request.user.is_authenticated:
+            return None
+        return request.user.profile.is_following(profile)
+
+    followings = [
+        (x.following, get_is_following_or_none(x.following))
+        for x in profile.following.all()
+    ]
+    followers = [
+        (x.follower, get_is_following_or_none(x.follower))
+        for x in profile.followers.all()
+    ]
+
+    is_following = get_is_following_or_none(profile)
+
     context = {
         "profile": profile,
-        "is_following": is_following,
         "followings": followings,
         "followers": followers,
+        "is_following": is_following,
     }
+
     return render(request, "main/profile.html", context)
 
 
@@ -419,6 +436,37 @@ class PostDetailView(DetailView):
     slug_field = "identifier"
     slug_url_kwarg = "identifier"
 
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        comments = self.object.comments.filter(active=True).order_by("tree_id", "lft")
+        context["comments"] = comments
+        context["form"] = CommentForm()
+
+        print([x.slug for x in Category.objects.all()])
+
+        is_bookmarked = Bookmark.objects.filter(
+            profile=self.request.user.profile, post=self.object
+        ).exists()
+        context["is_bookmarked"] = is_bookmarked
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.object
+            comment.author = request.user.profile
+            parent_id = form.cleaned_data.get("parent")
+            if parent_id:
+                comment.parent = parent_id
+            comment.save()
+            return HttpResponseRedirect(
+                reverse("post_detail", kwargs={"identifier": self.object.identifier})
+            )
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
 
 def error400(request, exception):
     return render(request, "main/error_400.html", status=400)
@@ -440,7 +488,7 @@ def error505(request, *args, **argv):
     return render(request, "main/error_505.html", status=505)
 
 
-def post_new(request: HttpRequest) -> HttpResponse:
+def post_add(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -474,3 +522,94 @@ def unfollow(request, username):
     follower = request.user.profile
     follower.following.filter(following_id=following.id).delete()
     return redirect(next)
+
+
+@login_required
+def edit_profile(request):
+    if request.method == "POST":
+        profile_form = EditProfileForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
+
+        passowrd_form = PasswordChangeForm(request.user, request.POST)
+
+        if profile_form.is_valid():
+            profile_form.save()
+
+            print(request.FILES.get("avatar", None), request.FILES)
+
+            if passowrd_form.is_valid():
+                passowrd_form.save()
+                update_session_auth_hash(request, passowrd_form.user)
+
+            if request.FILES.get("avatar", None) != None:
+                request.user.profile.avatar = request.FILES["avatar"]
+
+            request.user.profile.save()
+
+            return redirect(to="profile", username=request.user.profile.username)
+    else:
+        is_able_to_change_password = not UserSocialAuth.objects.filter(
+            user__email=request.user.email
+        ).exists()
+        profile_form = EditProfileForm(instance=request.user.profile)
+        passowrd_form = PasswordChangeForm(request.user)
+
+    return render(
+        request,
+        "main/edit_profile.html",
+        {
+            "profile_form": profile_form,
+            "password_form": passowrd_form,
+            "is_able_to_change_password": is_able_to_change_password,
+        },
+    )
+
+
+@login_required
+def post_edit(request: HttpRequest, identifier: str) -> HttpResponse:
+    post = get_object_or_404(Post, identifier=identifier)
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save()
+            return redirect("post_detail", identifier=post.identifier)
+    else:
+        form = PostForm(instance=post)
+    return render(request, "main/post_edit.html", {"form": form, "post": post})
+
+
+@login_required
+def post_bookmark(request: HttpRequest, identifier: str) -> HttpResponse:
+    next = request.GET.get("next", "/")
+    post = get_object_or_404(Post, identifier=identifier)
+    profile = request.user.profile
+    if Bookmark.objects.filter(profile=profile, post=post).exists():
+        Bookmark.objects.filter(profile=profile, post=post).delete()
+    else:
+        Bookmark.objects.create(profile=profile, post=post)
+    return redirect(next)
+
+
+def categories(request: HttpRequest) -> HttpResponse:
+    categories = Category.objects.all()
+    return render(request, "main/categories.html", {"categories": categories})
+
+
+def category(request: HttpRequest, slug: str) -> HttpResponse:
+    category = get_object_or_404(Category, slug=slug)
+    posts = Post.objects.filter(category=category)
+    return render(request, "main/category.html", {"category": category, "posts": posts})
+
+
+def collections(request: HttpRequest) -> HttpResponse:
+    collections = Collection.objects.all()
+    return render(request, "main/collections.html", {"collections": collections})
+
+
+def collection(request: HttpRequest, slug: str) -> HttpResponse:
+    collection = get_object_or_404(Collection, slug=slug)
+    posts = collection.posts.all()
+    return render(
+        request, "main/collection.html", {"collection": collection, "posts": posts}
+    )

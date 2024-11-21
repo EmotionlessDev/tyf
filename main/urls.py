@@ -1,9 +1,15 @@
 from django.urls import path
 from . import views
+from django.views.decorators.cache import never_cache
 
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("edit/", views.edit_profile, name="edit_profile"),
+    path("categories/", views.categories, name="categories"),
+    path("categories/<slug:slug>/", views.category, name="category"),
+    path("collections/", views.collections, name="collections"),
+    path("collections/<slug:slug>/", views.collection, name="collection"),
     path("load_posts/", views.load_posts, name="load_posts"),
     path("register/", views.register, name="register"),
     path("login/", views.login, name="login"),
@@ -19,9 +25,12 @@ urlpatterns = [
         views.setPassword,
         name="set_password",
     ),
-    path("posts/add/", views.post_new, name="post_add"),
+    path("posts/add/", views.post_add, name="post_add"),
     path("post/<str:identifier>/", views.PostDetailView.as_view(), name="post_detail"),
-    path("<str:username>/", views.profile, name="profile"),
+    path("post/<str:identifier>/edit/", views.post_edit, name="post_edit"),
+    # path("post/<str:identifier>/delete/", views.post_delete, name="post_delete"),
+    path("post/<str:identifier>/bookmark/", views.post_bookmark, name="post_bookmark"),
+    path("<str:username>/", never_cache(views.profile), name="profile"),
     path("follow/<str:username>/", views.follow, name="follow"),
     path("unfollow/<str:username>/", views.unfollow, name="unfollow"),
 ]
