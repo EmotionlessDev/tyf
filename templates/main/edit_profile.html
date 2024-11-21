@@ -83,7 +83,7 @@
 
                     <br/>
                     
-                    <div class="d-flex justify-content-start">
+                    <div class="d-flex align-items-center justify-content-start">
                         <label id="date_of_birth" class="mb-0">Date of birth: </label>{{ profile_form.date_of_birth }}
                     </div>
 
@@ -98,6 +98,17 @@
                     <br/>
 
                     <label>Bio: </label>{{ profile_form.bio }}
+
+                    <br/>
+
+                    <a href="{% url 'delete_profile' %}" class="fs-9" id="delete-account">
+                        <i class="bi bi-trash-fill"></i>
+                        Delete Account
+                    </a>
+
+                    <br/>
+
+                    <br/>
 
                     <hr>
 

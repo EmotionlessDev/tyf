@@ -581,8 +581,6 @@ def edit_profile(request):
         if profile_form.is_valid():
             profile_form.save()
 
-            print(request.FILES.get("avatar", None), request.FILES)
-
             if passowrd_form.is_valid():
                 passowrd_form.save()
                 update_session_auth_hash(request, passowrd_form.user)
@@ -614,10 +612,23 @@ def edit_profile(request):
 @login_required
 def post_edit(request: HttpRequest, identifier: str) -> HttpResponse:
     post = get_object_or_404(Post, identifier=identifier)
+
+    if post.author != request.user.profile:
+        return redirect("post_detail", identifier=post.identifier)
+    
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save()
+
+            if request.FILES.getlist("media_files") != None:
+                for file in post.media.all():
+                    file.delete()
+
+                media_files = request.FILES.getlist("media_files")
+                for file in media_files:
+                    Media.objects.create(content_object=post, file=file)
+
             return redirect("post_detail", identifier=post.identifier)
     else:
         form = PostForm(instance=post)
@@ -658,3 +669,9 @@ def collection(request: HttpRequest, slug: str) -> HttpResponse:
     return render(
         request, "main/collection.html", {"collection": collection, "posts": posts}
     )
+
+@login_required
+def delete_profile(request: HttpRequest) -> HttpResponse:
+    user = request.user
+    user.delete()
+    return redirect("index")

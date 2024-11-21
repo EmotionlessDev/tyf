@@ -75,11 +75,14 @@
                     <div class="post-description rounded bg-dark-subtle text-light fs-6 mt-4">
                         <p>{{ post.content|safe }}</p>
                     </div>
+
                     {% if post.media_files.all %}
-                    <h5 class="mt-5 fs-6" id="attachments">Attachments:</h5>
-                    <ul class="attachments-list list-group list-group-numbered fs-8">
+                    <hr>
+                    <h5 class="mt-3 fs-6" id="attachments">Attachments:</h5>
+                    <ul class="attachments-list list-unstyled fs-8">
                         {% for attachment in post.media_files.all %}
                             <li>
+                                <i class="bi bi-filetype-{{ attachment.filetype }} fs-6"></i>
                                 <a href="{{ attachment.file.url }}"
                                    target="_blank"
                                    class="mb-2 mt-2 fs-8">{{ attachment.original_filename }}</a>
