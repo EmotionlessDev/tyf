@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -25,21 +26,23 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .header {
+        .img {
             text-align: center;
-            border-bottom: 1px solid #eaeaea;
+            margin-bottom: 5px;
         }
+
         .header a {
             font-family: "Anton SC", sans-serif;
             font-size: 24px;
             color: #CCFF00;
         }
         .content {
-            padding: 20px 0;
+            padding: 5px 0;
             color: #F2F2F2;
         }
         .content p {
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 100;
             margin-bottom: 10px;
         }
         .verification-code {
@@ -53,17 +56,24 @@
         .footer {
             text-align: center;
             font-size: 12px;
-            color: #555555;
+            color: #CCFF00;
+            font-weight: 100;   
             padding-top: 20px;
-            border-top: 1px solid #eaeaea;
+        }
+        hr {
+            border: 0;
+            height: 0.1px;
+            background: #555555;
+            margin: 0;
         }
     </style>
 </head>
 <body>
     <div class="email-container">
-        <div class="header">
-            <a href="https://127.0.0.1/">TELL YOUR FRIENDS</a>
-        </div>
+        <a href="www.tellyourfriends.ru" class="navbar-brand d-flex me-4">
+            <img class="" src="{% static 'img/logo.svg' %}" alt="" style="height: 35px">
+        </a>
+        <hr>
         <div class="content">
             <p>Hello,</p>
             <p>We received a request to {{ context }} for your account.</p>
@@ -71,8 +81,9 @@
             <div class="verification-code">{{ otp_key }}</div>
             <p>If you did not request {{ context }}, please ignore this email. Your account is safe.</p>
         </div>
+        <hr>
         <div class="footer">
-            <p>Best regards,<br>The <strong>Tell Your Friends</strong> Team</p>
+            <p>Best regards,<br><strong>Tell Your Friends</strong></p>
         </div>
     </div>
 </body>

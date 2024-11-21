@@ -5,7 +5,7 @@ from registry.models import University, Major
 from main.models import Category, Collection
 
 # python manage.py shell
-# exec(open("registry/utils/load_data.py").read())
+# exec(open("utils/load_data.py").read())
 
 with open(os.path.abspath("utils/data/universities_Russia.csv")) as f:
     reader = csv.reader(f)

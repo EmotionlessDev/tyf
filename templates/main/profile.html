@@ -118,6 +118,18 @@
          </ul>
          <div class="tab-content">
             <div class="tab-pane active mt-4" id="about" role="tabpanel" aria-labelledby="about-tab">
+               {% if profile.username %}
+               <p>
+                  <em class="about-field">Username: </em>{{ profile.username }}
+               </p>
+               {% endif %}
+
+               <!-- {% if profile.email %}
+               <p>
+                  <em class="about-field">Email: </em>{{ profile.email }}
+               </p>
+               {% endif %} -->
+
                {% if profile.first_name %}
                <p>
                   <em class="about-field">Fisrt Name: </em>{{ profile.first_name }}
@@ -133,16 +145,7 @@
                   <em class="about-field">Middle Name: </em>{{ profile.middle_name }}
                </p>
                {% endif %}
-               {% if profile.username %}
-               <p>
-                  <em class="about-field">Username: </em>{{ profile.username }}
-               </p>
-               {% endif %}
-               {% if profile.email %}
-               <p>
-                  <em class="about-field">Email: </em>{{ profile.email }}
-               </p>
-               {% endif %}
+
                {% if profile.date_of_birth %}
                <p>
                   <em class="about-field">Date of Birth: </em>{{ profile.date_of_birth }}
@@ -195,7 +198,7 @@
             </div>
             <div class="tab-pane pt-1" id="followers" role="tabpanel" aria-labelledby="followers-tab">
                {% if not followers %}
-               <p class="text-secondary fs-7 text-center">Seems like {{ profile.username }} doesn't have any followers yet.</p>
+               <p class="text-secondary fs-7 mt-4 text-center">{{ profile.username }} doesn't have any followers yet.</p>
                {% else %}
                <ul class="list-unstyled">
                   {% for follower, is_following in followers %}
@@ -230,7 +233,7 @@
             </div>
             <div class="tab-pane pt-1" id="following" role="tabpanel" aria-labelledby="following-tab">
                {% if not followings %}
-               <p class="text-secondary fs-7 text-center">Seems like {{ profile.username }} doesn't have any followings yet.</p>
+               <p class="text-secondary fs-7 mt-4 text-center">{{ profile.username }} doesn't have any followings yet.</p>
                {% else %}
                <ul class="list-unstyled">
                   {% for following, is_following in followings %}

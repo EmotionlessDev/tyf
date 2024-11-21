@@ -104,64 +104,7 @@
             </form>
             <a href="{% url 'post_add' %}" class="btn btn-outline-primary fs-8 ms-4 action-super">+ Create</a>
             <div class="navbar-nav align-items-center ms-0">
-               <div class="nav-item dropdown">
-                  <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                     <a href="#" class="dropdown-item">
-                        <div class="d-flex align-items-center">
-                           <img class="rounded-circle" src="{{ user.profile.get_avatar }}" alt="" style="width: 40px;
-                                 height: 40px">
-                           <div class="ms-1">
-                              <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                              <small>15 minutes ago</small>
-                           </div>
-                        </div>
-                     </a>
-                     <hr class="dropdown-divider">
-                     <a href="#" class="dropdown-item">
-                        <div class="d-flex align-items-center">
-                           <img class="rounded-circle" src="{{ user.profile.get_avatar }}" alt="" style="width: 40px;
-                                 height: 40px">
-                           <div class="ms-2">
-                              <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                              <small>15 minutes ago</small>
-                           </div>
-                        </div>
-                     </a>
-                     <hr class="dropdown-divider">
-                     <a href="#" class="dropdown-item">
-                        <div class="d-flex align-items-center">
-                           <img class="rounded-circle" src="{{ user.profile.get_avatar }}" alt="" style="width: 40px;
-                                 height: 40px">
-                           <div class="ms-2">
-                              <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                              <small>15 minutes ago</small>
-                           </div>
-                        </div>
-                     </a>
-                     <hr class="dropdown-divider">
-                     <a href="#" class="dropdown-item text-center">See all message</a>
-                  </div>
-               </div>
-               <div class="nav-item dropdown">
-                  <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                     <a href="#" class="dropdown-item">
-                        <h6 class="fw-normal mb-0">Profile updated</h6>
-                        <small>15 minutes ago</small>
-                     </a>
-                     <hr class="dropdown-divider">
-                     <a href="#" class="dropdown-item">
-                        <h6 class="fw-normal mb-0">New user added</h6>
-                        <small>15 minutes ago</small>
-                     </a>
-                     <hr class="dropdown-divider">
-                     <a href="#" class="dropdown-item">
-                        <h6 class="fw-normal mb-0">Password changed</h6>
-                        <small>15 minutes ago</small>
-                     </a>
-                     <hr class="dropdown-divider">
-                     <a href="#" class="dropdown-item text-center">See all notifications</a>
-                  </div>
-               </div>
+
                <div class="nav-item dropdown">
                   {% if user.is_authenticated %}
                   <a href="{% url 'profile' username=request.user.profile.username %}" class="nav-link dropdown-toggle ms-0"
@@ -175,13 +118,9 @@
                            height: 30px">
                   </a>
                   {% endif %}
-                  <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom fs-7">
+                  <div class="dropdown-menu dropdown-menu-end bg-dark border-secondary border-top-0 rounded-0 rounded-bottom fs-8">
                      {% if user.is_authenticated %}
-                     <a href="{% url 'profile' username=request.user.profile.username %}" class="dropdown-item">My
-                        Profile</a>
-                     {% endif %}
-                     {% if user.is_authenticated %}
-                     <a href="#" class="dropdown-item">Settings</a>
+                     <a href="{% url 'profile' username=request.user.profile.username %}" class="dropdown-item">Profile</a>
                      {% endif %}
                      {% if user.is_authenticated %}
                      <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
