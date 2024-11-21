@@ -131,8 +131,31 @@
                                             <small class="text-muted fs-9">{{ node.created_at|date:"d M Y, H:i" }}</small>
                                         </div>
                                         <p class="fs-8 mb-1">{{ node.content }}</p>
-                                        <button class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block ml-auto reply-btn comments__reply"
-                                            data-parent-id="{{ node.id }}">Reply</button>
+                                        <div class="d-flex">
+
+                                            {% if request.user.is_authenticated %}
+                                            <button class="btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block ml-auto reply-btn comments__reply"
+                                                data-parent-id="{{ node.id }}">Reply</button>
+                                            {% endif %}
+                                            {% if request.user.is_authenticated %}
+                                            {% if node.author == request.user.profile %}
+                                            <a href="{% url 'delete_comment' node.id %}">
+                                                <button class="ms-3 btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block">
+                                                    Delete
+                                                </button>
+                                            </a>
+                                            {% endif %}
+                                            {% endif %}
+                                        {% if request.user.is_authenticated and node.author == request.user.profile %}
+                                            <a href="{% url 'edit_comment' node.id %}" >
+                                            <button type="button"
+                                                    class="ms-3 btn border-start-0 border-top-0 btn-outline-primary action-unchecked fs-9 d-block edit-btn"
+                                                    data-comment-id="{{ node.id }}">
+                                                Edit
+                                            </button>
+                                            </a>
+                                        {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                                 </li>
@@ -153,7 +176,16 @@
                     {{ form.as_p }}
                     <button type="submit" class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-2 action-unchecked comments__reply">Submit Reply</button>
                 </form>
+            <form id="edit-form-{{ node.id }}" class="d-none mt-4" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="#" class="btn btn-secondary cancel-edit">Cancel</a>
+                </form>
+                <!-- EDIT FORM-->
+
                 <!-- END COMMENTS -->
+
 
             </div>
         </div>
@@ -174,6 +206,33 @@
                     this.closest(".mb-4").append(replyForm);
                 });
             });
+
+
+const editButtons = document.querySelectorAll(".edit-btn");
+    
+    editButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const commentId = this.getAttribute("data-comment-id");
+            const editForm = document.getElementById("edit-form-" + commentId);
+            const commentContainer = this.closest(".comment-container"); // или используйте класс, который оборачивает комментарий
+            
+            // Показать форму редактирования
+            editForm.classList.remove("d-none");
+            commentContainer.appendChild(editForm); // Поместить форму рядом с комментариев
+
+            // Опционально: скрыть сам комментарий или кнопку редактирования
+            this.classList.add("d-none");
+
+            // Закрытие формы при отмене
+            const cancelButton = editForm.querySelector(".cancel-edit");
+            cancelButton.addEventListener("click", function (e) {
+                e.preventDefault();
+                editForm.classList.add("d-none");
+                button.classList.remove("d-none"); // Показать кнопку редактирования снова
+            });
         });
+    });
+});
+
 </script>
 {% endblock %}

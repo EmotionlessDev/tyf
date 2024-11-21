@@ -142,6 +142,7 @@ class PostAdmin(admin.ModelAdmin):
         "category",
         "created_at",
         "updated_at",
+        "active",
     ]
 
     list_filter = [

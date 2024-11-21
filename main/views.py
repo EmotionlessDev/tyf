@@ -41,7 +41,8 @@ from django.db import transaction
 from .forms import CommentForm
 from .models import Comment
 from social_django.models import UserSocialAuth
-
+from django.http import HttpResponseForbidden
+from django.template.loader import render_to_string
 
 ################################## Main Page Views ##################################
 
@@ -670,8 +671,37 @@ def collection(request: HttpRequest, slug: str) -> HttpResponse:
         request, "main/collection.html", {"collection": collection, "posts": posts}
     )
 
+
 @login_required
 def delete_profile(request: HttpRequest) -> HttpResponse:
     user = request.user
     user.delete()
     return redirect("index")
+
+
+@login_required
+def delete_comment(request: HttpRequest, pk) -> HttpResponse:
+    comment = get_object_or_404(Comment, pk=pk)
+    if comment.author != request.user.profile:
+        return HttpResponseForbidden("You are not allowed to delete this comment.")
+    comment.active = False
+    comment.save()
+    return redirect('post_detail', identifier=comment.post.identifier)
+
+
+@login_required
+def edit_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    
+    if comment.author != request.user.profile:
+        return HttpResponseForbidden("You are not allowed to edit this comment.")
+    
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', identifier=comment.post.identifier)
+    else:
+        form = CommentForm(instance=comment)
+    
+    return render(request, 'main/edit_comment.html', {'form': form, 'comment': comment})
