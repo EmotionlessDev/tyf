@@ -23,3 +23,7 @@ textarea {
 h1 {
     font-style: italic;
 }
+
+hr {
+    background-color: var(--secondary-light);
+}
