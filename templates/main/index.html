@@ -75,13 +75,11 @@
                <div class="nav-item dropdown">
                   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">🔖 Tags</a>
                   <div class="dropdown-menu bg-transparent border-0">
-                     {% for tag in tags %}
-                     <a href="#" onclick="tag_help('{{ tag.name }}')" class="dropdown-item">
-                        <span style="background-color: '{{ tag.color }}';">
-                           <span style="filter: invert(1) !important;">{{ tag.name }}</span>
-                        </span>
-                     </a>
-                     {% endfor %}
+                     <div class="px-3">
+                        {% for tag in tags %}
+                        {% include 'main/tag.html' with tag=tag %}
+                        {% endfor %}
+                     </div>
                   </div>
                </div>
             </div>
@@ -136,45 +134,48 @@
                </div>
             </div>
          </nav>
-
-         <div class="main__content container">
-               <div class="main_background"></div>
-            <div class="row position-relative">
-               <div class="col-9">
-                  {% block content %}
-                  <div id="search-container"></div>
-                  <div class="h-100 p-4 row" id="posts"></div>
-                  {% endblock %}
-               </div>
-               <div class="col-3" id="recent-users">
-                  <!-- recent users sidebar -->
-                  <div class="card bg-transparent p-2 mt-4">
-                        <h5 class="text-light>">Recent Users</h5>
+         
+         <div>
+            <div class="w-100 mb-0 main__content container">
+               <div class="main_background">
+                  <div class="row position-relative">
+                     <div class="col-9">
+                        {% block content %}
+                        <div id="search-container"></div>
+                        <div id="posts"></div>
+                        {% endblock %}
+                     </div>
+                     <div class="col-3" id="recent-users">
+                        <!-- recent users sidebar -->
+                        <div class="card bg-transparent p-2 mt-4">
+                              <h5 class="text-light>">Recent Users</h5>
+                        </div>
+                     </div>
+                     <div class="p-4 pb-0 w-100 text-center mb-3" style="color: var(--secondary-light);">
+                        <hr>
+                        <a href="{% url 'index' %}" style="color: var(--secondary-light);">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                           </svg>
+                           Reload the page to refresh post feed
+                        </a>
+                     </div>
                   </div>
                </div>
-               <!-- <div class="p-4 pb-0 w-100 text-center" style="color: var(--secondary-light);">
-                  <hr>
-                  <a href="{% url 'index' %}" style="color: var(--secondary-light);">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
-                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
-                     </svg>
-                     Reload the page to refresh post feed
-                  </a>
-               </div> -->
             </div>
-         </div>
 
-         <div class="container-fluid p-0">
-            <div class="bg-dark rounded-top mt-4 p-0">
-               <div class="d-flex align-items-center justify-content-between p-4">
-                  <div class="col-12 col-sm-6 text-center text-sm-start fs-9 text-muted">
-                     &copy; <a href="{% url 'index' %}">Tell Your Friends</a>, All Right Reserved.
-                  </div>
-                  <div class="d-flex align-items-center gap-1">
-                     <a href="https://github.com/EmotionlessDev/tyf" class="text-muted">
-                        <i class="bi bi-github"></i>
-                     </a>
+            <div class="container-fluid p-0 position-fixed bottom-0 w-100">
+               <div class="bg-dark rounded-top mt-4 p-0">
+                  <div class="d-flex align-items-center justify-content-between p-4">
+                     <div class="col-12 col-sm-6 text-center text-sm-start fs-9 text-muted">
+                        &copy; <a href="{% url 'index' %}">Tell Your Friends</a>, All Right Reserved.
+                     </div>
+                     <div class="d-flex align-items-center gap-1">
+                        <a href="https://github.com/EmotionlessDev/tyf" class="text-muted">
+                           <i class="bi bi-github"></i>
+                        </a>
+                     </div>
                   </div>
                </div>
             </div>
@@ -206,7 +207,6 @@
       const postContainer = document.getElementById('posts');
       const searchContainer = document.getElementById('search-container');
 
-
       $("#search-input").on("input", function() {
          if ($(this).val().includes(" ") || $(this).val() === "") {
             $("#search-input").css("color", "var(--text-color)");
@@ -227,7 +227,7 @@
          if (name == undefined) {
             $("#search-input").val("tag::");
          } else {
-            $("#search-input").val("tag::" + name);
+            $("#search-input").val("tag::" + name.slice(1));
             offset = -2;
             is_end = false;
             is_search_by_keyword = true;

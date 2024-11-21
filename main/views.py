@@ -27,6 +27,7 @@ from .utils import DataBaseLoader
 from django.db import transaction
 from django.contrib import messages
 from django.core.cache import cache
+from django.utils.text import slugify
 from django.views.generic import DetailView
 from .forms import PostForm, EditProfileForm
 from social_django.models import UserSocialAuth
@@ -442,8 +443,6 @@ class PostDetailView(DetailView):
         context["comments"] = comments
         context["form"] = CommentForm()
 
-        print([x.slug for x in Category.objects.all()])
-
         is_bookmarked = Bookmark.objects.filter(
             profile=self.request.user.profile, post=self.object
         ).exists()
@@ -496,6 +495,16 @@ def post_add(request: HttpRequest) -> HttpResponse:
                 post = form.save(commit=False)
                 post.author = request.user.profile
                 post.save()
+
+                tags = [
+                    slugify(x.strip().strip("#")) for x in form.cleaned_data.get("tags").split(",")
+                ]
+                for tag in tags:
+                    if not Tag.objects.filter(name=tag).exists():
+                        post.tags.create(name=tag)
+                    else:
+                        post.tags.add(Tag.objects.get(name=tag))
+
                 media_files = request.FILES.getlist("media_files")
                 for file in media_files:
                     Media.objects.create(content_object=post, file=file)
@@ -570,7 +579,7 @@ def post_edit(request: HttpRequest, identifier: str) -> HttpResponse:
 
     if post.author != request.user.profile:
         return redirect("post_detail", identifier=post.identifier)
-    
+
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
@@ -624,6 +633,7 @@ def collection(request: HttpRequest, slug: str) -> HttpResponse:
     return render(
         request, "main/collection.html", {"collection": collection, "posts": posts}
     )
+
 
 @login_required
 def delete_profile(request: HttpRequest) -> HttpResponse:

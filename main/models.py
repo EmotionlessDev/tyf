@@ -203,8 +203,6 @@ class Tag(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if '#' in self.name:
-            self.name = self.name.replace('#', '')
         self.name = '#' + self.name
         self.color = generate_pastel_color()
         super(Tag, self).save(*args, **kwargs)

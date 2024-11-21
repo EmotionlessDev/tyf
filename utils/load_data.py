@@ -38,7 +38,7 @@ with open(os.path.abspath("utils/data/categories.csv")) as f:
             description=row[1],
         )
 
-with open(os.path.abspath("/utils/data/collections.csv")) as f:
+with open(os.path.abspath("utils/data/collections.csv")) as f:
     reader = csv.reader(f)
     for row in reader:
         if Collection.objects.filter(name=row[0]).exists():
