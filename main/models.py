@@ -299,7 +299,9 @@ class Post(models.Model):
 
     @property
     def get_filetypes(self):
-        return list(set(os.path.splitext(x.file.url)[1][1:] for x in self.media.all()))[:3]
+        return list(set(os.path.splitext(x.file.url)[1][1:] for x in self.media.all()))[
+            :3
+        ]
 
     def __str__(self):
         return self.title
