@@ -15,7 +15,7 @@ from random_username.generate import generate_username
 from mdeditor.fields import MDTextField
 from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
-from utils import generate_media_path, generate_uuid
+from utils import generate_media_path, generate_uuid, generate_pastel_color
 from tyf import settings
 
 
@@ -107,7 +107,7 @@ class Profile(models.Model):
             while Profile.objects.filter(username=username).exists():
                 username = generate_username()[0]
             self.username = generate_username()[0]
-        
+
         super(Profile, self).save(force_insert, force_update, *args, **kwargs)
 
     # def save_thumbnail(self):
@@ -176,10 +176,20 @@ class Collection(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=True, null=True, unique=True)
+    color = models.CharField(
+        max_length=10, primary_key=False, editable=False, blank=True, null=True
+    )
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if '#' in self.name:
+            self.name = self.name.replace('#', '')
+        self.name = '#' + self.name
+        self.color = generate_pastel_color()
+        super(Tag, self).save(*args, **kwargs)
 
 
 class Media(models.Model):

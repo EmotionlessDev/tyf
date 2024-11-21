@@ -6,20 +6,6 @@ from users.utils import (
     EncryptTools,
     AccountActivationToken,
 )
-from django.apps import apps
-from user_agents import parse
-from users.models import User
-from django.urls import reverse
-from django.conf import settings
-from django.contrib import messages
-from django.core.cache import cache
-from django.views.generic import DetailView
-from social_django.models import UserSocialAuth
-from django.utils.encoding import force_bytes, force_str
-from users.forms import UserCreationForm, UserSetPasswordForm
-from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth import authenticate, login as login_user, logout as logout_user
 from django.http import (
     Http404,
     JsonResponse,
@@ -27,29 +13,32 @@ from django.http import (
     HttpRequest,
     HttpResponseRedirect,
 )
-from .models import Profile, Follow, Collection, Category, Tag, Media, Post
-from django.contrib.auth.decorators import login_required
 from .forms import PostForm
+from django.apps import apps
+from user_agents import parse
+from users.models import User
+from django.urls import reverse
+from django.conf import settings
 from django.utils import timezone
 from django.db import transaction
-
-
-################################## Main Page Views ##################################
+from .utils import DataBaseLoader
+from django.contrib import messages
+from django.core.cache import cache
+from django.views.generic import DetailView
+from social_django.models import UserSocialAuth
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.decorators import login_required
+from users.forms import UserCreationForm, UserSetPasswordForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from .models import Profile, Follow, Collection, Category, Tag, Media, Post
+from django.contrib.auth import authenticate, login as login_user, logout as logout_user
 
 
 def index(request: HttpRequest) -> HttpResponse:
     collections = Collection.objects.all()
     categories = Category.objects.all()
     tags = Tag.objects.all()
-
-    if cache.get("all_posts") is None:
-        cache.set("all_posts", Post.objects.all().order_by("-created_at"), 3600)
-
-    elif Post.objects.count() > len(cache.get("all_posts")):
-        cache.delete("all_posts")
-        if cache.get("end:all_posts") is not None:
-            cache.delete("end:all_posts")
-        cache.set("all_posts", Post.objects.all().order_by("-created_at"), 3600)
 
     context = {
         "user": request.user,
@@ -62,44 +51,18 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def load_posts(request: HttpRequest):
-    response = {"posts": [], "search_count": "0", "loading": False}
+    response = {"posts": [], "loading": False, "offset": -1}
+
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
-        if cache.get("all_posts") is not None:
-            data = json.loads(request.body)
-            offset = int(data["offset"])
-            limit = int(data["limit"])
+        data = json.loads(request.body)
+        posts = DataBaseLoader.load_posts(
+            _search_term=data["search_term"], _offset=data["offset"]
+        )
 
-            posts = cache.get(f"{offset}_{offset + limit}:all_posts")
-
-            if posts is None:
-                if len(cache.get("all_posts")) > offset + limit:
-                    posts = cache.get("all_posts")[offset : offset + limit]
-                    cache.set(f"{offset}_{offset + limit}:all_posts", posts, 3600)
-                    response["loading"] = True
-
-                elif len(cache.get("all_posts")) > offset:
-                    if cache.get(f"end:all_posts") is None:
-                        posts = cache.get("all_posts")[offset:]
-                        cache.set(f"{offset}_end:all_posts", posts, 3600)
-                        response["loading"] = True
-                    else:
-                        posts = cache.get(f"end:all_posts")
-            else:
-                response["loading"] = True
-
-        if response["loading"]:
-            response["posts"] = [
-                {
-                    "title": post.title,
-                    "content": post.content,
-                    "stars": str(post.stars),
-                    "identifier": post.identifier,
-                    "author": post.author.username,
-                    "author_id": str(post.author.id),
-                    "created_at": post.created_at.strftime(settings.DATETIME_FORMAT),
-                }
-                for post in posts
-            ]
+        if posts != []:
+            response["loading"] = True
+            response["offset"] = int(posts[-1]["id"]) - 1
+            response["posts"] = DataBaseLoader.posts_to_json(posts)
 
     return JsonResponse(response, safe=True)
 
@@ -118,9 +81,6 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
         "followers": followers,
     }
     return render(request, "main/profile.html", context)
-
-
-#####################################################################################
 
 
 def login(request):
