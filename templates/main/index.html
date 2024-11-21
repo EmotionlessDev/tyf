@@ -145,12 +145,30 @@
                         <div id="posts"></div>
                         {% endblock %}
                      </div>
+
                      <div class="col-3" id="recent-users">
                         <!-- recent users sidebar -->
-                        <div class="card bg-transparent p-2 mt-4">
-                              <h5 class="text-light>">Recent Users</h5>
+                        <div class="card bg-dark p-2 mt-4">
+                              <p class="text-light text-center m-0 fs-9>">Recent Users</p>
+                              <hr class="my-3">
+                              {% for profile in recent_users %}
+                                 <div class="d-flex align-items-center gap-2 mb-3">
+                                    <a href="{% url 'profile' username=profile.username %}"">
+                                       <img src="{{ profile.get_avatar }}" alt="avatar" class="img-fluid rounded-circle" style="width: 40px; height: 40px">
+                                    </a>
+                                    
+                                    <div class="d-flex flex-column gap-1">
+                                       <a  href="{% url 'profile' username=profile.username %}">
+                                          <p class="m-0 p-0 fs-9">{{ profile.username }}</p>
+                                       </a>
+                                       <p class="m-0 p-0 fs-9">Since {{ profile.date_joined }}</p>
+                                    </div>
+                                    
+                                 </div>
+                              {% endfor %}
                         </div>
                      </div>
+
                      <div class="p-4 pb-0 w-100 text-center mb-3" style="color: var(--secondary-light);">
                         <hr>
                         <a href="{% url 'index' %}" style="color: var(--secondary-light);">

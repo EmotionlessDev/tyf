@@ -28,6 +28,7 @@ from django.db import transaction
 from django.contrib import messages
 from django.core.cache import cache
 from django.utils.text import slugify
+from markdownify import markdownify
 from django.views.generic import DetailView
 from .forms import PostForm, EditProfileForm
 from social_django.models import UserSocialAuth
@@ -44,12 +45,14 @@ def index(request: HttpRequest) -> HttpResponse:
     collections = Collection.objects.all()
     categories = Category.objects.all()
     tags = Tag.objects.all()
+    recent_users = Profile.objects.all().order_by("-date_joined")[:10]
 
     context = {
         "user": request.user,
         "collections": collections,
         "categories": categories,
         "tags": tags,
+        "recent_users": recent_users,
     }
 
     return render(request, "main/index.html", context=context)
@@ -596,6 +599,8 @@ def post_edit(request: HttpRequest, identifier: str) -> HttpResponse:
             return redirect("post_detail", identifier=post.identifier)
     else:
         form = PostForm(instance=post)
+        form.fields["tags"].initial = ", ".join([x.name for x in post.tags.all()])
+        form.fields["content"].initial = markdownify(post.content, heading_style="ATX")
     return render(request, "main/post_edit.html", {"form": form, "post": post})
 
 
