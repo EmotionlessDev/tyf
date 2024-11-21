@@ -21,8 +21,10 @@
       rel="stylesheet">
    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
    {% block head %}{% endblock %}
@@ -45,10 +47,6 @@
             background-color: var(--dark) !important">
          <nav id="sidebar-nav" class="navbar bg-secondary navbar-dark align-items-center"
             style="background-color: var(--dark) !important">
-
-            <a href="{% url 'index' %}" class="lgog w-100 text-center">
-               <img class="" src="{% static 'img/logo.svg' %}" alt="" style="height: 32px">
-            </a>
 
             <p class=" text-break fs-9 w-100 p-3" style="color: var(--secondary-light);">
                What's the rush?
@@ -214,10 +212,15 @@
          </div>
 
          <div class="container-fluid">
-            <div class="bg-secondary rounded-top mt-4 p-4">
-               <div class="row">
-                  <div class="col-12 col-sm-6 text-center text-sm-start fs-7">
-                     &copy; <a href="#">Tell Your Friends</a>, All Right Reserved.
+            <div class="bg-dark rounded-top mt-4 p-4">
+               <div class="d-flex align-items-center justify-content-between">
+                  <div class="col-12 col-sm-6 text-center text-sm-start fs-9 text-muted">
+                     &copy; <a href="{% url 'index' %}">Tell Your Friends</a>, All Right Reserved.
+                  </div>
+                  <div class="d-flex align-items-center gap-1">
+                     <a href="https://github.com/EmotionlessDev/tyf" class="text-muted">
+                        <i class="bi bi-github"></i>
+                     </a>
                   </div>
                </div>
             </div>
@@ -398,7 +401,7 @@
       <script src="{% static 'js/util.js' %}"></script>
       <script src="{% static 'js/coalesce.js' %}"></script>
 
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
    <script src="{% static 'js/main.js' %}"></script>
 
 </body>

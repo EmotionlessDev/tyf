@@ -120,47 +120,52 @@
             <div class="tab-pane active mt-4" id="about" role="tabpanel" aria-labelledby="about-tab">
                {% if profile.first_name %}
                <p>
-                  <em class="about-field">Fisrt Name:</em> {{ profile.first_name }}
+                  <em class="about-field">Fisrt Name: </em>{{ profile.first_name }}
                </p>
                {% endif %}
                {% if profile.last_name %}
                <p>
-                  <em class="about-field">Last Name:</em> {{ profile.last_name }}
+                  <em class="about-field">Last Name: </em>{{ profile.last_name }}
                </p>
                {% endif %}
                {% if profile.middle_name %}
                <p>
-                  <em class="about-field">Middle Name:</em> {{ profile.middle_name }}
+                  <em class="about-field">Middle Name: </em>{{ profile.middle_name }}
                </p>
                {% endif %}
                {% if profile.username %}
                <p>
-                  <em class="about-field">Username:</em> {{ profile.username }}
+                  <em class="about-field">Username: </em>{{ profile.username }}
                </p>
                {% endif %}
                {% if profile.email %}
                <p>
-                  <em class="about-field">Email:</em> {{ profile.email }}
+                  <em class="about-field">Email: </em>{{ profile.email }}
                </p>
                {% endif %}
                {% if profile.date_of_birth %}
                <p>
-                  <em class="about-field">Date of Birth:</em> {{ profile.date_of_birth }}
+                  <em class="about-field">Date of Birth: </em>{{ profile.date_of_birth }}
+               </p>
+               {% endif %}
+               {% if profile.university %}
+               <p>
+                  <em class="about-field">University: </em>{{ profile.university }}
                </p>
                {% endif %}
                {% if profile.major %}
                <p>
-                  <em class="about-field">Major:</em>{{ profile.major }}
+                  <em class="about-field">Major: </em>{{ profile.major }}
                </p>
                {% endif %}
                {% if profile.date_joined %}
                <p>
-                  <em class="about-field">Joined:</em> {{ profile.date_joined }}
+                  <em class="about-field">Joined: </em>{{ profile.date_joined }}
                </p>
                {% endif %}
                {% if profile.bio %}
                <p>
-                  <em class="about-field">Bio:</em> {{ profile.bio }}
+                  <em class="about-field">Bio: </em>{{ profile.bio }}
                </p>
                {% endif %}
             </div>
@@ -176,7 +181,7 @@
                   </li>
                </ul>
                <div class="tab-content">
-                  <div class="tab-pane pt-1" id="posts-self" role="tabpanel" aria-labelledby="posts-self-tab">
+                  <div class="tab-pane pt-1 show active" id="posts-self" role="tabpanel" aria-labelledby="posts-self-tab">
                      {% for post in profile.posts.all %}
                         {% include 'main/post.html' with post=post %}
                      {% endfor %}

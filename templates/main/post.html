@@ -1,31 +1,56 @@
 {% load static %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'css/post.css' %}">
+<link rel="stylesheet" href="{% static 'css/post.css' %}">
 {% endblock %}
 {% block content %}
-    
-    <a href="{% url 'post_detail' post.identifier %}">
-        <div class="card bg-dark mb-4 p-1 scale-on-hover"
-    style="border: 1px solid var(--secondary) !important">
-            <div class="card-body fs-7">
-            <h5 class="card-title fs-6">{{ post.title }}</h5>
-            <p class="card-text text-truncate">{{ post.content|safe }}</p>
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <span class="language-dot"></span>
-                    <small class="text-muted"></small>
+<a href="{% url 'post_detail' post.identifier %}"">
+    <div class="card bg-dark mb-4 p-1">
+        <div class="card-body fs-7">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5 class="card-title fs-6">{{ post.title }}</h5>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{% url 'post_detail' post.identifier %}" class="d-flex align-items-center gap-1 mb-2 fs-9">
+                        <i class="bi bi-bookmark-fill"></i>
+                        <p class="m-0 p-0">{{ post.bookmarks.count }}</p>
+                    </a>
+                    <a href="{% url 'post_detail' post.identifier %}#comments" class="d-flex align-items-center gap-1 mb-2 fs-9">
+                        <i class="bi bi-chat-square-fill pt-0-5"></i>
+                        <p class="m-0 p-0">{{ post.comments.count }}</p>
+                    </a>
+                    <!-- <div class="stars fs-5">★</div> -->
                 </div>
-                <div class="stars">★</div>
             </div>
-            <div class="d-block justify-content-between mt-2 text-muted text-truncate">
-                <p>
-                    <strong>{{ post.author }}</strong>
-                </p>
-                <p>
-                    <strong>{{ post.created_at }}</strong>
-                </p>
+
+            <div class="card-text text-muted">
+                {{ post.content|safe }}
             </div>
+
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex flex-grow-1 gap-1 align-items-center">
+                    <a href="{% url 'profile' username=post.author.username %}">
+                        <img src="{{ post.author.get_avatar }}"
+                                alt="avatar"
+                                class="img-fluid rounded-circle"
+                                style="width: 30px; height: 30px">
+                    </a>
+                    <div class="d-flex flex-column text-muted gap-0">
+                        <a href="{% url 'profile' username=post.author.username %}">
+                            <p class="mb-0 link fs-9"><strong>{{ post.author }}</strong></p>
+                        </a>
+                        <p class="mb-0 fs-9"><strong>{{ post.created_at }}</strong></p>
+                    </div>
+                </div>
+                    
+                <div class="d-flex align-items-center gap-1">
+                    {% for filetype in post.get_filetypes %}
+                    <a href="{% url 'post_detail' post.identifier %}#attachments" class="text-light">
+                        <i class="bi bi-filetype-{{ filetype }} fs-5 filetype"></i>
+                    </a>
+                    <!-- <i class="bi bi-filetype-{{ filetype }} fs-5 filetype"></i> -->
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </a>
+    </div>
+</a>
 {% endblock %}

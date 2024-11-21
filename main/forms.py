@@ -82,17 +82,18 @@ class EditProfileForm(forms.ModelForm):
 
     university = forms.ModelChoiceField(
         queryset=University.objects.all().order_by("name"),
-        widget=UniversityWidget,
         required=False,
     )
 
     major = forms.ModelChoiceField(
         queryset=Major.objects.all().order_by("name"),
-        widget=MajorWidget,
         required=False,
     )
 
-    autocomplete_fields = ["university", "major", ]
+    autocomplete_fields = [
+        "university",
+        "major",
+    ]
 
     class Meta:
         model = Profile
@@ -118,41 +119,53 @@ class EditProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["first_name"].widget.attrs.update(
-            {"placeholder": "Ivan", }
+            {
+                "placeholder": "Ivan",
+            }
         )
 
         self.fields["last_name"].widget.attrs.update(
-            {"placeholder": "Ivanov", }
+            {
+                "placeholder": "Ivanov",
+            }
         )
 
         self.fields["middle_name"].widget.attrs.update(
-            {"placeholder": "Ivanovich", }
+            {
+                "placeholder": "Ivanovich",
+            }
         )
 
         self.fields["telegram"].widget.attrs.update(
-            {"placeholder": "https://t.me/username", }
+            {
+                "placeholder": "https://t.me/username",
+            }
         )
 
         self.fields["vkontakte"].widget.attrs.update(
-            {"placeholder": "https://vk.com/username", }
+            {
+                "placeholder": "https://vk.com/username",
+            }
         )
 
         self.fields["bio"].widget.attrs.update(
-            {"placeholder": "Tell your friends about yourself", }
+            {
+                "placeholder": "Tell your friends about yourself",
+            }
         )
-        
 
 
 class CommentForm(forms.ModelForm):
     parent = forms.ModelChoiceField(
-        queryset=Comment.objects.all(),
-        widget=forms.HiddenInput,
-        required=False
+        queryset=Comment.objects.all(), widget=forms.HiddenInput, required=False
     )
 
     class Meta:
         model = Comment
-        fields = ("content", "parent", )
+        fields = (
+            "content",
+            "parent",
+        )
         labels = {
             "content": "",
         }

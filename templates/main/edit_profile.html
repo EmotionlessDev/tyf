@@ -27,7 +27,7 @@
 
                     <br/>
 
-                    <img src="
+                    <img id="preview" src="
                         {% if profile_form.avatar.value %}
                             {{ profile_form.avatar.value.url }}
                         {% else %}
@@ -84,7 +84,7 @@
                     <br/>
                     
                     <div class="d-flex justify-content-start">
-                        <label id="date_of_birth">Date of birth: </label>{{ profile_form.date_of_birth }}
+                        <label id="date_of_birth" class="mb-0">Date of birth: </label>{{ profile_form.date_of_birth }}
                     </div>
 
                     <br/>
@@ -114,4 +114,16 @@
             </div>
         </div>
     </div>
+
+<script>
+    const fileInput = document.querySelector("input[type=file]");
+    fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.getElementById("preview").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+</script>
 {% endblock content %}

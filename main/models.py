@@ -1,5 +1,6 @@
 import os
 import markdown
+import random
 from functools import partial
 
 from PIL import Image
@@ -224,6 +225,9 @@ class Media(models.Model):
 
     description = models.CharField(max_length=255, blank=True, null=True)
 
+    def filetype(self):
+        return os.path.splitext(self.file.name)[1][1:]
+
 
 class Comment(MPTTModel):
     identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
@@ -236,7 +240,9 @@ class Comment(MPTTModel):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
+    parent = TreeForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
+    )
 
     def save(
         self,
@@ -271,9 +277,9 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
     media = GenericRelation(
-        to="Media", 
-        related_query_name="media", 
-        content_type_field="content_type", 
+        to="Media",
+        related_query_name="media",
+        content_type_field="content_type",
         object_id_field="object_id",
     )
 
@@ -291,12 +297,18 @@ class Post(models.Model):
         self.identifier = generate_uuid(klass=Post)
         super(Post, self).save(force_insert, force_update, *args, **kwargs)
 
+    @property
+    def get_filetypes(self):
+        return list(set(os.path.splitext(x.file.url)[1][1:] for x in self.media.all()))[:3]
+
     def __str__(self):
         return self.title
 
 
 class Bookmark(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="bookmarks")
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="bookmarks"
+    )
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="bookmarks")
     created_at = models.DateTimeField(auto_now_add=True)
 

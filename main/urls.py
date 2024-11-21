@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.views.decorators.cache import never_cache
 
 
 urlpatterns = [
@@ -29,7 +30,7 @@ urlpatterns = [
     path("post/<str:identifier>/edit/", views.post_edit, name="post_edit"),
     # path("post/<str:identifier>/delete/", views.post_delete, name="post_delete"),
     path("post/<str:identifier>/bookmark/", views.post_bookmark, name="post_bookmark"),
-    path("<str:username>/", views.profile, name="profile"),
+    path("<str:username>/", never_cache(views.profile), name="profile"),
     path("follow/<str:username>/", views.follow, name="follow"),
     path("unfollow/<str:username>/", views.unfollow, name="unfollow"),
 ]

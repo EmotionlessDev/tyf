@@ -9,7 +9,7 @@
 {% block content %}
     <div class="h-100 p-4">
         <!-- TODO: WTF with bootstrap classes? -->
-        <div class="card rounded-0 border-top-0 bg-transparent border-light p-4"
+        <div class="card rounded-0 border-top-0 border-bottom-0 bg-transparent border-light p-4"
              style="border-left: 0 !important;
                     border-right: 0 !important">
             <div class="row flex-md-row">
@@ -76,13 +76,13 @@
                         <p>{{ post.content|safe }}</p>
                     </div>
                     {% if post.media_files.all %}
-                    <h5 class="mt-5" id="attachments">Attachments:</h5>
-                    <ul class="attachments-list">
+                    <h5 class="mt-5 fs-6" id="attachments">Attachments:</h5>
+                    <ul class="attachments-list list-group list-group-numbered fs-8">
                         {% for attachment in post.media_files.all %}
                             <li>
                                 <a href="{{ attachment.file.url }}"
                                    target="_blank"
-                                   class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-2 action-unchecked">{{ attachment.original_filename }}</a>
+                                   class="mb-2 mt-2 fs-8">{{ attachment.original_filename }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -95,7 +95,7 @@
                         <form method="post">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <button class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-0 action-unchecked" type="submit">Submit</button>
+                            <button class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-0 fs-8 action-unchecked" type="submit">Submit</button>
                         </form>
                     </div>
                     <!-- END COMMENTS FORM -->
@@ -105,7 +105,7 @@
                         <hr>
                         <!-- if no comments -->
                         {% if comments.exists %}
-                        <div class="nested-comments">
+                        <div class="nested-comments" id="comments">
                             {% recursetree comments %}
                             <ul id="comment-thread-{{ node.pk }}" class="ps-0">
                                 <li class="d-flex flex-column mb-2" style="margin-left: {{ node.level|default:0 }}em">
@@ -142,7 +142,7 @@
                         {% endrecursetree %}
                     </div>
                     {% else %}
-                        <p class="text-muted fs-7">No comments yet... Be the first to comment!</p>
+                        <p class="text-muted fs-7">No comments yet.</p>
                     {% endif %}
                 <!-- Reply Form -->
                 <form id="reply-form" method="post" class="d-none mt-4">

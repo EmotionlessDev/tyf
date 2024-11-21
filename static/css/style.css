@@ -33,6 +33,10 @@
 
 /*** Custom ***/
 
+.pt-0-5 {
+    padding-top: 0.125em;
+}
+
 .action-super {
     color: var(--light);
     background-color: var(--dark);
@@ -45,7 +49,7 @@
     width: 110px;
     height: 2.4em;
     outline: none !important;
-    box-shadow: none;
+    box-shadow: none !important;
 }
 
 .action-super:hover {

@@ -1,0 +1,33 @@
+text-muted, pre {
+    color: var(--secondary-x-light);
+}
+
+link {
+    color: var(--primary);
+}
+
+link:hover {
+    color: var(--primary-hover);
+}
+
+.card {
+    border: 0;
+    border-bottom: 1px solid var(--secondary-x-light);
+    border-right: 1px solid var(--secondary-x-light);
+    transition: 0.5s;
+}
+
+.card:hover {
+    border: 0;
+    border-bottom: 1px solid var(--primary);
+    border-right: 1px solid var(--primary);
+}
+
+.filetype {
+    color: var(--secondary-x-light);
+    transition: 0.5s;
+}
+
+.card:hover .filetype {
+    color: var(--primary);
+}
