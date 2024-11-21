@@ -17,7 +17,7 @@ from random_username.generate import generate_username
 from mdeditor.fields import MDTextField
 from tyf.settings import MEDIA_ROOT
 from registry.models import Major, University
-from utils.utils import generate_media_path, generate_uuid
+from utils.utils import generate_media_path, generate_uuid, generate_pastel_color
 from tyf import settings
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -194,10 +194,18 @@ class Collection(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=True, null=True, unique=True)
+    color = models.CharField(
+        max_length=10, primary_key=False, editable=False, blank=True, null=True
+    )
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.name = '#' + self.name
+        self.color = generate_pastel_color()
+        super(Tag, self).save(*args, **kwargs)
 
 
 class Media(models.Model):

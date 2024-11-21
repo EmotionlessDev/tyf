@@ -59,6 +59,7 @@ class MultipleFileField(forms.FileField):
 
 class PostForm(forms.ModelForm):
     media_files = MultipleFileField(required=False)
+    tags = forms.CharField(max_length=255, required=False)
 
     class Meta:
         model = Post
@@ -70,6 +71,12 @@ class PostForm(forms.ModelForm):
         self.fields["title"].widget.attrs.update(
             {
                 "placeholder": "Title",
+            }
+        )
+
+        self.fields["tags"].widget.attrs.update(
+            {
+                "placeholder": "math,science,etc",
             }
         )
 

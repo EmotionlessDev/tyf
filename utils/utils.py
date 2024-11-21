@@ -1,7 +1,8 @@
-import uuid
 import os
-from django.utils.text import get_valid_filename
+import uuid
+import random
 from tyf.settings import MEDIA_ROOT
+from django.utils.text import get_valid_filename
 
 
 def generate_uuid(length=8, klass=None):
@@ -32,3 +33,13 @@ def generate_media_path(instance, filename, key, remove_with_same_key, depth=3, 
     if remove_with_same_key and os.path.exists(os.path.join(str(MEDIA_ROOT), path)):
         os.remove(os.path.join(str(MEDIA_ROOT), path))
     return path
+
+
+def generate_pastel_color():
+    red = random.randint(127, 255)
+    green = random.randint(127, 255)
+    blue = random.randint(127, 255)
+
+    hex_color = "#{:02x}{:02x}{:02x}".format(red, green, blue).upper()
+
+    return hex_color
