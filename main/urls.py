@@ -6,6 +6,7 @@ from django.views.decorators.cache import never_cache
 urlpatterns = [
     path("", views.index, name="index"),
     path("edit/", views.edit_profile, name="edit_profile"),
+    path("delete/", views.delete_profile, name="delete_profile"),
     path("categories/", views.categories, name="categories"),
     path("categories/<slug:slug>/", views.category, name="category"),
     path("collections/", views.collections, name="collections"),

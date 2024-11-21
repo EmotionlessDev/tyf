@@ -92,3 +92,12 @@ button {
         width: 100%;
     }
 }
+
+
+#delete-account {
+    color: var(--alert);
+}
+
+#delete-account:hover {
+    color: var(--alert-hover);
+}
