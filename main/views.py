@@ -705,3 +705,14 @@ def edit_comment(request, pk):
         form = CommentForm(instance=comment)
     
     return render(request, 'main/edit_comment.html', {'form': form, 'comment': comment})
+
+
+@login_required
+def delete_post(request, identifier):
+    post = get_object_or_404(Post, identifier=identifier)
+    if request.user != post.author.user:
+        return HttpResponseForbidden("You are not allowed to edit this comment.")
+    post.active = False
+    post.save()
+    messages.success(request, "Successfully deleted the post!")
+    return redirect("index")

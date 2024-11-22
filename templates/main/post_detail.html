@@ -41,6 +41,12 @@
                                 class="text-light">
                                     <i class="bi bi-pencil-square fs-6"></i>
                                 </a>
+                                <form action="{% url 'delete_post' identifier=post.identifier %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-transparent border-0 text-light">
+<i class="bi bi-trash-fill" style="font-size: 15px;"></i>
+                            </button>
+                            </form>
                                 {% endif %}
                             {% endif %}
                             {% if is_bookmarked %}
