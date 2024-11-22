@@ -46,28 +46,44 @@
          </div>
          <div class="sidebar pe-0 pb-3 border border-2 open" style="border-right: 0.1px solid var(--secondary) !important;
             background-color: var(--dark) !important">
-            <nav id="sidebar-nav" class="navbar bg-secondary navbar-dark align-items-center"
-               style="background-color: var(--dark) !important">
-               <p class=" text-break fs-9 w-100 p-3" style="color: var(--secondary-light);">
-                  What's the rush?
-                  <br />
-                  Just relax and enjoy another hour of free studying with
-                  <em>Tell Your Friends!</em>
-               </p>
-               <div class="navbar-nav ps-3 w-100">
-                  <div class="nav-item dropdown">
-                     <a href="#" onclick="collection_help('{{ collection }}')" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📚 Collections</a>
-                     <div class="dropdown-menu bg-transparent border-0">
-                        {% for collection in collections %}
-                        <a href="#" class="dropdown-item">{{ collection }}</a>
-                        {% endfor %}
-                     </div>
+         <nav id="sidebar-nav" class="navbar bg-secondary navbar-dark align-items-center"
+            style="background-color: var(--dark) !important">
+
+            <p class=" text-break fs-9 w-100 p-3 pt-0 pb-0" style="color: var(--secondary-light);">
+               What's the rush?
+               <br />
+               Just relax and enjoy another hour of free studying with
+               <em>Tell Your Friends!</em>
+            </p>
+
+            <input id="termin-search" type="text" class="form-control bg-transparent border-0 mb-4 ms-3 me-4" id="search-input" placeholder="Search..." 
+            style="border: 0.1px solid var(--primary) !important; border-top: 0 !important; border-left: 0 !important;
+                   border-right: 0; padding-right: 0; color: var(--light) !important; padding-left: 0.5em; font-weight: 100 !important;
+                   font-size: smaller !important; border-radius: 0.2em; box-shadow: none !important;">
+
+            <div class="navbar-nav ps-3 w-100">
+               <div class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle fs-6" data-bs-toggle="dropdown">📚 Collections</a>
+                  <div id="collections" class="dropdown-menu bg-transparent border-0 pt-0">
+                     {% for collection in collections %}
+                     <a href="#" onclick="collection_help('{{ collection }}')" class="dropdown-item fs-7" style="display: block !important;">{{ collection }}</a>
+                     {% endfor %}
                   </div>
-                  <div class="nav-item dropdown">
-                     <a href="#" onclick="category_help('{{ category }}')" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📁 Categories</a>
-                     <div class="dropdown-menu bg-transparent border-0">
-                        {% for category in categories %}
-                        <a href="#" class="dropdown-item">{{ category }}</a>
+               </div>
+               <div class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle fs-6" data-bs-toggle="dropdown">📁 Categories</a>
+                  <div id="categories" class="dropdown-menu bg-transparent border-0 pt-0">
+                     {% for category in categories %}
+                     <a href="#" onclick="category_help('{{ category }}')" class="dropdown-item fs-7" style="display: block !important;">{{ category }}</a>
+                     {% endfor %}
+                  </div>
+               </div>
+               <div class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle fs-6" data-bs-toggle="dropdown">🔖 Tags</a>
+                  <div id="tags" class="dropdown-menu bg-transparent border-0 pt-0">
+                     <div class="px-3">
+                        {% for tag in tags %}
+                        {% include 'main/tag.html' with tag=tag %}
                         {% endfor %}
                      </div>
                   </div>
@@ -87,9 +103,23 @@
                <a href="https://github.com/EmotionlessDev/tyf" class="dropdown-item">⭐ Support Us</a>
                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="dropdown-item">🛠️ Report a bug</a>
             </div>
-         </div>
-         <div class="content open">
-            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="background-color: var(--dark) !important;
+
+         </nav>
+         
+         <!-- TODO: Add social media links to bottom -->
+         <!-- <div class="ms-3 bottom-0 mb-4 position-absolute" style="box-shadow: none !important;">
+            <div>
+               <a class="mb-4 fs-8" href="https://github.com/EmotionlessDev/tyf" style="color: var(--light)">⭐ Support Us</a>
+            </div>
+            <div>
+               <a class="fs-8" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: var(--light)">🛠️ Report a bug</a>
+            </div>
+         </div> -->
+
+      </div>
+
+      <div class="content open">
+         <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="background-color: var(--dark) !important;
                border-bottom: 0.1px solid var(--secondary) !important">
                <a href="{% url 'index' %}" class="navbar-brand d-flex me-4">
                <img class="" src="{% static 'img/logo.svg' %}" alt="" style="height: 35px">
@@ -218,44 +248,93 @@
          </div>
       </div>
       <a href="{% url 'post_add' %}" class="post-add-btn">+</a>
-      </div>
-      <script 
-         src="https://code.jquery.com/jquery-3.5.1.js" 
-         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
-         crossorigin="anonymous"></script> 
-      <script src="https://www.the-art-of-web.com/hilitor.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
-      <script src='//cdn.rawgit.com/garysieling/jquery-highlighttextarea/master/jquery.highlighttextarea.js'></script>
-      <script defer>
-         $.ajaxSetup({
-            headers: { "X-CSRFToken": '{{csrf_token}}' }
-         });
-         
-         let offset = -2;
-         let is_end = false;
-         let search_term = "";
-         var timeoutId = null;
-         let is_search_by_keyword = false;
-         const postContainer = document.getElementById('posts');
-         const searchContainer = document.getElementById('search-container');
-         
-         $("#search-input").on("input", function() {
-            if ($(this).val().includes(" ") || $(this).val() === "") {
-               $("#search-input").css("color", "var(--text-color)");
-               is_search_by_keyword = false;
+   </div>
+
+   <script 
+      src="https://code.jquery.com/jquery-3.5.1.js" 
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+      crossorigin="anonymous">
+   </script> 
+   <script src="https://www.the-art-of-web.com/hilitor.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+   <script src='//cdn.rawgit.com/garysieling/jquery-highlighttextarea/master/jquery.highlighttextarea.js'></script>
+
+   <script defer>
+      $.ajaxSetup({
+         headers: { "X-CSRFToken": '{{csrf_token}}' }
+      });
+      let offset = -2;
+      let is_end = false;
+      let search_term = "";
+      var timeoutId = null;
+      let show_sidebar_content = false;
+      let is_search_by_keyword = false;
+      const postContainer = document.getElementById('posts');
+      const searchContainer = document.getElementById('search-container');
+
+      $("#termin-search").on("input", function() {
+         if ($("#termin-search").val() != "") {
+            if (!$("#tags").is(".show")) {
+               $("#tags").toggleClass("show");
             }
-            if ($(this).val().startsWith("tag::") || $(this).val().startsWith("collection::") || $(this).val().startsWith("category::")) {
-               $("#search-input").css("color", "#ADF0FF");
-               is_search_by_keyword = true;
-            } else {
-               $("#search-input").css("color", "var(--text-color)");
-               is_search_by_keyword = false;
+            if (!$("#collections").is(".show")) {
+               $("#collections").toggleClass("show");
+            } 
+            if (!$("#categories").is(".show")) {
+               $("#categories").toggleClass("show");
             }
-         });
-         
-         function tag_help(name) {
-            $("#search-input").focus();
+         }
+         if ($("#termin-search").val() == "") {
+            if ($("#tags").is(".show")) {
+               $("#tags").toggleClass("show");
+            } 
+            if ($("#collections").is(".show")) {
+               $("#collections").toggleClass("show");
+            } 
+            if ($("#categories").is(".show")) {
+               $("#categories").toggleClass("show");
+            }
+         }
+         searchingTerms($("#termin-search").val());
+      });
+
+      function searchingTerms(textToFind) {
+         console.log(textToFind);
+         $("#tags span").show();
+         $("#categories a").show();
+         $("#collections a").show();
+
+         if (textToFind != "") {
+            let tags = $("#tags span");
+            for (let i = 0; i < tags.length; i++) {
+               if (!tags[i].innerText.includes(textToFind)) {
+                  $(tags[i]).hide();
+               }
+            }
+
+            let categories = $("#categories a");
+            for (let i = 0; i < categories.length; i++) {
+               if (!categories[i].innerText.includes(textToFind)) {
+                  $(categories[i]).hide();
+               }
+            }
+
+            let collections = $("#collections a");
+            for (let i = 0; i < collections.length; i++) {
+               if (!collections[i].innerText.includes(textToFind)) {
+                  $(collections[i]).hide();
+               }
+            }
+         }
+      }
+
+      $("#search-input").on("input", function() {
+         if ($(this).val().includes(" ") || $(this).val() === "") {
+            $("#search-input").css("color", "var(--text-color)");
+            is_search_by_keyword = false;
+         }
+         if ($(this).val().startsWith("tag::") || $(this).val().startsWith("collection::") || $(this).val().startsWith("category::")) {
             $("#search-input").css("color", "#ADF0FF");
             if (name == undefined) {
                $("#search-input").val("tag::");
@@ -376,13 +455,29 @@
                      </div>
                      `;
                   }
-         
-                  if (data.loading === true) {
-                     if (data.offset < offset || offset == -2) {
-                        for (let i = 0; i < data.posts.length; i++) {
-                           if (data.posts !== null) {
-                              postContainer.innerHTML += createPostElement(data.posts[i]);
-                           }
+
+                  searchContainer.innerHTML = 
+                  `
+                  <div class="p-4 text-center pb-0" style="color: var(--secondary-light);">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                     </svg>
+                     <span>` + info + `</span>
+                     <hr>  
+                  </div>
+                  <div class="p-4 pb-1 pt-0" style="color: var(--secondary-light);">
+                     <div><a onclick='tag_help();' href="#" style="color: var(--secondary-light); font-style: italic;">Search by tag</a>,</div> 
+                     <div><a onclick='collection_help()'' href="#" style="color: var(--secondary-light); font-style: italic;">Search by collection</a>,</div>  
+                     <div><a onclick='category_help()' href="#" style="color: var(--secondary-light); font-style: italic;">Search by category</a>.</div> 
+                  </div>
+                  `;
+               }
+
+               if (data.loading === true) {
+                  if (data.offset < offset || offset == -2) {
+                     for (let i = 0; i < data.posts.length; i++) {
+                        if (data.posts !== null) {
+                           postContainer.innerHTML += data.posts[i];
                         }
                         offset = data.offset;
                         textTruncate();
@@ -391,65 +486,25 @@
                      is_end = true;
                   }
                }
-            });
-         }
-         
-         function createPostElement(post) {
-            var regex = /<([a-z]+)>(.+)<\/([a-z]+)>/ig;
-            var content_array = regex.exec(post.content);
-         
-            var fst_elm_content = "";
-            if (content_array !== null) {
-               fst_elm_content = content_array[0];
-            } else {
-               fst_elm_content = post.content;
             }
-         
-            var postElement =
-               `
-               <div class="col-md-6 border-4 d w-100;">
-                  <a href="post/` + post.identifier + `/">
-                     <div class="card bg-dark p-2 mt-4 scale-on-hover"
-                          style="border: 1px solid var(--primary) !important; border-left:0 !important; border-top:0 !important;
-                          height: 80% !important;">
-                        <div class="card-body fs-7">
-                           <h5 class="card-title truncate fs-3">
-               `
-               + post.title +
-               `
-                           </h5>
-                           <div class="post-description fs-6 card-text truncate truncate mb-2" 
-                                style="color: var(--light) !important;">
-               `
-               + fst_elm_content +
-               `
-                           </div>
-                           <div class="d-flex justify-content-between align-items-center mb-2">
-                              <div class="d-flex align-items-center">
-                                 <span class="language-dot"></span>
-                                 <small class="text-muted"></small>
-                              </div>
-                              <div class="stars">` + post.stars + ` ★</div>
-                           </div>
-                           <div class="d-block justify-content-between text-muted text-truncate">
-                              <p>
-                                 <strong>` + post.author + `</strong>
-                              </p>
-                              <p>
-                                 <strong>` + post.created_at + `</strong>
-                              </p>
-                           </div>
-                        </div>
-                     </div>
-                  </a>
-               </div>
-               `
-            return postElement;
-         }
-         
-         function textTruncate() {
-            var truncate_p = document.querySelector(".truncate p");
-            $clamp(truncate_p, {
+         });
+      }
+
+      function textTruncate() {
+         var truncate_p = document.querySelector(".truncate p");
+         $clamp(truncate_p, {
+            clamp: 2,
+            useNativeClamp: false
+         });
+
+         var truncate_span = document.querySelector(".truncate span");
+         $clamp(truncate_span, {
+            clamp: 2,
+            useNativeClamp: false
+         });
+
+         for (let i = 1; i < 7; i++) {
+            $clamp(document.querySelector(`.truncate h${i}`), {
                clamp: 2,
                useNativeClamp: false
             });

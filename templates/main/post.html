@@ -35,7 +35,7 @@
                     </a>
                     <div class="d-flex flex-column text-muted gap-0">
                         <a href="{% url 'profile' username=post.author.username %}">
-                            <p class="mb-0 link fs-9"><strong>{{ post.author }}</strong></p>
+                            <p class="mb-0 link fs-9"><strong>{{ post.author.username }}</strong></p>
                         </a>
                         <p class="mb-0 fs-9"><strong>{{ post.created_at }}</strong></p>
                     </div>

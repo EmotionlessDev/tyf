@@ -81,7 +81,7 @@ def load_posts(request: HttpRequest):
         if posts != []:
             response["loading"] = True
             response["offset"] = int(posts[-1]["id"]) - 1
-            response["posts"] = DataBaseLoader.posts_to_json(posts)
+            response["posts"] = DataBaseLoader.posts_to_html(posts)
 
     return JsonResponse(response, safe=True)
 

@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import connection
+from .models import Post, Profile
+from django.template.loader import render_to_string
 
 
 class _DataBaseLoader:
@@ -20,7 +22,7 @@ class _DataBaseLoader:
                         SELECT main_post.*, 
                                GROUP_CONCAT(main_tag.name) AS tag_names, 
                                GROUP_CONCAT(main_tag.color) AS tag_colors, 
-                               main_profile.username 
+                               main_profile.username
                         FROM main_post 
                         INNER JOIN main_profile ON main_profile.id = main_post.author_id 
                         LEFT JOIN main_post_tags ON main_post_tags.post_id = main_post.id 
@@ -38,7 +40,7 @@ class _DataBaseLoader:
                         SELECT main_post.*, 
                                GROUP_CONCAT(main_tag.name) AS tag_names, 
                                GROUP_CONCAT(main_tag.color) AS tag_colors, 
-                               main_profile.username 
+                               main_profile.username
                         FROM main_post 
                         INNER JOIN main_profile ON main_profile.id = main_post.author_id 
                         LEFT JOIN main_post_tags ON main_post_tags.post_id = main_post.id 
@@ -59,7 +61,7 @@ class _DataBaseLoader:
                         SELECT main_post.*, 
                                GROUP_CONCAT(main_tag.name) AS tag_names, 
                                GROUP_CONCAT(main_tag.color) AS tag_colors, 
-                               main_profile.username 
+                               main_profile.username
                         FROM main_post 
                         INNER JOIN main_profile ON main_profile.id = main_post.author_id 
                         LEFT JOIN main_post_tags ON main_post_tags.post_id = main_post.id 
@@ -79,7 +81,7 @@ class _DataBaseLoader:
                     SELECT main_post.*, 
                            GROUP_CONCAT(main_tag.name) AS tag_names, 
                            GROUP_CONCAT(main_tag.color) AS tag_colors, 
-                           main_profile.username 
+                           main_profile.username
                     FROM main_post 
                     INNER JOIN main_profile ON main_profile.id = main_post.author_id 
                     LEFT JOIN main_post_tags ON main_post_tags.post_id = main_post.id 
@@ -95,30 +97,53 @@ class _DataBaseLoader:
         return posts
 
     @staticmethod
-    def posts_to_json(posts: list[dict]):
-        return [
-            {
-                "title": post["title"],
-                "content": post["content"],
-                "stars": str(post["stars"]),
-                "identifier": post["identifier"],
-                "author": post["username"],
-                "author_id": str(post["author_id"]),
-                "created_at": post["created_at"].strftime(settings.DATETIME_FORMAT),
-                "tags": (
-                    [
-                        (
-                            post["tag_names"].split(",")[i],
-                            post["tag_colors"].split(",")[i],
-                        )
+    def post_to_json(post: dict):
+        return {
+            "title": post["title"],
+            "content": post["content"],
+            "stars": str(post["stars"]),
+            "identifier": post["identifier"],
+            "author": {
+                "username": post["username"],
+                "get_avatar": Profile.objects.get(id=post["author_id"]).get_avatar,
+            },
+            "author_id": str(post["author_id"]),
+            "created_at": post["created_at"].strftime(settings.DATETIME_FORMAT),
+            "tags": (
+                {
+                    "all": [
+                        {
+                            "name": post["tag_names"].split(",")[i],
+                            "color": post["tag_colors"].split(",")[i],
+                        }
                         for i in range(len(post["tag_names"].split(",")))
                     ]
-                    if post["tag_names"]
-                    else []
-                ),
-            }
-            for post in posts
-        ]
+                }
+                if post["tag_names"]
+                else []
+            ),
+            "bookmarks": {
+                "count": Post.objects.get(
+                    identifier=post["identifier"]
+                ).bookmarks.count()
+            },
+            "comments": {
+                "count": Post.objects.get(
+                    identifier=post["identifier"]
+                ).comments.count()
+            },
+            "get_filetypes": Post.objects.get(identifier=post["identifier"]).get_filetypes,
+        }
+
+    def posts_to_html(self, posts: list[dict]):
+        html_posts = []
+        for post in posts:
+            html_post = render_to_string(
+                "main/post.html", {"post": self.post_to_json(post)}
+            )
+            html_posts.append(html_post)
+
+        return html_posts
 
     @staticmethod
     def _dict_fetchall(cursor):
