@@ -1,31 +1,10 @@
 import json
-import markdown
 from users.utils import (
     OTPTools,
     sendEmail,
     EncryptTools,
     AccountActivationToken,
 )
-from django.apps import apps
-from user_agents import parse
-from users.models import User
-from django.urls import reverse
-from django.conf import settings
-from django.contrib import messages
-from django.core.cache import cache
-from django.views.generic import DetailView
-from social_django.models import UserSocialAuth
-from django.utils.encoding import force_bytes, force_str
-from users.forms import UserCreationForm, UserSetPasswordForm
-from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth import (
-    authenticate,
-    login as login_user,
-    logout as logout_user,
-    update_session_auth_hash,
-)
-from django.contrib.auth.forms import PasswordChangeForm
 from django.http import (
     Http404,
     JsonResponse,
@@ -33,6 +12,32 @@ from django.http import (
     HttpRequest,
     HttpResponseRedirect,
 )
+from django.contrib.auth import (
+    authenticate,
+    login as login_user,
+    logout as logout_user,
+    update_session_auth_hash,
+)
+from user_agents import parse
+from users.models import User
+from .forms import CommentForm
+from django.urls import reverse
+from django.conf import settings
+from .utils import DataBaseLoader
+from django.db import transaction
+from django.contrib import messages
+from django.core.cache import cache
+from django.utils.text import slugify
+from markdownify import markdownify
+from django.views.generic import DetailView
+from .forms import PostForm, EditProfileForm
+from social_django.models import UserSocialAuth
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required
+from users.forms import UserCreationForm, UserSetPasswordForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .models import Profile, Follow, Collection, Category, Tag, Media, Post, Bookmark
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm, EditProfileForm
@@ -51,65 +56,32 @@ def index(request: HttpRequest) -> HttpResponse:
     collections = Collection.objects.all()
     categories = Category.objects.all()
     tags = Tag.objects.all()
-
-    if cache.get("all_posts") is None:
-        cache.set("all_posts", Post.objects.all().order_by("-created_at"), 3600)
-
-    elif Post.objects.count() > len(cache.get("all_posts")):
-        cache.delete("all_posts")
-        if cache.get("end:all_posts") is not None:
-            cache.delete("end:all_posts")
-        cache.set("all_posts", Post.objects.all().order_by("-created_at"), 3600)
+    recent_users = Profile.objects.all().order_by("-date_joined")[:10]
 
     context = {
         "user": request.user,
         "collections": collections,
         "categories": categories,
         "tags": tags,
+        "recent_users": recent_users,
     }
 
     return render(request, "main/index.html", context=context)
 
 
 def load_posts(request: HttpRequest):
-    response = {"posts": [], "search_count": "0", "loading": False}
+    response = {"posts": [], "loading": False, "offset": -1}
+
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
-        if cache.get("all_posts") is not None:
-            data = json.loads(request.body)
-            offset = int(data["offset"])
-            limit = int(data["limit"])
+        data = json.loads(request.body)
+        posts = DataBaseLoader.load_posts(
+            _search_term=data["search_term"], _offset=data["offset"]
+        )
 
-            posts = cache.get(f"{offset}_{offset + limit}:all_posts")
-
-            if posts is None:
-                if len(cache.get("all_posts")) > offset + limit:
-                    posts = cache.get("all_posts")[offset : offset + limit]
-                    cache.set(f"{offset}_{offset + limit}:all_posts", posts, 3600)
-                    response["loading"] = True
-
-                elif len(cache.get("all_posts")) > offset:
-                    if cache.get(f"end:all_posts") is None:
-                        posts = cache.get("all_posts")[offset:]
-                        cache.set(f"{offset}_end:all_posts", posts, 3600)
-                        response["loading"] = True
-                    else:
-                        posts = cache.get(f"end:all_posts")
-            else:
-                response["loading"] = True
-
-        if response["loading"]:
-            response["posts"] = [
-                {
-                    "title": post.title,
-                    "content": post.content,
-                    "stars": str(post.stars),
-                    "identifier": post.identifier,
-                    "author": post.author.username,
-                    "author_id": str(post.author.id),
-                    "created_at": post.created_at.strftime(settings.DATETIME_FORMAT),
-                }
-                for post in posts
-            ]
+        if posts != []:
+            response["loading"] = True
+            response["offset"] = int(posts[-1]["id"]) - 1
+            response["posts"] = DataBaseLoader.posts_to_json(posts)
 
     return JsonResponse(response, safe=True)
 
@@ -141,9 +113,6 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
     }
 
     return render(request, "main/profile.html", context)
-
-
-#####################################################################################
 
 
 def login(request):
@@ -488,8 +457,6 @@ class PostDetailView(DetailView):
         context["comments"] = comments
         context["form"] = CommentForm()
 
-        print([x.slug for x in Category.objects.all()])
-
         is_bookmarked = Bookmark.objects.filter(
             profile=self.request.user.profile, post=self.object
         ).exists()
@@ -542,6 +509,16 @@ def post_add(request: HttpRequest) -> HttpResponse:
                 post = form.save(commit=False)
                 post.author = request.user.profile
                 post.save()
+
+                tags = [
+                    slugify(x.strip().strip("#")) for x in form.cleaned_data.get("tags").split(",")
+                ]
+                for tag in tags:
+                    if not Tag.objects.filter(name=tag).exists():
+                        post.tags.create(name=tag)
+                    else:
+                        post.tags.add(Tag.objects.get(name=tag))
+
                 media_files = request.FILES.getlist("media_files")
                 for file in media_files:
                     Media.objects.create(content_object=post, file=file)
@@ -616,7 +593,7 @@ def post_edit(request: HttpRequest, identifier: str) -> HttpResponse:
 
     if post.author != request.user.profile:
         return redirect("post_detail", identifier=post.identifier)
-    
+
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
@@ -633,6 +610,8 @@ def post_edit(request: HttpRequest, identifier: str) -> HttpResponse:
             return redirect("post_detail", identifier=post.identifier)
     else:
         form = PostForm(instance=post)
+        form.fields["tags"].initial = ", ".join([x.name for x in post.tags.all()])
+        form.fields["content"].initial = markdownify(post.content, heading_style="ATX")
     return render(request, "main/post_edit.html", {"form": form, "post": post})
 
 

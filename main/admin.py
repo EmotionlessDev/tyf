@@ -103,7 +103,10 @@ class CollectionAdmin(admin.ModelAdmin):
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ("name",)
+    list_display = (
+        "name",
+        "color",
+    )
 
     list_filter = ("name",)
 

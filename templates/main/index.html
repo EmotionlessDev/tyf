@@ -57,27 +57,29 @@
 
             <div class="navbar-nav ps-3 w-100">
                <div class="nav-item dropdown">
-                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📚 Collections</a>
+                  <a href="#" onclick="collection_help('{{ collection }}')" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📚 Collections</a>
                   <div class="dropdown-menu bg-transparent border-0">
                      {% for collection in collections %}
-                     <a href="signin.html" class="dropdown-item">{{ collection }}</a>
+                     <a href="#" class="dropdown-item">{{ collection }}</a>
                      {% endfor %}
                   </div>
                </div>
                <div class="nav-item dropdown">
-                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📁 Categories</a>
+                  <a href="#" onclick="category_help('{{ category }}')" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">📁 Categories</a>
                   <div class="dropdown-menu bg-transparent border-0">
                      {% for category in categories %}
-                     <a href="signin.html" class="dropdown-item">{{ category }}</a>
+                     <a href="#" class="dropdown-item">{{ category }}</a>
                      {% endfor %}
                   </div>
                </div>
                <div class="nav-item dropdown">
                   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">🔖 Tags</a>
                   <div class="dropdown-menu bg-transparent border-0">
-                     {% for tag in tags %}
-                     <a href="signin.html" class="dropdown-item">{{ tag }}</a>
-                     {% endfor %}
+                     <div class="px-3">
+                        {% for tag in tags %}
+                        {% include 'main/tag.html' with tag=tag %}
+                        {% endfor %}
+                     </div>
                   </div>
                </div>
             </div>
@@ -89,6 +91,7 @@
             <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="dropdown-item">🛠️ Report a bug</a>
          </div>
       </div>
+
       <div class="content open">
          <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="background-color: var(--dark) !important;
                border-bottom: 0.1px solid var(--secondary) !important">
@@ -99,9 +102,9 @@
             <a href="#" class="sidebar-toggler flex-shrink-0">
                <i class="bi bi-list fs-4 text-light"></i>
             </a>
-            <form class="ms-4 w-100">
-               <input id="search-input" class="form-control bg-dark fs-7 border-0" type="search" placeholder="Search">
-            </form>
+            <div class="ms-4 w-100">
+               <input id="search-input" class="js-typing-color form-control fs-7 bg-dark border-0" type="search" placeholder="Search">
+            </div>
             <a href="{% url 'post_add' %}" class="btn btn-outline-primary fs-8 ms-4 action-super">+ Create</a>
             <div class="navbar-nav align-items-center ms-0">
 
@@ -131,35 +134,66 @@
                </div>
             </div>
          </nav>
-
-         <div class="main__content container">
+         
+         <div>
+            <div class="w-100 mb-0 main__content container">
                <div class="main_background"></div>
-            <div class="row position-relative">
-               <div class="col-9">
-                  {% block content %}
-                  <div id="search-container"></div>
-                  <div class="h-100 p-4 row" id="posts"></div>
-                  {% endblock %}
-               </div>
-               <div class="col-3" id="recent-users">
-                  <!-- recent users sidebar -->
-                  <div class="card bg-transparent p-2 mt-4">
-                        <h5 class="text-light>">Recent Users</h5>
+                  <div class="row position-relative">
+                     <div class="col-9">
+                        {% block content %}
+                        <div id="search-container"></div>
+                        <div id="posts"></div>
+                        {% endblock %}
+                     </div>
+
+                     <div class="col-3" id="recent-users">
+                        <!-- recent users sidebar -->
+                        <div class="card bg-dark p-2 mt-4">
+                              <p class="text-light text-center m-0 fs-9>">Recent Users</p>
+                              <hr class="my-3">
+                              {% for profile in recent_users %}
+                                 <div class="d-flex align-items-center gap-2 mb-3">
+                                    <a href="{% url 'profile' username=profile.username %}"">
+                                       <img src="{{ profile.get_avatar }}" alt="avatar" class="img-fluid rounded-circle" style="width: 40px; height: 40px">
+                                    </a>
+                                    
+                                    <div class="d-flex flex-column gap-1">
+                                       <a  href="{% url 'profile' username=profile.username %}">
+                                          <p class="m-0 p-0 fs-9">{{ profile.username }}</p>
+                                       </a>
+                                       <p class="m-0 p-0 fs-9">Since {{ profile.date_joined }}</p>
+                                    </div>
+                                    
+                                 </div>
+                              {% endfor %}
+                        </div>
+                     </div>
+
+                     <div class="p-4 pb-0 w-100 text-center mb-3" style="color: var(--secondary-light);">
+                        <hr>
+                        <a href="{% url 'index' %}" style="color: var(--secondary-light);">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                           </svg>
+                           Reload the page to refresh post feed
+                        </a>
+                     </div>
                   </div>
                </div>
             </div>
-         </div>
 
-         <div class="container-fluid p-0">
-            <div class="bg-dark rounded-top mt-4 p-0">
-               <div class="d-flex align-items-center justify-content-between p-4">
-                  <div class="col-12 col-sm-6 text-center text-sm-start fs-9 text-muted">
-                     &copy; <a href="{% url 'index' %}">Tell Your Friends</a>, All Right Reserved.
-                  </div>
-                  <div class="d-flex align-items-center gap-1">
-                     <a href="https://github.com/EmotionlessDev/tyf" class="text-muted">
-                        <i class="bi bi-github"></i>
-                     </a>
+            <div class="container-fluid p-0 position-fixed bottom-0 w-100">
+               <div class="bg-dark rounded-top mt-4 p-0">
+                  <div class="d-flex align-items-center justify-content-between p-4">
+                     <div class="col-12 col-sm-6 text-center text-sm-start fs-9 text-muted">
+                        &copy; <a href="{% url 'index' %}">Tell Your Friends</a>, All Right Reserved.
+                     </div>
+                     <div class="d-flex align-items-center gap-1">
+                        <a href="https://github.com/EmotionlessDev/tyf" class="text-muted">
+                           <i class="bi bi-github"></i>
+                        </a>
+                     </div>
                   </div>
                </div>
             </div>
@@ -168,98 +202,180 @@
       <a href="{% url 'post_add' %}" class="post-add-btn">+</a>
    </div>
 
-   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+   <script 
+      src="https://code.jquery.com/jquery-3.5.1.js" 
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
       crossorigin="anonymous">
-      </script>
+   </script> 
+   <script src="https://www.the-art-of-web.com/hilitor.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+   <script src='//cdn.rawgit.com/garysieling/jquery-highlighttextarea/master/jquery.highlighttextarea.js'></script>
 
-   <script>
-      let offset = 0;
-      const limit = 12;
-      let search_term = "";
+   <script defer>
       $.ajaxSetup({
-         headers: {"X-CSRFToken": '{{csrf_token}}'}
+         headers: { "X-CSRFToken": '{{csrf_token}}' }
       });
+
+      let offset = -2;
+      let is_end = false;
+      let search_term = "";
+      var timeoutId = null;
+      let is_search_by_keyword = false;
       const postContainer = document.getElementById('posts');
       const searchContainer = document.getElementById('search-container');
-      // document.getElementById("search-input").addEventListener("input", loadSearchContent);
 
+      $("#search-input").on("input", function() {
+         if ($(this).val().includes(" ") || $(this).val() === "") {
+            $("#search-input").css("color", "var(--text-color)");
+            is_search_by_keyword = false;
+         }
+         if ($(this).val().startsWith("tag::") || $(this).val().startsWith("collection::") || $(this).val().startsWith("category::")) {
+            $("#search-input").css("color", "#ADF0FF");
+            is_search_by_keyword = true;
+         } else {
+            $("#search-input").css("color", "var(--text-color)");
+            is_search_by_keyword = false;
+         }
+      });
 
-      if (postContainer.innerText === "") {
-         if ('{{ request.get_full_path }}' === "/") {
+      function tag_help(name) {
+         $("#search-input").focus();
+         $("#search-input").css("color", "#ADF0FF");
+         if (name == undefined) {
+            $("#search-input").val("tag::");
+         } else {
+            $("#search-input").val("tag::" + name.slice(1));
+            offset = -2;
+            is_end = false;
+            is_search_by_keyword = true;
+            search_term = $("#search-input").val();
+            postContainer.innerHTML = "";
+            loadMoreContent();
+         }
+      }
+      function collection_help(name) {
+         $("#search-input").focus();
+         $("#search-input").css("color", "#ADF0FF");
+         if (name == undefined) {
+            $("#search-input").val("collection::");
+         } else {
+            $("#search-input").val("collection::" + name);
+            offset = -2;
+            is_end = false;
+            is_search_by_keyword = true;
+            search_term = $("#search-input").val();
+            postContainer.innerHTML = "";
+            loadMoreContent();
+         }
+      }
+      function category_help(name) {
+         $("#search-input").focus();
+         $("#search-input").css("color", "#ADF0FF");
+         if (name == undefined) {
+            $("#search-input").val("category::");
+         } else {
+            $("#search-input").val("category::" + name);
+            offset = -2;
+            is_end = false;
+            is_search_by_keyword = true;
+            search_term = $("#search-input").val();
+            postContainer.innerHTML = "";
             loadMoreContent();
          }
       }
 
+      if (postContainer.innerText === "") {
+         if ('{{ request.get_full_path }}' === "/"  && !is_end) {
+            loadMoreContent();
+         }
+      }
       window.onscroll = function () {
          if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-            if ('{{ request.get_full_path }}' === "/") {
-               offset += limit;
+            if ('{{ request.get_full_path }}' === "/" && !is_end) {
                loadMoreContent();
             }
          }
       };
-
-      // async function loadSearchContent() {
-      //    search_term = $("#search-input").val();
-
-      //    if (search_term.length >= 0) {
-      //       if (search_term.length == 0) {
-      //          searchContainer.innerHTML = "";
-      //       } else if (search_term.length == 1) {
-      //          offset = 0;
-      //          postContainer.innerHTML = "";
-      //          searchContainer.innerHTML = 
-      //          `
-      //          <div class="p-4 text-center pb-1" style="color: var(--secondary-light);">
-      //             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-      //                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-      //             </svg>
-      //             The search term "<span id="search-term"></span>" returned <span id="search-count"></span> posts.
-      //             <hr>
-      //          </div>
-      //          `;
-      //       }
-      //       await loadMoreContent();
-      //    }
-      //    console.log(search_term);
-      // }
+      $('#search-input').on('keyup', function() {
+         clearTimeout(timeoutId);
+         timeoutId = setTimeout(function() {
+            search_term = $("#search-input").val();
+            if (search_term != "") {
+               offset = -2;
+               is_end = false;
+               postContainer.innerHTML = "";
+               loadMoreContent();
+            } else {
+               offset = -2;
+               is_end = false;
+               search_term = "";
+               postContainer.innerHTML = "";
+               searchContainer.innerHTML = "";
+               loadMoreContent();
+            }
+         }, 500); 
+      });
 
       function loadMoreContent() {
          let payload = {
             "offset": offset,
-            "limit": limit,
-            "search": search_term,
+            "search_term": search_term,
          }
+         
          $.ajax({
             type: "POST",
             url: 'load_posts/',
             contentType: 'application/json',
             dataType: "json",
             data: JSON.stringify(payload),
-            success: function (data) {
-               console.log(data);
-               if (data.loading === false) {
-                  if (postContainer.innerText != "") {
-                     offset -= limit;
-                  }
-               } else {
-                  if (data.search) {
-                     console.log(data);
-                  }
-                  if (search_term != "") {
-                     document.getElementById('search-term').innerHTML = search_term;
-                     document.getElementById('search-count').innerHTML = data.posts.length;
+            success: function(data) {
+               if (search_term != "") {
+                  let info = "";
+
+                  if (is_search_by_keyword) {
+                     if (search_term.startsWith("tag::")) {
+                        info = `Search results for tag "#${search_term.slice(5)}".`;
+                     } else if (search_term.startsWith("collection::")) {
+                        info = `Posts contained in "${search_term.slice(12)}" collection.`;
+                     } else if (search_term.startsWith("category::")) {
+                        info = `Search results for category "${search_term.slice(10)}".`;
+                     }
+                  } else {
+                     info = `Search results for "${search_term}".`;
                   }
 
-                  for (let i = 0; i < data.posts.length; i++) {
-                     if (data.posts !== null) {
-                        postContainer.innerHTML += createPostElement(data.posts[i]);
-                     }
-                  }
-                  textTruncate();
+                  searchContainer.innerHTML = 
+                  `
+                  <div class="p-4 text-center pb-0" style="color: var(--secondary-light);">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                     </svg>
+                     <span>` + info + `</span>
+                     <hr>  
+                  </div>
+                  <div class="p-4 pb-1 pt-0" style="color: var(--secondary-light);">
+                     <div><a onclick='tag_help();' href="#" style="color: var(--secondary-light); font-style: italic;">Search by tag</a>,</div> 
+                     <div><a onclick='collection_help()'' href="#" style="color: var(--secondary-light); font-style: italic;">Search by collection</a>,</div>  
+                     <div><a onclick='category_help()' href="#" style="color: var(--secondary-light); font-style: italic;">Search by category</a>.</div> 
+                  </div>
+                  `;
                }
-            },
+
+               if (data.loading === true) {
+                  if (data.offset < offset || offset == -2) {
+                     for (let i = 0; i < data.posts.length; i++) {
+                        if (data.posts !== null) {
+                           postContainer.innerHTML += createPostElement(data.posts[i]);
+                        }
+                     }
+                     offset = data.offset;
+                     textTruncate();
+                  }
+               } else {
+                  is_end = true;
+               }
+            }
          });
       }
 
@@ -276,18 +392,19 @@
 
          var postElement =
             `
-            <div class="col-md-6 border-4";">
+            <div class="col-md-6 border-4 d w-100;">
                <a href="post/` + post.identifier + `/">
-                  <div class="card bg-dark p-1 mb-4 scale-on-hover"
-                       style="border: 1px solid var(--primary) !important; border-left:0 !important; border-top:0 !important;">
+                  <div class="card bg-dark p-2 mt-4 scale-on-hover"
+                       style="border: 1px solid var(--primary) !important; border-left:0 !important; border-top:0 !important;
+                       height: 80% !important;">
                      <div class="card-body fs-7">
                         <h5 class="card-title truncate fs-3">
             `
             + post.title +
             `
                         </h5>
-                        <div class="post-description fs-6 card-text truncate mb-2" 
-                             style="color: var(--light); !important">
+                        <div class="post-description fs-6 card-text truncate truncate mb-2" 
+                             style="color: var(--light) !important;">
             `
             + fst_elm_content +
             `
@@ -296,10 +413,10 @@
                            <div class="d-flex align-items-center">
                               <span class="language-dot"></span>
                               <small class="text-muted"></small>
-                           </div> 
+                           </div>
                            <div class="stars">` + post.stars + ` ★</div>
                         </div>
-                        <div class="d-block justify-content-between mt-2 text-muted text-truncate">
+                        <div class="d-block justify-content-between text-muted text-truncate">
                            <p>
                               <strong>` + post.author + `</strong>
                            </p>
@@ -336,13 +453,13 @@
          }
       }
    </script>
-      <script src="{% static 'js/noise.min.js' %}"></script>
-      <script src="{% static 'js/util.js' %}"></script>
-      <script src="{% static 'js/coalesce.js' %}"></script>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+   <script src="{% static 'js/noise.min.js' %}"></script>
+   <script src="{% static 'js/util.js' %}"></script>
+   <script src="{% static 'js/coalesce.js' %}"></script>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
    <script src="{% static 'js/main.js' %}"></script>
 
 </body>
-
 </html>

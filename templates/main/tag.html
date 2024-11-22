@@ -1,0 +1,7 @@
+{% block content %}
+<a href="#" onclick="tag_help('{{ tag.name }}')">
+   <span style="background-color: {{ tag.color }}; display: inline-block !important;">
+      <span style="filter: invert(1) !important; display: inline-block !important;">{{ tag.name }}</span>
+   </span>
+</a>
+{% endblock %}
