@@ -1,10 +1,15 @@
+{% extends 'main/index.html' %}
 
+{% block title %}Edit Comment{% endblock %}
+
+{% block content %}
 <div class="container mt-5">
     <h2>Edit Comment</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-        <a href="{% url 'post_detail' identifier=comment.post.identifier %}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-0 fs-8 action-unchecked">Save Changes</button>
+        <a href="{% url 'post_detail' identifier=comment.post.identifier %}" class="mb-2 btn border-start-0 border-top-0 btn-outline-primary mt-0 fs-8 action-unchecked">Cancel</a>
     </form>
 </div>
+{% endblock %}
