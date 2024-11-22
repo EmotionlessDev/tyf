@@ -514,10 +514,10 @@ def post_add(request: HttpRequest) -> HttpResponse:
                     slugify(x.strip().strip("#")) for x in form.cleaned_data.get("tags").split(",")
                 ]
                 for tag in tags:
-                    if not Tag.objects.filter(name=tag).exists():
+                    if not Tag.objects.filter(name="#"+tag).exists():
                         post.tags.create(name=tag)
                     else:
-                        post.tags.add(Tag.objects.get(name=tag))
+                        post.tags.add(Tag.objects.get(name="#"+tag))
 
                 media_files = request.FILES.getlist("media_files")
                 for file in media_files:
