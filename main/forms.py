@@ -196,7 +196,7 @@ class CommentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["content"].widget.attrs.update(
-            {"class": "form-control comments__content", "placeholder": "..."}
+            {"class": "form-control comments__content", "placeholder": "Leave a comment"}
         )
 
 

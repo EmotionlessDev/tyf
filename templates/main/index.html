@@ -246,6 +246,8 @@
             headers: { "X-CSRFToken": '{{csrf_token}}' }
          });
 
+         var INDEX_URL = "{% url 'index' %}"
+
          let offset = -2;
          let is_end = false;
          let search_term = "";

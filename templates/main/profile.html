@@ -51,7 +51,7 @@
                   <div class="avatars-block"> 
                      {% for follower, _ in followers|slice:":3" %}
                      <a href="{% url 'profile' username=follower.username %}" class="m-0 ">
-                     <img src="{{ follower.get_avatar }}" alt="avatar" class="avatar">
+                     <img src="{{ follower.get_avatar }}" alt="avatar" class="avatar reduce-margin-right">
                      </a>
                      {% endfor %}
                   </div>
