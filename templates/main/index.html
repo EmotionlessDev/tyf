@@ -46,50 +46,38 @@
          </div>
          <div class="sidebar pe-0 pb-3 border border-2 open" style="border-right: 0.1px solid var(--secondary) !important;
             background-color: var(--dark) !important">
-         <nav id="sidebar-nav" class="navbar bg-secondary navbar-dark align-items-center"
-            style="background-color: var(--dark) !important">
-
-            <p class=" text-break fs-9 w-100 p-3 pt-0 pb-0" style="color: var(--secondary-light);">
-               What's the rush?
-               <br />
-               Just relax and enjoy another hour of free studying with
-               <em>Tell Your Friends!</em>
-            </p>
-
-            <input id="termin-search" type="text" class="form-control bg-transparent border-0 mb-4 ms-3 me-4" id="search-input" placeholder="Search..." 
-            style="border: 0.1px solid var(--primary) !important; border-top: 0 !important; border-left: 0 !important;
-                   border-right: 0; padding-right: 0; color: var(--light) !important; padding-left: 0.5em; font-weight: 100 !important;
-                   font-size: smaller !important; border-radius: 0.2em; box-shadow: none !important;">
-
-            <div class="navbar-nav ps-3 w-100">
-               <div class="nav-item dropdown">
-                  <a href="#" class="nav-link dropdown-toggle fs-6" data-bs-toggle="dropdown">📚 Collections</a>
-                  <div id="collections" class="dropdown-menu bg-transparent border-0 pt-0">
-                     {% for collection in collections %}
-                     <a href="#" onclick="collection_help('{{ collection }}')" class="dropdown-item fs-7" style="display: block !important;">{{ collection }}</a>
-                     {% endfor %}
-                  </div>
-               </div>
-               <div class="nav-item dropdown">
-                  <a href="#" class="nav-link dropdown-toggle fs-6" data-bs-toggle="dropdown">📁 Categories</a>
-                  <div id="categories" class="dropdown-menu bg-transparent border-0 pt-0">
-                     {% for category in categories %}
-                     <a href="#" onclick="category_help('{{ category }}')" class="dropdown-item fs-7" style="display: block !important;">{{ category }}</a>
-                     {% endfor %}
-                  </div>
-               </div>
-               <div class="nav-item dropdown">
-                  <a href="#" class="nav-link dropdown-toggle fs-6" data-bs-toggle="dropdown">🔖 Tags</a>
-                  <div id="tags" class="dropdown-menu bg-transparent border-0 pt-0">
-                     <div class="px-3">
-                        {% for tag in tags %}
-                        {% include 'main/tag.html' with tag=tag %}
+            <nav id="sidebar-nav" class="navbar bg-secondary navbar-dark align-items-center"
+               style="background-color: var(--dark) !important">
+               <p class=" text-break fs-9 w-100 p-3 pt-0 pb-0" style="color: var(--secondary-light);">
+                  What's the rush?
+                  <br />
+                  Just relax and enjoy another hour of free studying with
+                  <em>Tell Your Friends!</em>
+               </p>
+               <input id="termin-search" type="text" class="form-control bg-transparent border-0 mb-4 ms-3 me-4" id="search-input" placeholder="Search..." 
+                  style="border: 0.1px solid var(--primary) !important; border-top: 0 !important; border-left: 0 !important;
+                  border-right: 0; padding-right: 0; color: var(--light) !important; padding-left: 0.5em; font-weight: 100 !important;
+                  font-size: smaller !important; border-radius: 0.2em; box-shadow: none !important;">
+               <div class="navbar-nav ps-3 w-100">
+                  <div class="nav-item dropdown">
+                     <a href="#" class="nav-link dropdown-toggle fs-6" data-bs-toggle="dropdown">📚 Collections</a>
+                     <div id="collections" class="dropdown-menu bg-transparent border-0 pt-0">
+                        {% for collection in collections %}
+                        <a href="#" onclick="collection_help('{{ collection }}')" class="dropdown-item fs-7" style="display: block !important;">{{ collection }}</a>
                         {% endfor %}
                      </div>
                   </div>
                   <div class="nav-item dropdown">
-                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">🔖 Tags</a>
-                     <div class="dropdown-menu bg-transparent border-0">
+                     <a href="#" class="nav-link dropdown-toggle fs-6" data-bs-toggle="dropdown">📁 Categories</a>
+                     <div id="categories" class="dropdown-menu bg-transparent border-0 pt-0">
+                        {% for category in categories %}
+                        <a href="#" onclick="category_help('{{ category }}')" class="dropdown-item fs-7" style="display: block !important;">{{ category }}</a>
+                        {% endfor %}
+                     </div>
+                  </div>
+                  <div class="nav-item dropdown">
+                     <a href="#" class="nav-link dropdown-toggle fs-6" data-bs-toggle="dropdown">🔖 Tags</a>
+                     <div id="tags" class="dropdown-menu bg-transparent border-0 pt-0">
                         <div class="px-3">
                            {% for tag in tags %}
                            {% include 'main/tag.html' with tag=tag %}
@@ -97,244 +85,248 @@
                         </div>
                      </div>
                   </div>
-               </div>
             </nav>
             <div>
-               <a href="https://github.com/EmotionlessDev/tyf" class="dropdown-item">⭐ Support Us</a>
-               <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="dropdown-item">🛠️ Report a bug</a>
+            <a href="https://github.com/EmotionlessDev/tyf" class="dropdown-item">⭐ Support Us</a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="dropdown-item">🛠️ Report a bug</a>
             </div>
-
-         </nav>
-         
-         <!-- TODO: Add social media links to bottom -->
-         <!-- <div class="ms-3 bottom-0 mb-4 position-absolute" style="box-shadow: none !important;">
-            <div>
-               <a class="mb-4 fs-8" href="https://github.com/EmotionlessDev/tyf" style="color: var(--light)">⭐ Support Us</a>
-            </div>
-            <div>
-               <a class="fs-8" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: var(--light)">🛠️ Report a bug</a>
-            </div>
-         </div> -->
-
-      </div>
-
-      <div class="content open">
-         <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="background-color: var(--dark) !important;
-               border-bottom: 0.1px solid var(--secondary) !important">
-               <a href="{% url 'index' %}" class="navbar-brand d-flex me-4">
-               <img class="" src="{% static 'img/logo.svg' %}" alt="" style="height: 35px">
-               </a>
-               <a href="#" class="sidebar-toggler flex-shrink-0">
-               <i class="bi bi-list fs-4 text-light"></i>
-               </a>
-               <div class="ms-4 w-100">
-                  <input id="search-input" class="js-typing-color form-control fs-7 bg-dark border-0" type="search" placeholder="Search">
+            </nav>
+            <!-- TODO: Add social media links to bottom -->
+            <!-- <div class="ms-3 bottom-0 mb-4 position-absolute" style="box-shadow: none !important;">
+               <div>
+                  <a class="mb-4 fs-8" href="https://github.com/EmotionlessDev/tyf" style="color: var(--light)">⭐ Support Us</a>
                </div>
-               <a href="{% url 'post_add' %}" class="btn btn-outline-primary fs-8 ms-4 action-super">+ Create</a>
-               <div class="navbar-nav align-items-center ms-0">
-                  <div class="nav-item dropdown">
-                     {% if user.is_authenticated %}
-                     <a href="{% url 'profile' username=request.user.profile.username %}" class="nav-link dropdown-toggle ms-0"
-                        data-bs-toggle="dropdown">
-                     <img class="rounded-circle me-lg-0" src="{{ user.profile.get_avatar }}" alt="" style="width: 30px;
-                        height: 30px">
-                     </a>
-                     {% else %}
-                     <a href="{% url 'login' %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                     <img class="rounded-circle me-lg-0" src="{% static 'img/default_avatar.webp' %}" alt="" style="width: 30px;
-                        height: 30px">
-                     </a>
-                     {% endif %}
-                     <div class="dropdown-menu dropdown-menu-end bg-dark border-secondary border-top-0 rounded-0 rounded-bottom fs-8">
+               <div>
+                  <a class="fs-8" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: var(--light)">🛠️ Report a bug</a>
+               </div>
+               </div> -->
+            </div>
+            <div class="content open">
+               <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="background-color: var(--dark) !important;
+                  border-bottom: 0.1px solid var(--secondary) !important">
+                  <a href="{% url 'index' %}" class="navbar-brand d-flex me-4">
+                  <img class="" src="{% static 'img/logo.svg' %}" alt="" style="height: 35px">
+                  </a>
+                  <a href="#" class="sidebar-toggler flex-shrink-0">
+                  <i class="bi bi-list fs-4 text-light"></i>
+                  </a>
+                  <div class="ms-4 w-100">
+                     <input id="search-input" class="js-typing-color form-control fs-7 bg-dark border-0" type="search" placeholder="Search">
+                  </div>
+                  <a href="{% url 'post_add' %}" class="btn btn-outline-primary fs-8 ms-4 action-super">+ Create</a>
+                  <div class="navbar-nav align-items-center ms-0">
+                     <div class="nav-item dropdown">
                         {% if user.is_authenticated %}
-                        <a href="{% url 'profile' username=request.user.profile.username %}" class="dropdown-item">Profile</a>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
+                        <a href="{% url 'profile' username=request.user.profile.username %}" class="nav-link dropdown-toggle ms-0"
+                           data-bs-toggle="dropdown">
+                        <img class="rounded-circle me-lg-0" src="{{ user.profile.get_avatar }}" alt="" style="width: 30px;
+                           height: 30px">
+                        </a>
                         {% else %}
-                        <a href="{% url 'login' %}" class="dropdown-item">Log In</a>
+                        <a href="{% url 'login' %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <img class="rounded-circle me-lg-0" src="{% static 'img/default_avatar.webp' %}" alt="" style="width: 30px;
+                           height: 30px">
+                        </a>
                         {% endif %}
-                     </div>
-                  </div>
-               </div>
-            </nav>
-            <div>
-               <div class="w-100 mb-0 main__content container">
-                  <div class="main_background"></div>
-                  <div class="row position-relative px-4">
-                     {% block content %}
-                     <div>
-                        <h1 class="mt-4 h1-super fs-0">
-                           Welcome To 
-                           <span class="color-primary">Tell Your Friends</span>
-                           <span>!</span>
-                        </h1>
-                        <h2 class="fs-6 text- mt-3" style="font-weight: 300;">
-                           <em>
-                           You've arrived in a space where the noise of the world fades, 
-                           and the whispers of your potential take center stage. 
-                           Open the door to a realm where your thoughts transform into a beacon for others, 
-                           a sanctuary where students exchange more than notes—they exchange purpose.
-                           
-                           <br/><br/>
-
-                           Among these pages, you'll find collaborators, dreamers, 
-                           seekers of the same light you carry. Share your work, gather a team, 
-                           or plant the seeds of something extraordinary. This isn't just a platform,
-                           it's a reflection of what you can become when you choose to inspire and be inspired.
-
-                           <br/><br/>
-
-                           So leave your mark. Because here on <strong style="font-weight: 800;">Tell Your Friends</strong>, 
-                           your voice doesn't just echo — it resonates forever.
-                           </em>
-                        </h2>
-                     </div>
-                     <hr class="my-4">
-                     <div class="col-9">
-                        <div>
-                           <div id="search-container"></div>
-                           <div id="posts"></div>
+                        <div class="dropdown-menu dropdown-menu-end bg-dark border-secondary border-top-0 rounded-0 rounded-bottom fs-8">
+                           {% if user.is_authenticated %}
+                           <a href="{% url 'profile' username=request.user.profile.username %}" class="dropdown-item">Profile</a>
+                           {% endif %}
+                           {% if user.is_authenticated %}
+                           <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
+                           {% else %}
+                           <a href="{% url 'login' %}" class="dropdown-item">Log In</a>
+                           {% endif %}
                         </div>
                      </div>
-                     <div class="col-3" id="recent-users">
-                        <!-- recent users sidebar -->
-                        <div class="card bg-dark p-2 mt-4">
-                           <p class="text-light text-center m-0 mt-1 fs-9>">Recent Users</p>
-                           <hr class="mt-2 mb-3">
-                           {% for profile in recent_users %}
-                           <div class="d-flex align-items-center gap-2 mb-3">
-                              <a href="{% url 'profile' username=profile.username %}"">
-                              <img src="{{ profile.get_avatar }}" alt="avatar" class="img-fluid rounded-circle" style="width: 40px; height: 40px">
-                              </a>
-                              <div class="d-flex flex-column gap-1">
-                                 <a  href="{% url 'profile' username=profile.username %}">
-                                    <p class="m-0 p-0 fs-9">{{ profile.username }}</p>
+                  </div>
+               </nav>
+               <div>
+                  <div class="w-100 mb-0 main__content container">
+                     <div class="main_background"></div>
+                     <div class="row position-relative px-4" >
+                        {% block content %}
+                        <div id="greetings">
+                           <h1 class="mt-4 h1-super color-light fs-0">
+                              Welcome To 
+                              <span class="color-primary">Tell Your Friends</span>
+                              <span>!</span>
+                           </h1>
+                           <h2 class="fs-6 text-light mt-3" style="font-weight: 300;">
+                              <em>
+                              You've arrived in a space where the noise of the world fades, 
+                              and the whispers of your potential take center stage. 
+                              Open the door to a realm where your thoughts transform into a beacon for others, 
+                              a sanctuary where students exchange more than notes—they exchange purpose.
+                              <br/><br/>
+                              Among these pages, you'll find collaborators, dreamers, 
+                              seekers of the same light you carry. Share your work, gather a team, 
+                              or plant the seeds of something extraordinary. This isn't just a platform,
+                              it's a reflection of what you can become when you choose to inspire and be inspired.
+                              <br/><br/>
+                              So leave your mark. Because here on <strong style="font-weight: 800;">Tell Your Friends</strong>, 
+                              your voice doesn't just echo — it resonates forever.
+                              </em>
+                           </h2>
+                            <hr class="my-4">
+                        </div>
+                        <div id="search-container" class="fs-9"></div>
+                        <div class="col-9">
+                           <div id="posts"></div>    
+                        </div>
+                        <div class="col-3" id="recent-users">
+                           <div class="card bg-dark p-2 mt-0">
+                              <p class="text-light text-center m-0 mt-1 fs-9>">Recent Users</p>
+                              <hr class="mt-2 mb-3">
+                              {% for profile in recent_users %}
+                              <div class="d-flex align-items-center gap-2 mb-3">
+                                 <a href="{% url 'profile' username=profile.username %}"">
+                                 <img src="{{ profile.get_avatar }}" alt="avatar" class="img-fluid rounded-circle" style="width: 40px; height: 40px">
                                  </a>
-                                 <p class="m-0 p-0 fs-9">Since {{ profile.date_joined }}</p>
+                                 <div class="d-flex flex-column gap-1">
+                                    <a  href="{% url 'profile' username=profile.username %}">
+                                       <p class="m-0 p-0 fs-9">{{ profile.username }}</p>
+                                    </a>
+                                    <p class="m-0 p-0 fs-9">Since {{ profile.date_joined }}</p>
+                                 </div>
                               </div>
+                              {% endfor %}
                            </div>
-                           {% endfor %}
                         </div>
+                        <div class="p-4 pb-0 w-100 text-center mb-3" style="color: var(--secondary-light);">
+                           <hr>
+                           <a href="{% url 'index' %}" class="fs-9" style="color: var(--secondary-light);">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                 <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                                 <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                              </svg>
+                              Reload the page to refresh post feed
+                           </a>
+                        </div>
+                        {% endblock %}
                      </div>
-                     <div class="p-4 pb-0 w-100 text-center mb-3" style="color: var(--secondary-light);">
-                        <hr>
-                        <a href="{% url 'index' %}" class="fs-9" style="color: var(--secondary-light);">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
-                              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
-                           </svg>
-                           Reload the page to refresh post feed
-                        </a>
-                     </div>
-                     {% endblock %}
                   </div>
                </div>
-            </div>
-            <div class="container-fluid p-0 bottom-0 w-100">
-               <div class="bg-dark rounded-top mt-4 p-0">
-                  <div class="container-fluid d-flex align-items-center justify-content-between p-4">
-                     <div class="col-12 col-sm-6 text-center text-sm-start fs-9 text-muted">
-                        &copy; <a href="{% url 'index' %}">Tell Your Friends</a>, All Right Reserved.
-                     </div>
-                     <div class="d-flex align-items-center gap-1">
-                        <a href="https://github.com/EmotionlessDev/tyf" class="text-muted">
-                        <i class="bi bi-github"></i>
-                        </a>
+               <div class="container-fluid p-0 bottom-0 w-100">
+                  <div class="bg-dark rounded-top mt-4 p-0">
+                     <div class="container-fluid d-flex align-items-center justify-content-between p-4">
+                        <div class="col-12 col-sm-6 text-center text-sm-start fs-9 text-muted">
+                           &copy; <a href="{% url 'index' %}">Tell Your Friends</a>, All Right Reserved.
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                           <a href="https://github.com/EmotionlessDev/tyf" class="text-muted">
+                           <i class="bi bi-github"></i>
+                           </a>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
          </div>
+         <a href="{% url 'post_add' %}" class="post-add-btn">+</a>
       </div>
-      <a href="{% url 'post_add' %}" class="post-add-btn">+</a>
-   </div>
+      <script 
+         src="https://code.jquery.com/jquery-3.5.1.js" 
+         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+         crossorigin="anonymous"></script> 
+      <script src="https://www.the-art-of-web.com/hilitor.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+      <script src='//cdn.rawgit.com/garysieling/jquery-highlighttextarea/master/jquery.highlighttextarea.js'></script>
+      <script 
+         src="https://code.jquery.com/jquery-3.5.1.js" 
+         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+         crossorigin="anonymous"></script> 
+      <script src="https://www.the-art-of-web.com/hilitor.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+      <script src='//cdn.rawgit.com/garysieling/jquery-highlighttextarea/master/jquery.highlighttextarea.js'></script>
+      <script defer>
+         $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' }
+         });
 
-   <script 
-      src="https://code.jquery.com/jquery-3.5.1.js" 
-      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
-      crossorigin="anonymous">
-   </script> 
-   <script src="https://www.the-art-of-web.com/hilitor.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"></script>
-   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
-   <script src='//cdn.rawgit.com/garysieling/jquery-highlighttextarea/master/jquery.highlighttextarea.js'></script>
-
-   <script defer>
-      $.ajaxSetup({
-         headers: { "X-CSRFToken": '{{csrf_token}}' }
-      });
-      let offset = -2;
-      let is_end = false;
-      let search_term = "";
-      var timeoutId = null;
-      let show_sidebar_content = false;
-      let is_search_by_keyword = false;
-      const postContainer = document.getElementById('posts');
-      const searchContainer = document.getElementById('search-container');
-
-      $("#termin-search").on("input", function() {
-         if ($("#termin-search").val() != "") {
-            if (!$("#tags").is(".show")) {
-               $("#tags").toggleClass("show");
-            }
-            if (!$("#collections").is(".show")) {
-               $("#collections").toggleClass("show");
-            } 
-            if (!$("#categories").is(".show")) {
-               $("#categories").toggleClass("show");
-            }
-         }
-         if ($("#termin-search").val() == "") {
-            if ($("#tags").is(".show")) {
-               $("#tags").toggleClass("show");
-            } 
-            if ($("#collections").is(".show")) {
-               $("#collections").toggleClass("show");
-            } 
-            if ($("#categories").is(".show")) {
-               $("#categories").toggleClass("show");
-            }
-         }
-         searchingTerms($("#termin-search").val());
-      });
-
-      function searchingTerms(textToFind) {
-         console.log(textToFind);
-         $("#tags span").show();
-         $("#categories a").show();
-         $("#collections a").show();
-
-         if (textToFind != "") {
-            let tags = $("#tags span");
-            for (let i = 0; i < tags.length; i++) {
-               if (!tags[i].innerText.includes(textToFind)) {
-                  $(tags[i]).hide();
+         let offset = -2;
+         let is_end = false;
+         let search_term = "";
+         var timeoutId = null;
+         let show_sidebar_content = false;
+         let is_search_by_keyword = false;
+         const postContainer = document.getElementById('posts');
+         const searchContainer = document.getElementById('search-container');
+         
+         $("#termin-search").on("input", function() {
+            if ($("#termin-search").val() != "") {
+               if (!$("#tags").is(".show")) {
+                  $("#tags").toggleClass("show");
+               }
+               if (!$("#collections").is(".show")) {
+                  $("#collections").toggleClass("show");
+               } 
+               if (!$("#categories").is(".show")) {
+                  $("#categories").toggleClass("show");
                }
             }
-
-            let categories = $("#categories a");
-            for (let i = 0; i < categories.length; i++) {
-               if (!categories[i].innerText.includes(textToFind)) {
-                  $(categories[i]).hide();
+            if ($("#termin-search").val() == "") {
+               if ($("#tags").is(".show")) {
+                  $("#tags").toggleClass("show");
+               } 
+               if ($("#collections").is(".show")) {
+                  $("#collections").toggleClass("show");
+               } 
+               if ($("#categories").is(".show")) {
+                  $("#categories").toggleClass("show");
                }
             }
-
-            let collections = $("#collections a");
-            for (let i = 0; i < collections.length; i++) {
-               if (!collections[i].innerText.includes(textToFind)) {
-                  $(collections[i]).hide();
+            searchingTerms($("#termin-search").val());
+         });
+         
+         function searchingTerms(textToFind) {
+            console.log(textToFind);
+            $("#tags span").show();
+            $("#categories a").show();
+            $("#collections a").show();
+         
+            if (textToFind != "") {
+               let tags = $("#tags span");
+               for (let i = 0; i < tags.length; i++) {
+                  if (!tags[i].innerText.includes(textToFind)) {
+                     $(tags[i]).hide();
+                  }
+               }
+         
+               let categories = $("#categories a");
+               for (let i = 0; i < categories.length; i++) {
+                  if (!categories[i].innerText.includes(textToFind)) {
+                     $(categories[i]).hide();
+                  }
+               }
+         
+               let collections = $("#collections a");
+               for (let i = 0; i < collections.length; i++) {
+                  if (!collections[i].innerText.includes(textToFind)) {
+                     $(collections[i]).hide();
+                  }
                }
             }
          }
-      }
-
-      $("#search-input").on("input", function() {
-         if ($(this).val().includes(" ") || $(this).val() === "") {
-            $("#search-input").css("color", "var(--text-color)");
-            is_search_by_keyword = false;
-         }
-         if ($(this).val().startsWith("tag::") || $(this).val().startsWith("collection::") || $(this).val().startsWith("category::")) {
+         
+         $("#search-input").on("input", function() {
+            if ($(this).val().includes(" ") || $(this).val() === "") {
+               $("#search-input").css("color", "var(--text-color)");
+               is_search_by_keyword = false;
+            }
+            if ($(this).val().startsWith("tag::") || $(this).val().startsWith("collection::") || $(this).val().startsWith("category::")) {
+               $("#search-input").css("color", "#ADF0FF");
+               is_search_by_keyword = true;
+            } else {
+               $("#search-input").css("color", "var(--text-color)");
+               is_search_by_keyword = false;
+            }
+         });
+         
+         function tag_help(name) {
+            $("#search-input").focus();
             $("#search-input").css("color", "#ADF0FF");
             if (name == undefined) {
                $("#search-input").val("tag::");
@@ -441,43 +433,30 @@
          
                      searchContainer.innerHTML = 
                      `
-                     <div class="p-4 text-center pb-0" style="color: var(--secondary-light);">
+                     <div class="text-center mt-3" style="color: var(--secondary-light);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                         </svg>
                         <span>` + info + `</span>
                         <hr>  
                      </div>
-                     <div class="p-4 pb-1 pt-0" style="color: var(--secondary-light);">
+                     <div class="mb-4" style="color: var(--secondary-light);">
                         <div><a onclick='tag_help();' href="#" style="color: var(--secondary-light); font-style: italic;">Search by tag</a>,</div> 
                         <div><a onclick='collection_help()'' href="#" style="color: var(--secondary-light); font-style: italic;">Search by collection</a>,</div>  
                         <div><a onclick='category_help()' href="#" style="color: var(--secondary-light); font-style: italic;">Search by category</a>.</div> 
                      </div>
                      `;
+                     $("#greetings").hide();
+                  } else {
+                     $("#greetings").show();
                   }
-
-                  searchContainer.innerHTML = 
-                  `
-                  <div class="p-4 text-center pb-0" style="color: var(--secondary-light);">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                     </svg>
-                     <span>` + info + `</span>
-                     <hr>  
-                  </div>
-                  <div class="p-4 pb-1 pt-0" style="color: var(--secondary-light);">
-                     <div><a onclick='tag_help();' href="#" style="color: var(--secondary-light); font-style: italic;">Search by tag</a>,</div> 
-                     <div><a onclick='collection_help()'' href="#" style="color: var(--secondary-light); font-style: italic;">Search by collection</a>,</div>  
-                     <div><a onclick='category_help()' href="#" style="color: var(--secondary-light); font-style: italic;">Search by category</a>.</div> 
-                  </div>
-                  `;
-               }
-
-               if (data.loading === true) {
-                  if (data.offset < offset || offset == -2) {
-                     for (let i = 0; i < data.posts.length; i++) {
-                        if (data.posts !== null) {
-                           postContainer.innerHTML += data.posts[i];
+         
+                  if (data.loading === true) {
+                     if (data.offset < offset || offset == -2) {
+                        for (let i = 0; i < data.posts.length; i++) {
+                           if (data.posts !== null) {
+                              postContainer.innerHTML += data.posts[i];
+                           }
                         }
                         offset = data.offset;
                         textTruncate();
@@ -486,25 +465,12 @@
                      is_end = true;
                   }
                }
-            }
-         });
-      }
-
-      function textTruncate() {
-         var truncate_p = document.querySelector(".truncate p");
-         $clamp(truncate_p, {
-            clamp: 2,
-            useNativeClamp: false
-         });
-
-         var truncate_span = document.querySelector(".truncate span");
-         $clamp(truncate_span, {
-            clamp: 2,
-            useNativeClamp: false
-         });
-
-         for (let i = 1; i < 7; i++) {
-            $clamp(document.querySelector(`.truncate h${i}`), {
+            });
+         }
+         
+         function textTruncate() {
+            var truncate_p = document.querySelector(".truncate p");
+            $clamp(truncate_p, {
                clamp: 2,
                useNativeClamp: false
             });

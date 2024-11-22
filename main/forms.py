@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from registry.models import Major, University
 from .models import Post, Comment, Media, Profile
 from django.contrib.contenttypes.admin import GenericStackedInline
+from django.contrib.auth.forms import PasswordChangeForm as BasePasswordChangeForm
 
 
 User = get_user_model()
@@ -63,7 +64,12 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ["title", "category", "tags", "content",]
+        fields = [
+            "title",
+            "category",
+            "tags",
+            "content",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -192,3 +198,32 @@ class CommentForm(forms.ModelForm):
         self.fields["content"].widget.attrs.update(
             {"class": "form-control comments__content", "placeholder": "..."}
         )
+
+
+class PasswordChangeForm(BasePasswordChangeForm):
+    old_password = forms.CharField(
+        label="Old password",
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "current-password", "autofocus": True}
+        ),
+        required=False,
+    )
+
+    new_password1 = forms.CharField(
+        label="New password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        required=False,
+    )
+
+    new_password2 = forms.CharField(
+        label="Confirm new password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        required=False,
+    )
+
+    class Meta:
+        model = User
+        fields = ("old_password", "new_password1", "new_password2")

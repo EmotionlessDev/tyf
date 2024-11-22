@@ -1,29 +1,33 @@
 .content_block img {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 .comments__content {
-    border: 1px solid var(--secondary);
-    resize: none;
+  border: 1px solid var(--secondary);
+  resize: none;
 }
 
 .comments__reply {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .comments__reply:hover {
-    color: var(--dark);
+  color: var(--dark);
 }
 
-textarea {
-    font-size: smaller !important;
+textarea.form-control {
+  font-size: smaller !important;
+  border: 1px solid var(--primary);
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
 }
 
 h1 {
-    font-style: italic;
+  font-style: italic;
 }
 
 hr {
-    background-color: var(--secondary-light);
+  background-color: var(--secondary-light);
 }

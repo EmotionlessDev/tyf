@@ -1,140 +1,142 @@
-{% extends "main/index.html" %}
-{% load static %}
-{% block title %}Edit Profile{% endblock title %}
-{% block content %}
-{% block extrahead %}
-<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
-{% endblock %}
-    {% if user_form.errors %}
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <div id="form_errors">
-                {% for key, value in user_form.errors.items %}
-                    <strong>{{ value }}</strong>
-                {% endfor %}
-            </div>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endif %}
+{% extends "main/index.html" %} {% load static %} {% block title %}Edit
+Profile{% endblock title %} {% block content %} {% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}" />
+{% endblock %} {% if user_form.errors %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+  <div id="form_errors">
+    {% for key, value in user_form.errors.items %}
+    <strong>{{ value }}</strong>
+    {% endfor %}
+  </div>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
 
-    <div class="container px-5 pt-4">
-        <div class="row">
-            <p class="fs-5 mb-0">Edit Profile</p>
-            <div class="form-content">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
+<div class="container px-5 pt-4">
+  <div class="row">
+    <p class="fs-5 mb-0">Edit Profile</p>
+    <div class="form-content">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-                    <br/>
+        <br />
 
-                    <img id="preview" src="
+        <img
+          id="preview"
+          src="
                         {% if profile_form.avatar.value %}
                             {{ profile_form.avatar.value.url }}
                         {% else %}
                             {{ request.user.profile.get_avatar }}
                         {% endif %}
-                    " alt="avatar" class="img-fuild rounded-circle" style="height: 50px;">
+                    "
+          alt="avatar"
+          class="img-fuild rounded-circle"
+          style="height: 50px; width: 50px"
+        />
 
-                    <br/>
+        <br />
 
-                    <br/>
-                    
-                    <label>Username: </label>{{ profile_form.username }}
+        <br />
 
-                    <br/>
+        <label>Username: </label>{{ profile_form.username }}
 
-                    {% if is_able_to_change_password %}
+        <br />
 
-                    <hr>
+        {% if is_able_to_change_password %}
 
-                    <br/>
+        <hr />
 
-                    {{ password_form.as_p }}
-                    
-                    <br/>
+        <br />
 
-                    <hr>
+        {{ password_form.as_p }}
 
-                    <br/>
+        <br />
 
-                    {% endif %}
-                    
-                    <label>Change Avatar: </label>{{ profile_form.avatar }}
+        <hr />
 
-                    <br/>
-                    
-                    <label >First Name: </label>{{ profile_form.first_name }}
-                    
-                    <br/>
-                    
-                    <label >Last Name: </label>{{ profile_form.last_name }}
+        <br />
 
-                    <br/>
-                    
-                    <label>Middle Name: </label>{{ profile_form.middle_name }}
+        {% endif %}
 
-                    <br/>
-                    
-                    <label>University: </label>{{ profile_form.university }}
+        <label>Change Avatar: </label>{{ profile_form.avatar }}
 
-                    <br/>
+        <br />
 
-                    <label>Major: </label>{{ profile_form.major }}
+        <label>First Name: </label>{{ profile_form.first_name }}
 
-                    <br/>
-                    
-                    <div class="d-flex align-items-center justify-content-start">
-                        <label id="date_of_birth" class="mb-0">Date of birth: </label>{{ profile_form.date_of_birth }}
-                    </div>
+        <br />
 
-                    <br/>
+        <label>Last Name: </label>{{ profile_form.last_name }}
 
-                    <label>Telegram: </label>{{ profile_form.telegram }}
+        <br />
 
-                    <br/>
+        <label>Middle Name: </label>{{ profile_form.middle_name }}
 
-                    <label>VK: </label>{{ profile_form.vkontakte }}
+        <br />
 
-                    <br/>
+        <label>University: </label>{{ profile_form.university }}
 
-                    <label>Bio: </label>{{ profile_form.bio }}
+        <br />
 
-                    <br/>
+        <label>Major: </label>{{ profile_form.major }}
 
-                    <a href="{% url 'delete_profile' %}" class="fs-9" id="delete-account">
-                        <i class="bi bi-trash-fill"></i>
-                        Delete Account
-                    </a>
+        <br />
 
-                    <br/>
-
-                    <br/>
-
-                    <hr>
-
-                    <br/>
-
-                    <button type="submit" class="btn btn-outline-primary action-unchecked">
-                        Save Changes
-                    </button>
-
-                    <button type="reset" class="btn btn-outline-primary action-unchecked">
-                        Reset
-                    </button>
-                </form>
-            </div>
+        <div class="d-flex align-items-center justify-content-start">
+          <label id="date_of_birth" class="mb-0">Date of birth: </label>{{profile_form.date_of_birth }}
         </div>
+
+        <br />
+
+        <label>Telegram: </label>{{ profile_form.telegram }}
+
+        <br />
+
+        <label>VK: </label>{{ profile_form.vkontakte }}
+
+        <br />
+
+        <label>Bio: </label>{{ profile_form.bio }}
+
+        <br />
+
+        <a href="{% url 'delete_profile' %}" class="fs-9" id="delete-account">
+          <i class="bi bi-trash-fill"></i>
+          Delete Account
+        </a>
+
+        <br />
+
+        <br />
+
+        <hr />
+
+        <br />
+
+        <button type="submit" class="btn btn-outline-primary action-unchecked">
+          Save Changes
+        </button>
+
+        <button type="reset" class="btn btn-outline-primary action-unchecked">
+          Reset
+        </button>
+      </form>
     </div>
+  </div>
+</div>
 
 <script>
-    const fileInput = document.querySelector("input[type=file]");
-    fileInput.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            document.getElementById("preview").src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
+  const fileInput = document.querySelector("input[type=file]");
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById("preview").src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 </script>
 {% endblock content %}
