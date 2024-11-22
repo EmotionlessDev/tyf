@@ -270,6 +270,7 @@ class Comment(MPTTModel):
 
 
 class Post(models.Model):
+    active = models.BooleanField(default=True)
     media_files = GenericRelation(Media)
     comments = GenericRelation(Comment)
     identifier = CharField(max_length=8, primary_key=False, editable=False, unique=True)
