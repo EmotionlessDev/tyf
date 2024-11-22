@@ -67,7 +67,7 @@ def load_posts(request: HttpRequest):
         if posts != []:
             response["loading"] = True
             response["offset"] = int(posts[-1]["id"]) - 1
-            response["posts"] = DataBaseLoader.posts_to_json(posts)
+            response["posts"] = DataBaseLoader.posts_to_html(posts)
 
     return JsonResponse(response, safe=True)
 
@@ -500,10 +500,11 @@ def post_add(request: HttpRequest) -> HttpResponse:
                     slugify(x.strip().strip("#")) for x in form.cleaned_data.get("tags").split(",")
                 ]
                 for tag in tags:
-                    if not Tag.objects.filter(name=tag).exists():
-                        post.tags.create(name=tag)
-                    else:
-                        post.tags.add(Tag.objects.get(name=tag))
+                    if tag != "":
+                        if not Tag.objects.filter(name=tag).exists():
+                            post.tags.create(name=tag)
+                        else:
+                            post.tags.add(Tag.objects.get(name=tag))
 
                 media_files = request.FILES.getlist("media_files")
                 for file in media_files:

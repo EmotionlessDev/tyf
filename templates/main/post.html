@@ -35,18 +35,25 @@
                     </a>
                     <div class="d-flex flex-column text-muted gap-0">
                         <a href="{% url 'profile' username=post.author.username %}">
-                            <p class="mb-0 link fs-9"><strong>{{ post.author }}</strong></p>
+                            <p class="mb-0 link fs-9"><strong>{{ post.author.username }}</strong></p>
                         </a>
                         <p class="mb-0 fs-9"><strong>{{ post.created_at }}</strong></p>
                     </div>
                 </div>
                     
                 <div class="d-flex align-items-center gap-1">
+                    <div class="me-1 fs-9">
+                        {% for tag in post.tags.all|slice:'3' %}
+                        {% include 'main/tag.html' with tag=tag %}
+                        {% endfor %}
+                        {% if post.tags|length > 3 %}
+                        <a href="{% url 'post_detail' post.identifier %}" class="badge bg-secondary fs-9">...</a>
+                        {% endif %}
+                    </div>
                     {% for filetype in post.get_filetypes %}
                     <a href="{% url 'post_detail' post.identifier %}#attachments" class="text-light">
                         <i class="bi bi-filetype-{{ filetype }} fs-5 filetype"></i>
                     </a>
-                    <!-- <i class="bi bi-filetype-{{ filetype }} fs-5 filetype"></i> -->
                     {% endfor %}
                 </div>
             </div>
