@@ -185,11 +185,17 @@
                </ul>
                <div class="tab-content">
                   <div class="tab-pane pt-1 show active" id="posts-self" role="tabpanel" aria-labelledby="posts-self-tab">
+                     {% if not profile.posts.all %}
+                     <p class="text-secondary fs-7 mt-4 text-center">{{ profile.username }} doesn't have any posts yet.</p>
+                     {% endif %}
                      {% for post in profile.posts.all %}
                         {% include 'main/post.html' with post=post %}
                      {% endfor %}
                   </div>
                   <div class="tab-pane pt-1" id="bookmarks" role="tabpanel" aria-labelledby="bookmarks-tab">
+                     {% if not profile.bookmarks.all %}
+                     <p class="text-secondary fs-7 mt-4 text-center">{{ profile.username }} doesn't have any bookmarks yet.</p>
+                     {% endif %}
                      {% for bookmark in profile.bookmarks.all %}
                         {% include 'main/post.html' with post=bookmark.post %}
                      {% endfor %}

@@ -1,49 +1,50 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-   <meta charset="utf-8">
-   <title>
-      {% block title %}
-      Tell your friends
-      {% endblock %}
-   </title>
-   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-   <meta content="" name="keywords">
-   <meta content="" name="description">
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-      rel="stylesheet">
-   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
-      rel="stylesheet">
-   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
-   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-
-   <link href="{% static 'css/style.css' %}" rel="stylesheet">
-
-   {% block head %}{% endblock %}
-</head>
-
-<body>
-   <div class="content--canvas">
-         
-   </div>
-   <div class="container-fluid position-relative d-flex p-0">
-      <div id="spinner"
-         class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-         <div class="spinner-border text-primary" style="width: 3rem;
+   <head>
+      <meta charset="utf-8">
+      <title>
+         {% block title %}
+         Tell your friends
+         {% endblock %}
+      </title>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      <meta content="" name="keywords">
+      <meta content="" name="description">
+      <link rel="icon" type="image/png" href="{% static 'img/favicon/favicon-96x96.png' %}" sizes="96x96" />
+      <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon/favicon.svg' %}" />
+      <link rel="shortcut icon" href="{% static 'img/favicon/favicon.ico' %}" />
+      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/apple-touch-icon.png' %}" />
+      <meta name="apple-mobile-web-app-title" content="tyf.com" />
+      <link rel="manifest" href="{% static 'img/favicon/site.webmanifest' %}" />
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link
+         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+         rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
+         rel="stylesheet">
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+      <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
+      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+      <link href="{% static 'css/style.css' %}" rel="stylesheet">
+      {% block head %}{% endblock %}
+   </head>
+   <body>
+      <div class="content--canvas">
+      </div>
+      <div class="container-fluid position-relative d-flex p-0">
+         <div id="spinner"
+            class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex flex-column align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem;
                height: 3rem;
                color: var(--primary) !important" role="status">
-            <span class="sr-only">Loading...</span>
+            </div>
+            <span class="sr-only ms-2 color-primary">Loading...</span>
          </div>
-      </div>
-      <div class="sidebar pe-0 pb-3 border border-2 open" style="border-right: 0.1px solid var(--secondary) !important;
+         <div class="sidebar pe-0 pb-3 border border-2 open" style="border-right: 0.1px solid var(--secondary) !important;
             background-color: var(--dark) !important">
          <nav id="sidebar-nav" class="navbar bg-secondary navbar-dark align-items-center"
             style="background-color: var(--dark) !important">
@@ -86,7 +87,21 @@
                         {% endfor %}
                      </div>
                   </div>
+                  <div class="nav-item dropdown">
+                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">🔖 Tags</a>
+                     <div class="dropdown-menu bg-transparent border-0">
+                        <div class="px-3">
+                           {% for tag in tags %}
+                           {% include 'main/tag.html' with tag=tag %}
+                           {% endfor %}
+                        </div>
+                     </div>
+                  </div>
                </div>
+            </nav>
+            <div>
+               <a href="https://github.com/EmotionlessDev/tyf" class="dropdown-item">⭐ Support Us</a>
+               <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="dropdown-item">🛠️ Report a bug</a>
             </div>
 
          </nav>
@@ -106,65 +121,105 @@
       <div class="content open">
          <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="background-color: var(--dark) !important;
                border-bottom: 0.1px solid var(--secondary) !important">
-            <a href="{% url 'index' %}" class="navbar-brand d-flex me-4">
+               <a href="{% url 'index' %}" class="navbar-brand d-flex me-4">
                <img class="" src="{% static 'img/logo.svg' %}" alt="" style="height: 35px">
-
-            </a>
-            <a href="#" class="sidebar-toggler flex-shrink-0">
+               </a>
+               <a href="#" class="sidebar-toggler flex-shrink-0">
                <i class="bi bi-list fs-4 text-light"></i>
-            </a>
-            <div class="ms-4 w-100">
-               <input id="search-input" class="js-typing-color form-control fs-7 bg-dark border-0" type="search" placeholder="Search">
-            </div>
-            <a href="{% url 'post_add' %}" class="btn btn-outline-primary fs-8 ms-4 action-super">+ Create</a>
-            <div class="navbar-nav align-items-center ms-0">
-
-               <div class="nav-item dropdown">
-                  {% if user.is_authenticated %}
-                  <a href="{% url 'profile' username=request.user.profile.username %}" class="nav-link dropdown-toggle ms-0"
-                     data-bs-toggle="dropdown">
+               </a>
+               <div class="ms-4 w-100">
+                  <input id="search-input" class="js-typing-color form-control fs-7 bg-dark border-0" type="search" placeholder="Search">
+               </div>
+               <a href="{% url 'post_add' %}" class="btn btn-outline-primary fs-8 ms-4 action-super">+ Create</a>
+               <div class="navbar-nav align-items-center ms-0">
+                  <div class="nav-item dropdown">
+                     {% if user.is_authenticated %}
+                     <a href="{% url 'profile' username=request.user.profile.username %}" class="nav-link dropdown-toggle ms-0"
+                        data-bs-toggle="dropdown">
                      <img class="rounded-circle me-lg-0" src="{{ user.profile.get_avatar }}" alt="" style="width: 30px;
                         height: 30px">
-                  </a>
-                  {% else %}
-                  <a href="{% url 'login' %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                     <img class="rounded-circle me-lg-0" src="{% static 'img/default_avatar.webp' %}" alt="" style="width: 30px;
-                           height: 30px">
-                  </a>
-                  {% endif %}
-                  <div class="dropdown-menu dropdown-menu-end bg-dark border-secondary border-top-0 rounded-0 rounded-bottom fs-8">
-                     {% if user.is_authenticated %}
-                     <a href="{% url 'profile' username=request.user.profile.username %}" class="dropdown-item">Profile</a>
-                     {% endif %}
-                     {% if user.is_authenticated %}
-                     <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
+                     </a>
                      {% else %}
-                     <a href="{% url 'login' %}" class="dropdown-item">Log In</a>
+                     <a href="{% url 'login' %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                     <img class="rounded-circle me-lg-0" src="{% static 'img/default_avatar.webp' %}" alt="" style="width: 30px;
+                        height: 30px">
+                     </a>
                      {% endif %}
+                     <div class="dropdown-menu dropdown-menu-end bg-dark border-secondary border-top-0 rounded-0 rounded-bottom fs-8">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'profile' username=request.user.profile.username %}" class="dropdown-item">Profile</a>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="dropdown-item">Log In</a>
+                        {% endif %}
+                     </div>
                   </div>
                </div>
-            </div>
-         </nav>
-         
-         <div>
-            <div class="w-100 mb-0 main__content container">
-               <div class="main_background">
-                  <div class="row position-relative">
+            </nav>
+            <div>
+               <div class="w-100 mb-0 main__content container">
+                  <div class="main_background"></div>
+                  <div class="row position-relative px-4">
+                     {% block content %}
+                     <div>
+                        <h1 class="mt-4 h1-super fs-0">
+                           Welcome To 
+                           <span class="color-primary">Tell Your Friends</span>
+                           <span>!</span>
+                        </h1>
+                        <h2 class="fs-6 text- mt-3" style="font-weight: 300;">
+                           <em>
+                           You've arrived in a space where the noise of the world fades, 
+                           and the whispers of your potential take center stage. 
+                           Open the door to a realm where your thoughts transform into a beacon for others, 
+                           a sanctuary where students exchange more than notes—they exchange purpose.
+                           
+                           <br/><br/>
+
+                           Among these pages, you'll find collaborators, dreamers, 
+                           seekers of the same light you carry. Share your work, gather a team, 
+                           or plant the seeds of something extraordinary. This isn't just a platform,
+                           it's a reflection of what you can become when you choose to inspire and be inspired.
+
+                           <br/><br/>
+
+                           So leave your mark. Because here on <strong style="font-weight: 800;">Tell Your Friends</strong>, 
+                           your voice doesn't just echo — it resonates forever.
+                           </em>
+                        </h2>
+                     </div>
+                     <hr class="my-4">
                      <div class="col-9">
-                        {% block content %}
-                        <div id="search-container"></div>
-                        <div id="posts"></div>
-                        {% endblock %}
+                        <div>
+                           <div id="search-container"></div>
+                           <div id="posts"></div>
+                        </div>
                      </div>
                      <div class="col-3" id="recent-users">
                         <!-- recent users sidebar -->
-                        <div class="card bg-transparent p-2 mt-4">
-                              <h5 class="text-light>">Recent Users</h5>
+                        <div class="card bg-dark p-2 mt-4">
+                           <p class="text-light text-center m-0 mt-1 fs-9>">Recent Users</p>
+                           <hr class="mt-2 mb-3">
+                           {% for profile in recent_users %}
+                           <div class="d-flex align-items-center gap-2 mb-3">
+                              <a href="{% url 'profile' username=profile.username %}"">
+                              <img src="{{ profile.get_avatar }}" alt="avatar" class="img-fluid rounded-circle" style="width: 40px; height: 40px">
+                              </a>
+                              <div class="d-flex flex-column gap-1">
+                                 <a  href="{% url 'profile' username=profile.username %}">
+                                    <p class="m-0 p-0 fs-9">{{ profile.username }}</p>
+                                 </a>
+                                 <p class="m-0 p-0 fs-9">Since {{ profile.date_joined }}</p>
+                              </div>
+                           </div>
+                           {% endfor %}
                         </div>
                      </div>
                      <div class="p-4 pb-0 w-100 text-center mb-3" style="color: var(--secondary-light);">
                         <hr>
-                        <a href="{% url 'index' %}" style="color: var(--secondary-light);">
+                        <a href="{% url 'index' %}" class="fs-9" style="color: var(--secondary-light);">
                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                               <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
                               <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
@@ -172,19 +227,19 @@
                            Reload the page to refresh post feed
                         </a>
                      </div>
+                     {% endblock %}
                   </div>
                </div>
             </div>
-
-            <div class="container-fluid p-0 position-fixed bottom-0 w-100">
+            <div class="container-fluid p-0 bottom-0 w-100">
                <div class="bg-dark rounded-top mt-4 p-0">
-                  <div class="d-flex align-items-center justify-content-between p-4">
+                  <div class="container-fluid d-flex align-items-center justify-content-between p-4">
                      <div class="col-12 col-sm-6 text-center text-sm-start fs-9 text-muted">
                         &copy; <a href="{% url 'index' %}">Tell Your Friends</a>, All Right Reserved.
                      </div>
                      <div class="d-flex align-items-center gap-1">
                         <a href="https://github.com/EmotionlessDev/tyf" class="text-muted">
-                           <i class="bi bi-github"></i>
+                        <i class="bi bi-github"></i>
                         </a>
                      </div>
                   </div>
@@ -281,117 +336,124 @@
          }
          if ($(this).val().startsWith("tag::") || $(this).val().startsWith("collection::") || $(this).val().startsWith("category::")) {
             $("#search-input").css("color", "#ADF0FF");
-            is_search_by_keyword = true;
-         } else {
-            $("#search-input").css("color", "var(--text-color)");
-            is_search_by_keyword = false;
-         }
-      });
-
-      function tag_help(name) {
-         $("#search-input").focus();
-         $("#search-input").css("color", "#ADF0FF");
-         if (name == undefined) {
-            $("#search-input").val("tag::");
-         } else {
-            $("#search-input").val("tag::" + name.slice(1));
-            offset = -2;
-            is_end = false;
-            is_search_by_keyword = true;
-            search_term = $("#search-input").val();
-            postContainer.innerHTML = "";
-            loadMoreContent();
-         }
-      }
-      function collection_help(name) {
-         $("#search-input").focus();
-         $("#search-input").css("color", "#ADF0FF");
-         if (name == undefined) {
-            $("#search-input").val("collection::");
-         } else {
-            $("#search-input").val("collection::" + name);
-            offset = -2;
-            is_end = false;
-            is_search_by_keyword = true;
-            search_term = $("#search-input").val();
-            postContainer.innerHTML = "";
-            loadMoreContent();
-         }
-      }
-      function category_help(name) {
-         $("#search-input").focus();
-         $("#search-input").css("color", "#ADF0FF");
-         if (name == undefined) {
-            $("#search-input").val("category::");
-         } else {
-            $("#search-input").val("category::" + name);
-            offset = -2;
-            is_end = false;
-            is_search_by_keyword = true;
-            search_term = $("#search-input").val();
-            postContainer.innerHTML = "";
-            loadMoreContent();
-         }
-      }
-
-      if (postContainer.innerText === "") {
-         if ('{{ request.get_full_path }}' === "/"  && !is_end) {
-            loadMoreContent();
-         }
-      }
-      window.onscroll = function () {
-         if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-            if ('{{ request.get_full_path }}' === "/" && !is_end) {
-               loadMoreContent();
-            }
-         }
-      };
-      $('#search-input').on('keyup', function() {
-         clearTimeout(timeoutId);
-         timeoutId = setTimeout(function() {
-            search_term = $("#search-input").val();
-            if (search_term != "") {
-               offset = -2;
-               is_end = false;
-               postContainer.innerHTML = "";
-               loadMoreContent();
+            if (name == undefined) {
+               $("#search-input").val("tag::");
             } else {
+               $("#search-input").val("tag::" + name.slice(1));
                offset = -2;
                is_end = false;
-               search_term = "";
+               is_search_by_keyword = true;
+               search_term = $("#search-input").val();
                postContainer.innerHTML = "";
-               searchContainer.innerHTML = "";
                loadMoreContent();
             }
-         }, 500); 
-      });
-
-      function loadMoreContent() {
-         let payload = {
-            "offset": offset,
-            "search_term": search_term,
+         }
+         function collection_help(name) {
+            $("#search-input").focus();
+            $("#search-input").css("color", "#ADF0FF");
+            if (name == undefined) {
+               $("#search-input").val("collection::");
+            } else {
+               $("#search-input").val("collection::" + name);
+               offset = -2;
+               is_end = false;
+               is_search_by_keyword = true;
+               search_term = $("#search-input").val();
+               postContainer.innerHTML = "";
+               loadMoreContent();
+            }
+         }
+         function category_help(name) {
+            $("#search-input").focus();
+            $("#search-input").css("color", "#ADF0FF");
+            if (name == undefined) {
+               $("#search-input").val("category::");
+            } else {
+               $("#search-input").val("category::" + name);
+               offset = -2;
+               is_end = false;
+               is_search_by_keyword = true;
+               search_term = $("#search-input").val();
+               postContainer.innerHTML = "";
+               loadMoreContent();
+            }
          }
          
-         $.ajax({
-            type: "POST",
-            url: 'load_posts/',
-            contentType: 'application/json',
-            dataType: "json",
-            data: JSON.stringify(payload),
-            success: function(data) {
+         if (postContainer.innerText === "") {
+            if ('{{ request.get_full_path }}' === "/"  && !is_end) {
+               loadMoreContent();
+            }
+         }
+         window.onscroll = function () {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+               if ('{{ request.get_full_path }}' === "/" && !is_end) {
+                  loadMoreContent();
+               }
+            }
+         };
+         $('#search-input').on('keyup', function() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(function() {
+               search_term = $("#search-input").val();
                if (search_term != "") {
-                  let info = "";
-
-                  if (is_search_by_keyword) {
-                     if (search_term.startsWith("tag::")) {
-                        info = `Search results for tag "#${search_term.slice(5)}".`;
-                     } else if (search_term.startsWith("collection::")) {
-                        info = `Posts contained in "${search_term.slice(12)}" collection.`;
-                     } else if (search_term.startsWith("category::")) {
-                        info = `Search results for category "${search_term.slice(10)}".`;
+                  offset = -2;
+                  is_end = false;
+                  postContainer.innerHTML = "";
+                  loadMoreContent();
+               } else {
+                  offset = -2;
+                  is_end = false;
+                  search_term = "";
+                  postContainer.innerHTML = "";
+                  searchContainer.innerHTML = "";
+                  loadMoreContent();
+               }
+            }, 500); 
+         });
+         
+         function loadMoreContent() {
+            let payload = {
+               "offset": offset,
+               "search_term": search_term,
+            }
+            
+            $.ajax({
+               type: "POST",
+               url: 'load_posts/',
+               contentType: 'application/json',
+               dataType: "json",
+               data: JSON.stringify(payload),
+               success: function(data) {
+                  if (search_term != "") {
+                     let info = "";
+         
+                     if (is_search_by_keyword) {
+                        if (search_term.startsWith("tag::")) {
+                           info = `Search results for tag "#${search_term.slice(5)}".`;
+                        } else if (search_term.startsWith("collection::")) {
+                           info = `Posts contained in "${search_term.slice(12)}" collection.`;
+                        } else if (search_term.startsWith("category::")) {
+                           info = `Search results for category "${search_term.slice(10)}".`;
+                        }
+                     } else {
+                        info = `Search results for "${search_term}".`;
                      }
-                  } else {
-                     info = `Search results for "${search_term}".`;
+         
+                     searchContainer.innerHTML = 
+                     `
+                     <div class="p-4 text-center pb-0" style="color: var(--secondary-light);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                        <span>` + info + `</span>
+                        <hr>  
+                     </div>
+                     <div class="p-4 pb-1 pt-0" style="color: var(--secondary-light);">
+                        <div><a onclick='tag_help();' href="#" style="color: var(--secondary-light); font-style: italic;">Search by tag</a>,</div> 
+                        <div><a onclick='collection_help()'' href="#" style="color: var(--secondary-light); font-style: italic;">Search by collection</a>,</div>  
+                        <div><a onclick='category_help()' href="#" style="color: var(--secondary-light); font-style: italic;">Search by category</a>.</div> 
+                     </div>
+                     `;
                   }
 
                   searchContainer.innerHTML = 
@@ -417,12 +479,12 @@
                         if (data.posts !== null) {
                            postContainer.innerHTML += data.posts[i];
                         }
+                        offset = data.offset;
+                        textTruncate();
                      }
-                     offset = data.offset;
-                     textTruncate();
+                  } else {
+                     is_end = true;
                   }
-               } else {
-                  is_end = true;
                }
             }
          });
@@ -446,16 +508,25 @@
                clamp: 2,
                useNativeClamp: false
             });
+         
+            var truncate_span = document.querySelector(".truncate span");
+            $clamp(truncate_span, {
+               clamp: 2,
+               useNativeClamp: false
+            });
+         
+            for (let i = 1; i < 7; i++) {
+               $clamp(document.querySelector(`.truncate h${i}`), {
+                  clamp: 2,
+                  useNativeClamp: false
+               });
+            }
          }
-      }
-   </script>
-
-   <script src="{% static 'js/noise.min.js' %}"></script>
-   <script src="{% static 'js/util.js' %}"></script>
-   <script src="{% static 'js/coalesce.js' %}"></script>
-
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-   <script src="{% static 'js/main.js' %}"></script>
-
-</body>
+      </script>
+      <script src="{% static 'js/noise.min.js' %}"></script>
+      <script src="{% static 'js/util.js' %}"></script>
+      <script src="{% static 'js/coalesce.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+      <script src="{% static 'js/main.js' %}"></script>
+   </body>
 </html>

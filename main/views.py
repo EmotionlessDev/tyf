@@ -28,6 +28,7 @@ from django.db import transaction
 from django.contrib import messages
 from django.core.cache import cache
 from django.utils.text import slugify
+from markdownify import markdownify
 from django.views.generic import DetailView
 from .forms import PostForm, EditProfileForm
 from social_django.models import UserSocialAuth
@@ -38,18 +39,31 @@ from users.forms import UserCreationForm, UserSetPasswordForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .models import Profile, Follow, Collection, Category, Tag, Media, Post, Bookmark
+from django.contrib.auth.decorators import login_required
+from .forms import PostForm, EditProfileForm
+from django.utils import timezone
+from django.db import transaction
+from .forms import CommentForm
+from .models import Comment
+from social_django.models import UserSocialAuth
+from django.http import HttpResponseForbidden
+from django.template.loader import render_to_string
+
+################################## Main Page Views ##################################
 
 
 def index(request: HttpRequest) -> HttpResponse:
     collections = Collection.objects.all()
     categories = Category.objects.all()
     tags = Tag.objects.all()
+    recent_users = Profile.objects.all().order_by("-date_joined")[:10]
 
     context = {
         "user": request.user,
         "collections": collections,
         "categories": categories,
         "tags": tags,
+        "recent_users": recent_users,
     }
 
     return render(request, "main/index.html", context=context)
@@ -500,11 +514,10 @@ def post_add(request: HttpRequest) -> HttpResponse:
                     slugify(x.strip().strip("#")) for x in form.cleaned_data.get("tags").split(",")
                 ]
                 for tag in tags:
-                    if tag != "":
-                        if not Tag.objects.filter(name=tag).exists():
-                            post.tags.create(name=tag)
-                        else:
-                            post.tags.add(Tag.objects.get(name=tag))
+                    if not Tag.objects.filter(name="#"+tag).exists():
+                        post.tags.create(name=tag)
+                    else:
+                        post.tags.add(Tag.objects.get(name="#"+tag))
 
                 media_files = request.FILES.getlist("media_files")
                 for file in media_files:
@@ -597,6 +610,8 @@ def post_edit(request: HttpRequest, identifier: str) -> HttpResponse:
             return redirect("post_detail", identifier=post.identifier)
     else:
         form = PostForm(instance=post)
+        form.fields["tags"].initial = ", ".join([x.name for x in post.tags.all()])
+        form.fields["content"].initial = markdownify(post.content, heading_style="ATX")
     return render(request, "main/post_edit.html", {"form": form, "post": post})
 
 
@@ -640,4 +655,43 @@ def collection(request: HttpRequest, slug: str) -> HttpResponse:
 def delete_profile(request: HttpRequest) -> HttpResponse:
     user = request.user
     user.delete()
+    return redirect("index")
+
+
+@login_required
+def delete_comment(request: HttpRequest, pk) -> HttpResponse:
+    comment = get_object_or_404(Comment, pk=pk)
+    if comment.author != request.user.profile:
+        return HttpResponseForbidden("You are not allowed to delete this comment.")
+    comment.active = False
+    comment.save()
+    return redirect('post_detail', identifier=comment.post.identifier)
+
+
+@login_required
+def edit_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    
+    if comment.author != request.user.profile:
+        return HttpResponseForbidden("You are not allowed to edit this comment.")
+    
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', identifier=comment.post.identifier)
+    else:
+        form = CommentForm(instance=comment)
+    
+    return render(request, 'main/edit_comment.html', {'form': form, 'comment': comment})
+
+
+@login_required
+def delete_post(request, identifier):
+    post = get_object_or_404(Post, identifier=identifier)
+    if request.user != post.author.user:
+        return HttpResponseForbidden("You are not allowed to edit this comment.")
+    post.active = False
+    post.save()
+    messages.success(request, "Successfully deleted the post!")
     return redirect("index")
