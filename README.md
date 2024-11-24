@@ -46,6 +46,12 @@ We welcome dreamers and doers. Whether it's refining a feature, fixing a bug, or
 
 Released under the [MIT License](LICENSE), so you can share, adapt, and create without limits.  
 
+### 👨🏻‍💻 Developed by the team:
+
+[teenxsky](https://github.com/teenxsky) - Ruslan Kutorgin
+[r0manch1k](https://github.com/r0manch1k) - Roman Sokolovsky 
+[EmotionlessDev](https://github.com/EmotionlessDev) - Artem Svirin
+
 ---
 
 ## Closing Words 🌠  
