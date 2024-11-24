@@ -1,4 +1,4 @@
-# ✨ Tell Your Friends ✨
+# Tell Your Friends
 
 Welcome to **Tell Your Friends** – the ultimate online space for students to share, learn, and connect! 🌍 Here, you can upload notes, post project ideas, or introduce yourself to find the perfect team for your academic journey! Whether it's study guides, research work, or just a way to meet like-minded peers, we've got you covered. 💡✨
 
@@ -29,21 +29,10 @@ Tell Your Friends is designed to be a collaborative, friendly environment where 
 
 ## 📈 How It Works
 
-1. **Sign up** and create your profile. 🚪
+1. **Sign up** and create your profile.
 2. **Create posts**: Share notes, project ideas, or simply introduce yourself.
 3. **Engage**: Like and comment on posts to connect with others and gain insights.
 4. **Earn Rewards**: Collect likes to unlock achievements and cool profile decorations! 🌟🎖️
-
----
-
-## 👥 Community Guidelines
-
-To keep **Tell Your Friends** welcoming and helpful for everyone:
-- **Be respectful** and constructive with comments. 💬
-- **Share original content** or give credit where it's due. ✍️
-- **Stay positive** and supportive in your interactions. 🌈
-
-Together, we create a safe, engaging space for academic growth! 🌟️
 
 ---
 
@@ -54,8 +43,6 @@ Together, we create a safe, engaging space for academic growth! 🌟️
 - PostgreSQL
 - MyPy
 - Flake8
-- Nginx
-- Docker
 
 ### 🌟 Join the Journey
 
