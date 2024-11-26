@@ -1,4 +1,4 @@
-# Tell Your Friends 🌟  
+# Tell Your Friends 💚
 *Welcome, friend, to the infinite web. A place where questions rest and knowledge flows like the winds of a forgotten dream.*  
 
 ---
@@ -19,7 +19,7 @@ Bring forth your treasures—class notes, study guides, and flashes of inspirati
 ### ❓ Ask Questions  
 No question is too small, no thought too grand. A simple query sparks a cascade of insight. Post your doubts and watch as the collective wisdom brings clarity.  
 
-### 📚 Explore Resources  
+### 📗 Explore Resources  
 Dive deep into a well of curated materials. Organized by subject, by theme, by passion. Lose yourself in the flow and emerge with what you need.  
 
 ### 🤝 Connect with Peers  
