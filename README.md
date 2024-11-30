@@ -27,7 +27,7 @@ Threads of connection weave through the site. Build friendships, ignite collabor
 
 ---
 
-## ⚙️ Developed using technologies:
+## ⚙️ Technologies:
 
 - Python 3.12
 - Django 5.1.2
@@ -38,7 +38,7 @@ Threads of connection weave through the site. Build friendships, ignite collabor
 
 ---
 
-### 👨🏻‍💻 Developed by the team:
+### 👨🏻‍💻 Team:
 
 [teenxsky](https://github.com/teenxsky) - Ruslan Kutorgin
 [r0manch1k](https://github.com/r0manch1k) - Roman Sokolovsky 
