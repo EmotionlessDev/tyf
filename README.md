@@ -27,24 +27,16 @@ Threads of connection weave through the site. Build friendships, ignite collabor
 
 ---
 
-## Contribution 🌠  
-*"Will you add your voice to the chorus, or stand silent, waiting for your moment to begin?"*  
+## ⚙️ Developed using technologies:
 
-We welcome dreamers and doers. Whether it's refining a feature, fixing a bug, or simply sharing an idea—your contribution matters.  
-
-### How to Contribute  
-1. Fork the repository.  
-2. Create a branch for your feature or fix.  
-3. Add all required Django files
-4. Do a magic
-5. Submit a pull request with a description of your changes.  
+- Python 3.12
+- Django 5.1.2
+- MySQL
+- MyPy
+- Flake8
+- Black
 
 ---
-
-## License 📜  
-*"This is free, not in cost, but in spirit. A gift to the curious, forever boundless."*  
-
-Released under the [MIT License](LICENSE), so you can share, adapt, and create without limits.  
 
 ### 👨🏻‍💻 Developed by the team:
 
