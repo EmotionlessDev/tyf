@@ -1,6 +1,4 @@
-**Tell Your Friends 💚**
-
-## ⚙️ Technologies:
+### Tell Your Friends 💚
 
 - Python 3.12
 - Django 5.1.2
