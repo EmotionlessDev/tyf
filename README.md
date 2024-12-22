@@ -1,4 +1,4 @@
-### Tell Your Friends 💚
+## Tell Your Friends
 
 - Python 3.12
 - Django 5.1.2
@@ -17,5 +17,5 @@
 
 ---
 
-*"So, tell your friends. Let them find this place, where minds meet, and ideas grow wild. Because in the end, isn’t that the dream? To learn, to share, to connect?"*  
+*"So, tell your friends. Let them find this place, where minds meet, and ideas grow wild. Because in the end, isn’t that the dream? To learn, to share, to connect? 💚"*  
 
