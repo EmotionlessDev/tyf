@@ -1,4 +1,4 @@
-<p class="text-align: center">Tell Your Friends 💚</p>
+**Tell Your Friends 💚**
 
 ## ⚙️ Technologies:
 
