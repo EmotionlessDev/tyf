@@ -1,15 +1,5 @@
 # Tell Your Friends 💚
 
-## Features ✨  
-
-### 🗂️ Share Notes  
-
-### ❓ Ask Questions  
-
-### 📗 Explore Resources  
-
-### 🤝 Connect with Peers  
-
 ---
 
 ## ⚙️ Technologies:
